@@ -1,7 +1,7 @@
 function goToHomePage(){
 	var errorContainer = document.getElementById('errorMessage');
   	errorContainer.style.display = 'none';
-  	makeCall('GET','HomePage', null,(req) => {
+  	makeCall("GET",'HomePage', null,(req) => {
     if (req.readyState == XMLHttpRequest.DONE) {
       var responseBody = req.responseText;
       document.getElementById('pageContainer').innerHTML = '';

@@ -3,6 +3,7 @@
  */
 
 	function makeCall(method, url, formElement, cback, reset = true) {
+		console.log("makeCall on "+method+ " "+url+" "+reset); //debug
 	    var req = new XMLHttpRequest(); // visible by closure
 	    req.onreadystatechange = function() {
 	      cback(req)
