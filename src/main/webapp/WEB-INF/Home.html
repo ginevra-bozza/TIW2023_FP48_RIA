@@ -5,18 +5,35 @@
 <title>Home</title>
 
 <!--<link rel="stylesheet" type="text/css" media="all" href="CSS/mystyle.css" />-->
-<script src="utils.js" charset="utf-8" defer></script>
-<script  src="shopManagement.js" charset="utf-8" defer></script>
+<script src="./JS/utils.js" charset="utf-8" defer></script>
+<script  src="./JS/homePage.js" charset="utf-8" defer></script>
 
 </head>
 <body>
-	<p>Search product</p>
-		<form id="id_search" action="#">
-		<fieldset>
-			<input type="text" name="textSearch" required> 
-			<input type="button" name="search" value="Search">
-		</fieldset>
+	<header>
+		<nav>
+			<a href="#" id="goCartLink" >Cart <i class="fa fa-shopping-cart"></i></a>
+			<a href="#" id="goOrdersLink">Orders <i class="fa fa-file" aria-hidden="true"></i></a>
+			<span id="navUsername">John Doe </span>
+			<a href="#" id="doLogoutLink"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
+		</nav>
+		<div>
+			<a href="#" id="displayHomeLink">
+				<!--<img class="header-logo" src="./images/logo-light.png" />-->
+			</a>
+		</div>
+		<form id="searchForm" action="#">
+			<input id="textSearch" type="text" name="textSearch" placeholder="Search" />
+			<!-- <button type="submit" id="idButton"><i class="fa fa-search"></i></button> -->
+		</form>
+		
+	</header>
+	<div class="errorMessage" id="errorMessage">
+		<h3>Error</h3>
+		<p id="errorBody"></p>
+	</div>
+	<section id="pageContainer">
 
-	</form>
+	</section>
 </body>
 </html>

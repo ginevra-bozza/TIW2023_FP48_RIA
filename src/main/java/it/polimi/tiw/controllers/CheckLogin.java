@@ -1,4 +1,4 @@
-package it.polimi.tiw.Controllers;
+package it.polimi.tiw.controllers;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringEscapeUtils;
+
 
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.DAO.UserDAO;
@@ -39,7 +40,7 @@ public class CheckLogin extends HttpServlet {
 		// obtain and escape params
 		String email = null;
 		String pwd = null;
-		email = StringEscapeUtils.escapeJava(request.getParameter("username"));
+		email = StringEscapeUtils.escapeJava(request.getParameter("email"));
 		pwd = StringEscapeUtils.escapeJava(request.getParameter("pwd"));
 		if (email == null || pwd == null || email.isEmpty() || pwd.isEmpty() ) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
