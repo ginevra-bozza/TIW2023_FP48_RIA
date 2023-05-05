@@ -7,32 +7,31 @@
 <!--<link rel="stylesheet" type="text/css" media="all" href="CSS/mystyle.css" />-->
 <script src="./JS/utils.js" charset="utf-8" defer></script>
 <script  src="./JS/homePage.js" charset="utf-8" defer></script>
+<script  src="./JS/results.js" charset="utf-8" defer></script>
 
 </head>
 <body>
-	<header>
-		<nav>
-			<a href="#" id="goCartLink" >Cart <i class="fa fa-shopping-cart"></i></a>
-			<a href="#" id="goOrdersLink">Orders <i class="fa fa-file" aria-hidden="true"></i></a>
-			<span id="navUsername">John Doe </span>
-			<a href="#" id="doLogoutLink"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
-		</nav>
-		<div>
-			<a href="#" id="displayHomeLink">
-				<!--<img class="header-logo" src="./images/logo-light.png" />-->
-			</a>
-		</div>
+	<p>Welcome
+		<span id = "id_name"></span>
+	</p>	
+		
 		<form id="searchForm" action="#">
 			<input id="textSearch" type="text" name="textSearch" placeholder="Search" />
-			<button type="submit" id="idButton"></button>
+			<input id="searchButton" type="button" value="Search">
+			
 		</form>
+		<table id="id_listcontainer" class= "boxed">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Price</th>
+				</tr>
+			</thead>
+			<tbody id = "id_listcontainerbody"></tbody>
 		
-	</header>
-	<div class="errorMessage" id="errorMessage">
-		<h3>Error</h3>
-		<p id="errorBody"></p>
-	</div>
-	<section id="pageContainer">
+		</table>
+
+	<section id="id_pageContainer">
 
 	</section>
 </body>

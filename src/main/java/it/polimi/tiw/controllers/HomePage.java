@@ -62,8 +62,7 @@ public class HomePage extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String path = "/WEB-INF/Home.html";
-		ServletContext servletContext = getServletContext();
+		
 		HttpSession session = request.getSession();
 		
 		productDAO = new ProductDAO(connection);
@@ -83,7 +82,7 @@ public class HomePage extends HttpServlet {
 		String productJson = "[";
 		for (Product p : visualizedProducts) {
 			productJson += "{\"id\":" + p.getProduct_id() + ",\"name\":\"" + p.getName()
-					 + "\",\"price\":\""	+ p.getPrice() + "\",";
+					 + "\",\"price\":\""	+ p.getPrice() + "\"},";
 		}
 		productJson = productJson.substring(0, productJson.length() - 1);
 		
