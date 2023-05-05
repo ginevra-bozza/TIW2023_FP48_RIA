@@ -11,7 +11,7 @@
 		{
 			makeCall("POST", 'CheckLogin',form,
 				function(x) {
-					if (x.readyState == XMLHttpRequest.DONE) {
+					if (x.readyState === XMLHttpRequest.DONE) {
 						var message = x.responseText;
 						console.log("Status: "+x.status);
 						switch (x.status) {

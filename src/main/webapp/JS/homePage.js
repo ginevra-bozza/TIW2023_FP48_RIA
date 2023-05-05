@@ -1,4 +1,12 @@
 {
+    window.onload = function() { // wait for the document to finish loading
+        var title = document.getElementById("");
+        title.onclick = function() {
+            var element = document.getElementById("id_listcontainer");
+            element.className = "displayed";
+        };
+    };
+
 	let missionDetails, lastViewedList, wizard,
 	    pageOrchestrator = new PageOrchestrator(); // main controller
 

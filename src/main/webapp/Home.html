@@ -2,9 +2,10 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+	<link rel="stylesheet" type="text/css" media="all" href="StyleSheet.css" />
 <title>Home</title>
 
-<!--<link rel="stylesheet" type="text/css" media="all" href="CSS/mystyle.css" />-->
+
 <script src="./JS/utils.js" charset="utf-8" defer></script>
 <script  src="./JS/homePage.js" charset="utf-8" defer></script>
 <script  src="./JS/results.js" charset="utf-8" defer></script>
@@ -20,7 +21,8 @@
 			<input id="searchButton" type="button" value="Search">
 			
 		</form>
-		<table id="id_listcontainer" class= "boxed">
+		<p id="clickable">Click here to show your last viewed products</p>
+		<table id="id_listcontainer" class= "masked">
 			<thead>
 				<tr>
 					<th>Name</th>
@@ -31,7 +33,7 @@
 		
 		</table>
 
-		<table id="id_resultlistcontainer">
+		<table id="id_resultlistcontainer" class = "masked">
 			<thead>
 			<tr>
 				<th>Product Id</th>
