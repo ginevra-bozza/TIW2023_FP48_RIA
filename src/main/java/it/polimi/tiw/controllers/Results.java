@@ -68,12 +68,22 @@ public class Results extends HttpServlet {
 		if(productList != null)
 			productList.clear();
 		productList = product.searchProduct((String) session.getAttribute("searchedProduct"));
-			String path ="/WEB-INF/Results.html";
-			ServletContext servletContext = getServletContext();
-			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-			ctx.setVariable("productList", productList);
-			ctx.setVariable("checkMethod", checkMethod);
-			templateEngine.process(path, ctx, response.getWriter());
+		
+		String productJson = "[";
+		for (Product p : productList) {
+			productJson += "{\"id\":" + p.getProduct_id() + ",\"name\":\"" + p.getName()
+					 + "\",\"price\":\""	+ p.getPrice() + "\"},";
+		}
+		productJson = productJson.substring(0, productJson.length() - 1);
+		
+		productJson += "]";
+		
+		response.setStatus(HttpServletResponse.SC_OK);
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().println(productJson);
+		
+		
 	}
 
 
