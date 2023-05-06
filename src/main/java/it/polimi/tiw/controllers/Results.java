@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -34,9 +35,7 @@ import it.polimi.tiw.utils.ConnectionHandler;
 @WebServlet("/Results")
 public class Results extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private TemplateEngine templateEngine;
 	private Connection connection = null;
-	private boolean checkMethod = false;
 	List<Product> productList = null;
 
        
@@ -51,19 +50,26 @@ public class Results extends HttpServlet {
     public void init() throws ServletException {
     	ServletContext servletContext = getServletContext();
 		connection = ConnectionHandler.getConnection(servletContext);
+		
     }
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		HttpSession session = request.getSession();
-		
+		//HttpSession session = request.getSession();
+		String searchedProduct;
 		ProductDAO product = new ProductDAO(connection);
 		if(productList != null)
 			productList.clear();
-			productList = product.searchProduct((String) session.getAttribute("searchedProduct"));
-			System.out.print((String) session.getAttribute("searchedProduct"));
+			searchedProduct= StringEscapeUtils.escapeJava(request.getParameter("textSearch"));
+			if (searchedProduct == null || searchedProduct.isEmpty() ) {
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				response.getWriter().println("text must be not null");
+				return;
+			}
+			productList = product.searchProduct(searchedProduct);
+			System.out.print(searchedProduct);
 			String productJson = "[";
 			for (Product p : productList) {
 				productJson += "{\"id\":" + p.getProduct_id() + ",\"name\":\"" + p.getName()
@@ -84,7 +90,7 @@ public class Results extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// If the user is not logged in (not present in session) redirect to the login
-				checkMethod = true;
+				
 				
 				String loginpath = getServletContext().getContextPath() + "/index.html";
 				HttpSession session = request.getSession();

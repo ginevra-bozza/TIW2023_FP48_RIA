@@ -1,19 +1,16 @@
 {
     function initializeHome() {
 
-        var personalMessage = new PersonalMessage(sessionStorage.getItem('name'),
-            document.getElementById("id_name"));
-        personalMessage.show();
+        //var personalMessage = new PersonalMessage(sessionStorage.getItem('email'),
+          //  document.getElementById("id_name"));
+        //personalMessage.show();
         refreshHome();
         search();
     }
 
     //showing last five element viewed
     function refreshHome() {
-        lastViewedList = new LastViewedList(
-            alertContainer,
-            //document.getElementById("id_lastviewedcontainer"),
-            document.getElementById("id_lastviewedlistcontainerbody"));
+        lastViewedList = new LastViewedList(document.getElementById("id_pageContainer"));
         lastViewedList.show();
 
 
@@ -21,30 +18,22 @@
 
     //Product search
     function search(){
-        searchForm.addEventListener('keydown', (e) => {
-            var searchForm = document.getElementById("id_searchForm");
+       document.getElementById("id_searchForm").addEventListener('keydown', (e) => {
             if (e.code === 'Enter') {
                 e.preventDefault();
-                var textSearch = document.getElementById('textSearch');
-                sessionStorage.setItem('searchedProduct', textSearch.value);
-                var searchedProducts = new ResultsList(
-                    alertContainer,
-                    document.getElementById("id_resultlistcontainer"),
-                    document.getElementById("id_resultlistcontainerbody"));
+                //var textSearch = document.getElementById('id_textSearch');
+                //sessionStorage.setItem('searchedProduct', textSearch.value);
+                var form = e.target.closest("form");
+                var searchedProducts = new ResultsList( document.getElementById("id_pageContainer"),form);
                 searchedProducts.show();
-            } else {
-                errorContainer.style.display = 'block';
-                document
-                    .getElementById('errorBody')
-                    .textContent('Error in Input string');
-            }
+                }
         });
     }
 
-    function LastViewedList(id_lastviewedlistcontainerbody) {
-        //id_lastviewedcontainer,
-            //this.listcontainer = id_lastviewedcontainer;
-        this.listcontainerbody = id_lastviewedlistcontainerbody;
+    function LastViewedList(id_lastviewedcontainer) {
+
+        this.listcontainer = id_lastviewedcontainer;
+
 
         this.show = function () {
 
@@ -76,12 +65,24 @@
 
 
         this.update = function (productArray) {
-            var row, nameCell, priceCell;
-            this.listcontainerbody.innerHTML = ""; // empty the table body
+            var table,thead,row, nameCell, priceCell;
+            this.listcontainer.innerHTML = ""; // empty the table body
 
             // build updated list
             var self = this;
+            table = document.createElement('table');
+            this.listcontainer.appendChild(table);
+            thead = document.createElement('thead');
+            table.appendChild(thead);
+            var th = document.createElement('th');
+            th.textContent = "name";
+            thead.appendChild(th);
+            var th = document.createElement('th');
+            th.textContent = "price";
+            thead.appendChild(th);
 
+            var tbody = document.createElement('tbody');
+            table.appendChild(tbody);
             productArray.forEach(function (product) { // self visible here, not this
                 //Create a row for each conference
                 row = document.createElement("tr");
@@ -95,7 +96,7 @@
                 row.appendChild(priceCell);
 
                 // Add row to table body
-                self.listcontainerbody.appendChild(row);
+                tbody.appendChild(row);
             });
 
 

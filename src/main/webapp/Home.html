@@ -8,6 +8,7 @@
 
 <script src="./JS/utils.js" charset="utf-8" defer></script>
 <script  src="./JS/homeBuilder.js" charset="utf-8" defer></script>
+<script  src="./JS/resultsBuilder.js" charset="utf-8" defer></script>
 <script  src="./JS/orchestrator.js" charset="utf-8" defer></script>
 
 
@@ -15,43 +16,20 @@
 <body>
 	<p>Welcome
 		<span id = "id_name"></span>
-	</p>	
-		
+	</p>
+
 		<form id="id_searchForm" action="#">
-			<input id="id_textSearch" type="text" name="textSearch" placeholder="Search" />
+			<input type="text" name="textSearch" placeholder="Search" required/>
 		</form>
-		
-		<table>
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>Price</th>
-				</tr>
-			</thead>
-			<tbody id = "id_lastviewedlistcontainerbody"></tbody>
-		
-		</table>
 
-
-		<table id="id_resultlistcontainer" class = "masked">
-			<thead>
-			<tr>
-				<th>Product Id</th>
-				<th>Name</th>
-				<th>Price</th>
-			</tr>
-			</thead>
-			<tbody id = "id_resultlistcontainerbody"></tbody>
-
-		</table>
 	<div class="errorMessage" id="errorMessage">
 		<h3>Error</h3>
 		<p id="errorBody"></p>
 	</div>
-
-
 	<section id="id_pageContainer">
 
 	</section>
+
+
 </body>
 </html>
