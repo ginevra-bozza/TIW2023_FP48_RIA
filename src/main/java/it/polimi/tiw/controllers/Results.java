@@ -50,11 +50,6 @@ public class Results extends HttpServlet {
 
     public void init() throws ServletException {
     	ServletContext servletContext = getServletContext();
-		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
-		templateResolver.setTemplateMode(TemplateMode.HTML);
-		this.templateEngine = new TemplateEngine();
-		this.templateEngine.setTemplateResolver(templateResolver);
-		templateResolver.setSuffix(".html");
 		connection = ConnectionHandler.getConnection(servletContext);
     }
 	/**
@@ -67,23 +62,20 @@ public class Results extends HttpServlet {
 		ProductDAO product = new ProductDAO(connection);
 		if(productList != null)
 			productList.clear();
-		productList = product.searchProduct((String) session.getAttribute("searchedProduct"));
-		
-		String productJson = "[";
-		for (Product p : productList) {
-			productJson += "{\"id\":" + p.getProduct_id() + ",\"name\":\"" + p.getName()
-					 + "\",\"price\":\""	+ p.getPrice() + "\"},";
-		}
-		productJson = productJson.substring(0, productJson.length() - 1);
-		
-		productJson += "]";
-		
-		response.setStatus(HttpServletResponse.SC_OK);
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		response.getWriter().println(productJson);
-		
-		
+			productList = product.searchProduct((String) session.getAttribute("searchedProduct"));
+			System.out.print((String) session.getAttribute("searchedProduct"));
+			String productJson = "[";
+			for (Product p : productList) {
+				productJson += "{\"id\":" + p.getProduct_id() + ",\"name\":\"" + p.getName()
+						 + "\",\"price\":\""	+ p.getPrice() + "\"},";
+			}
+			productJson = productJson.substring(0, productJson.length() - 1);
+			
+			productJson += "]";
+			response.setStatus(HttpServletResponse.SC_OK);
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().println(productJson);
 	}
 
 
@@ -132,19 +124,7 @@ public class Results extends HttpServlet {
 					return;
 				}
 				
-				// Redirect to the Home page and add missions to the parameters
-				String path = "/WEB-INF/Results.html";
-				ServletContext servletContext = getServletContext();
-				final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-				ctx.setVariable("productList", productList);
-				ctx.setVariable("product_id", product_Id);
-				ctx.setVariable("supplier_info", supplier_info);
-				ctx.setVariable("product_name", product.get(0).getName());
-				ctx.setVariable("category", product.get(0).getCategory());
-				ctx.setVariable("description", product.get(0).getDescription());
-				ctx.setVariable("checkMethod", checkMethod);
-				templateEngine.process(path, ctx, response.getWriter());
-				checkMethod = false;
+				
 				
 				
 	}

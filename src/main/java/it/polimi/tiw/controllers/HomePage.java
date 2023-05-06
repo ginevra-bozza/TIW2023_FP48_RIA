@@ -32,8 +32,7 @@ import it.polimi.tiw.utils.ConnectionHandler;
  */
 @WebServlet("/HomePage")
 public class HomePage extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	private TemplateEngine templateEngine;
+	private static final long serialVersionUID = 1L;	
 	private List<Product> visualizedProducts;
 	private ProductDAO productDAO = null;
 	private Connection connection = null;
@@ -48,13 +47,8 @@ public class HomePage extends HttpServlet {
 
     public void init() throws ServletException {
     	ServletContext servletContext = getServletContext();
-		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
-		templateResolver.setTemplateMode(TemplateMode.HTML);
-		this.templateEngine = new TemplateEngine();
-		this.templateEngine.setTemplateResolver(templateResolver);
-		templateResolver.setSuffix(".html");
-		
 		connection = ConnectionHandler.getConnection(servletContext);
+		
 		
     }
 	/**
