@@ -20,7 +20,7 @@
 
     //Product search
     function prepareSearch(){
-        let search_form = document.getElementById("id_searchForm")
+        let search_form = document.getElementById("id_textSearch")
        search_form.addEventListener('keydown', (e) => {
             if (e.code === 'Enter') {
                 e.preventDefault();

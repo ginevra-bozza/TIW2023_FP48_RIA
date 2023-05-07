@@ -9,7 +9,7 @@
                 function (req) {
                     if (req.readyState === XMLHttpRequest.DONE) { // == 4
                         if (req.status === 200) {
-                            document.getElementById('pageContainer').innerHTML = '';
+                            document.getElementById('id_pageContainer').innerHTML = '';
                             let productToShow = JSON.parse(req.responseText);
 
                             if (productToShow.length === 0) {

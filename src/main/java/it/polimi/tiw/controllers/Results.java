@@ -57,12 +57,16 @@ public class Results extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		//HttpSession session = request.getSession();
 		
+		HttpSession session = request.getSession();
+
+		
+		User user = (User) session.getAttribute("user");
+
 		String searchedProduct = null;
 		try {
 
-			searchedProduct = request.getParameter("keyword");
+			searchedProduct = request.getParameter("textSearch");
 			// check the validity
 			if (searchedProduct == null || searchedProduct.isEmpty()) {
 				throw new Exception("Missing or empty credential value");
