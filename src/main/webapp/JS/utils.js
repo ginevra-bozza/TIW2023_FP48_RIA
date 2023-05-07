@@ -3,7 +3,7 @@
  */
 
 	function makeCall(method, url, formElement, cback, reset = true) {
-		console.log("makeCall on "+method+ " "+url+" "+reset); //debug
+		console.log("makeCall on "+method+ " "+url+" "); //debug
 	    var req = new XMLHttpRequest(); // visible by closure
 	    req.onreadystatechange = function() {
 	      cback(req)
@@ -18,6 +18,20 @@
 	      formElement.reset();
 	    }
 	  }
+
+    function doRequest(url, method, callback, form = null) {
+        console.log("makeCall on "+method+ " "+url+" "); //debug
+        console.log(form);
+        var request = new XMLHttpRequest();
+        request.onreadystatechange = () => callback(request);
+        request.open(method, url);
+        if (form == null) {
+            request.send();
+        } else {
+            var fd = new FormData(form);
+            request.send(fd);
+        }
+    }
 	  
 function linkButton(id, cb) {
  	 	var button = document.getElementById(id);
@@ -65,9 +79,9 @@ function buildLittleProduct(product) {
   viewDiv.appendChild(viewButton);
   product_Container.appendChild(viewDiv);
 
-  viewButton.addEventListener('click', (e) => {
+  viewButton.addEventListener('click', () => {
     //call the POST in the server
-    doView(product_id.textContent, product);
+    //doView(product_id.textContent, product);
   });
 
   return product_Container;

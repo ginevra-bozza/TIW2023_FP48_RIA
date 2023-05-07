@@ -58,16 +58,26 @@ public class Results extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		//HttpSession session = request.getSession();
-		String searchedProduct;
+		
+		String searchedProduct = null;
+		try {
+
+			searchedProduct = request.getParameter("keyword");
+			// check the validity
+			if (searchedProduct == null || searchedProduct.isEmpty()) {
+				throw new Exception("Missing or empty credential value");
+			}
+		} catch (Exception e) {
+
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400
+			response.getWriter().println("Input Error");
+			return;
+
+		}
+		
 		ProductDAO product = new ProductDAO(connection);
 		if(productList != null)
 			productList.clear();
-			searchedProduct= StringEscapeUtils.escapeJava(request.getParameter("textSearch"));
-			if (searchedProduct == null || searchedProduct.isEmpty() ) {
-				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-				response.getWriter().println("text must be not null");
-				return;
-			}
 			productList = product.searchProduct(searchedProduct);
 			System.out.print(searchedProduct);
 			String productJson = "[";

@@ -17,11 +17,16 @@
 	<p>Welcome
 		<span id = "id_name"></span>
 	</p>
-
+	<a href="#" id="goHomeLink"></a>
 		<form id="id_searchForm" action="#">
-			<input type="text" name="textSearch" placeholder="Search" required/>
+			<input id = "id_textSearch" type="text" name="textSearch" placeholder="Search.." required/>
 		</form>
-
+	<nav>
+		<a href="#" id="goCartLink" >Cart <i class="fa fa-shopping-cart"></i></a>
+		<a href="#" id="goOrdersLink">Orders <i class="fa fa-file" aria-hidden="true"></i></a>
+		<span id="navUsername">John Doe </span>
+		<a href="#" id="doLogoutLink"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
+	</nav>
 	<div class="errorMessage" id="errorMessage">
 		<h3>Error</h3>
 		<p id="errorBody"></p>

@@ -4,28 +4,30 @@
         //var personalMessage = new PersonalMessage(sessionStorage.getItem('email'),
           //  document.getElementById("id_name"));
         //personalMessage.show();
+        linkButton('goHomeLink', () => goHome());
+        linkButton('goCartLink', () => goCart());
+        linkButton('goOrdersLink', () => goOrders());
         refreshHome();
-        search();
+        prepareSearch();
     }
 
     //showing last five element viewed
     function refreshHome() {
-        lastViewedList = new LastViewedList(document.getElementById("id_pageContainer"));
+        let lastViewedList = new LastViewedList(document.getElementById("id_pageContainer"));
         lastViewedList.show();
-
 
     }
 
     //Product search
-    function search(){
-       document.getElementById("id_searchForm").addEventListener('keydown', (e) => {
+    function prepareSearch(){
+        let search_form = document.getElementById("id_searchForm")
+       search_form.addEventListener('keydown', (e) => {
             if (e.code === 'Enter') {
                 e.preventDefault();
-                //var textSearch = document.getElementById('id_textSearch');
-                //sessionStorage.setItem('searchedProduct', textSearch.value);
-                var form = e.target.closest("form");
-                var searchedProducts = new ResultsList( document.getElementById("id_pageContainer"),form);
-                searchedProducts.show();
+                sessionStorage.setItem('id_searchForm', search_form.value);
+                //sessionStorage.removeItem('viewItem');
+                doSearch( document.getElementById("id_pageContainer"),search_form.value);
+
                 }
         });
     }
@@ -39,11 +41,9 @@
 
             var self = this; //Important!
 
-            makeCall("GET", 'HomePage', null,
-                // callback function
+            doRequest('HomePage', "GET", // callback function
                 function (req) {
                     if (req.readyState === XMLHttpRequest.DONE) { // == 4
-                        var message = req.responseText;
                         if (req.status === 200) {
                             var productToShow = JSON.parse(req.responseText);
 
@@ -65,23 +65,23 @@
 
 
         this.update = function (productArray) {
-            var table,thead,row, nameCell, priceCell;
+            let table,thead,row, nameCell, priceCell;
             this.listcontainer.innerHTML = ""; // empty the table body
 
             // build updated list
-            var self = this;
+
             table = document.createElement('table');
             this.listcontainer.appendChild(table);
             thead = document.createElement('thead');
             table.appendChild(thead);
-            var th = document.createElement('th');
+            let th = document.createElement('th');
             th.textContent = "name";
             thead.appendChild(th);
-            var th = document.createElement('th');
+            th = document.createElement('th');
             th.textContent = "price";
             thead.appendChild(th);
 
-            var tbody = document.createElement('tbody');
+            let tbody = document.createElement('tbody');
             table.appendChild(tbody);
             productArray.forEach(function (product) { // self visible here, not this
                 //Create a row for each conference
