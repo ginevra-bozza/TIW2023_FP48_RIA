@@ -155,7 +155,7 @@ public class Results extends HttpServlet {
 						+ ",\"name\":\"" + detailedProduct.getName()
 						+ "\",\"description\":\"" + detailedProduct.getDescription()
 						+ "\",\"category\":\"" + detailedProduct.getCategory()
-						+ "\",\"image\":\"" + detailedProduct.getImage() + "\",\"suppliers:\":";
+						+ "\",\"image\":\"" + detailedProduct.getImage() + "\",\"suppliers\":";
 				String supplierString = "[";
 				
 				for (Supplier s: supplier_info.keySet()) {
