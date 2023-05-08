@@ -86,7 +86,7 @@ public class Results extends HttpServlet {
 		if(productList != null)
 			productList.clear();
 			productList = product.searchProduct(searchedProduct);
-			System.out.print(searchedProduct);
+			
 			String productJson = "[";
 			for (Product p : productList) {
 				productJson += "{\"id\":" + p.getProduct_id() + ",\"name\":\"" + p.getName()
@@ -119,9 +119,10 @@ public class Results extends HttpServlet {
 				//get product details
 				Integer product_Id = null;
 				try {
-					product_Id = (Integer) session.getAttribute("product_id");
+					product_Id = Integer.parseInt(request.getParameter("product_id"));
 				} catch (NumberFormatException | NullPointerException e) {
 					// only for debugging e.printStackTrace();
+					System.out.println(product_Id);
 					response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect param values");
 					return;
 				}
@@ -140,10 +141,7 @@ public class Results extends HttpServlet {
 					supplier_info.put(supplier,p.getPrice());
 				}
 				user.addToVisualizedList(product.get(0));
-				System.out.println("Suppliers info for product: "+product.get(0).getName());
-				for(Supplier s : supplier_info.keySet()) {
-					System.out.println(s.getSupplier_name());
-				}
+				
 				if (product == null || supplier_info == null) {
 					response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found");
 					return;
@@ -157,17 +155,19 @@ public class Results extends HttpServlet {
 						+ ",\"name\":\"" + detailedProduct.getName()
 						+ "\",\"description\":\"" + detailedProduct.getDescription()
 						+ "\",\"category\":\"" + detailedProduct.getCategory()
-						+ "\",\"image\":\"" + detailedProduct.getImage() + "\",";
+						+ "\",\"image\":\"" + detailedProduct.getImage() + "\",\"suppliers:\":";
 				String supplierString = "[";
 				
 				for (Supplier s: supplier_info.keySet()) {
-					supplierString += gson.toJson(s) + ",\"price\":" + supplier_info.get(s) + ",";
+					supplierString +=  gson.toJson(s);
+					supplierString = supplierString.substring(0, supplierString.length() - 1);
+					supplierString += ",\"price\":" + supplier_info.get(s) + "},";
 				}
-				
-				
 				supplierString = supplierString.substring(0, supplierString.length() - 1);
 				supplierString += "]";
-				productDetailsJson += "}]";
+				
+				
+				productDetailsJson += supplierString + "}]";
 				System.out.println(productDetailsJson);
 				response.setStatus(HttpServletResponse.SC_OK);
 				response.setContentType("application/json");

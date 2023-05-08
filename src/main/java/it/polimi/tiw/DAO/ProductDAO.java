@@ -83,34 +83,7 @@ public class ProductDAO {
 					product.setSupplier_id(result.getInt("supplier_id"));
 					product.setImage(result.getString("image"));
 					product.setDescription(result.getString("product_description"));
-					
-					
-					//Blob blob = result.getBlob(6);
-					
-					/*byte[] byteArr = blob.getBytes(1,(int) blob.length());
-					System.out.println("blob: "+blob+" byte[]: "+byteArr);
-					File f = new File("/TIW2023_FP48/src/imageCache/" + product.getName()+ ".jpeg");
-					FileOutputStream fileOutputStream = new FileOutputStream (f);
-					fileOutputStream.write(byteArr);
-					fileOutputStream.close();*/
-					
-					
-					//String fileName = "/src/imageCache/"+product.getName()+".jpeg";
-					String fileName = "image.jpeg";
-
-	                try (FileOutputStream fos = new FileOutputStream(fileName)) {
-
-	                    Blob blob = result.getBlob("image");
-	                    int len = (int) blob.length();
-
-	                    byte[] buf = blob.getBytes(1, len);
-
-	                    fos.write(buf, 0, len);
-
-	                } catch (IOException ex) {
-	                	System.out.println("Image not found");
-	                }
-					
+								
 					products.add(product);
 					
 					}	

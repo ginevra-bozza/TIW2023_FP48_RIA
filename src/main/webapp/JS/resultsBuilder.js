@@ -70,8 +70,8 @@
                 anchor.setAttribute("product_id", product.id);
                 anchor.addEventListener("click",(e) => {
                     let detailsList = new DetailsList();
-                    sessionStorage.setItem("product_id",product.id);
-                    detailsList.show(product.id);
+                    var searchedProduct = product.id;
+                    detailsList.show(searchedProduct);
 
                 });
                 anchor.href="#";
@@ -114,7 +114,7 @@
                             }
                         } else {
                             // request failed, handle it
-                            self.listcontainer.style.visibility = "hidden";
+                            list_container.style.visibility = "hidden";
                             alert("Not possible to recover data"); //for demo purposes
                         }
                     }
@@ -124,14 +124,14 @@
 
         }
 
-        this.update = function (productArray) {
-            let table, thead, row, idCell, nameCell, priceCell, th, tbody, anchor, linkText ;
-            this.listcontainer.innerHTML = ""; // empty the table body
+        this.update = function (details) {
+            let table, thead, row, idCell, nameCell, descriptionCell, categoryCell, imageCell, th, tbody, div, img ;
+            list_container.innerHTML = ""; // empty the table body
 
             // build updated list
 
             table = document.createElement('table');
-            this.listcontainer.appendChild(table);
+            list_container.appendChild(table);
             thead = document.createElement('thead');
             table.appendChild(thead);
             th = document.createElement('th');
@@ -141,40 +141,49 @@
             th.textContent = "name";
             thead.appendChild(th);
             th = document.createElement('th');
-            th.textContent = "price";
+            th.textContent = "description";
+            thead.appendChild(th);
+            th = document.createElement('th');
+            th.textContent = "category";
+            thead.appendChild(th);
+            th = document.createElement('th');
+            th.textContent = "image";
             thead.appendChild(th);
             tbody = document.createElement('tbody');
             table.appendChild(tbody);
-            productArray.forEach(function (product) { // self visible here, not this
-                //Create a row for each conference
-                row = document.createElement("tr");
 
-                idCell = document.createElement("td");
-                idCell.textContent = product.id;
-                row.appendChild(idCell);
+            row = document.createElement("tr");
 
-                nameCell = document.createElement("td");
-                anchor = document.createElement('a');
-                nameCell.appendChild(anchor);
-                linkText = document.createTextNode(product.name);
-                anchor.appendChild(linkText);
-                anchor.setAttribute("product_id", product.id);
-                anchor.addEventListener("click",(e) => {
-                    detailsList.show(e.target.getAttribute("product_id"))
+            idCell = document.createElement("td");
+            idCell.textContent = details.id;
+            row.appendChild(idCell);
 
-                });
-                anchor.href="#";
-                row.appendChild(nameCell);
+            nameCell = document.createElement("td");
+            nameCell.textContent = details.name;
+            row.appendChild(idCell);
 
-                priceCell = document.createElement("td");
-                priceCell.textContent = product.price + "€";
-                row.appendChild(priceCell);
+            descriptionCell = document.createElement("td");
+            descriptionCell.textContent = details.description;
+            row.appendChild(descriptionCell);
 
-                // Add row to table body
-                tbody.appendChild(row);
-            });
+            categoryCell = document.createElement("td");
+            categoryCell.textContent = details.category;
+            row.appendChild(categoryCell);
 
-            this.listcontainer.style.visibility = "visible";
+            imageCell = document.createElement("td");
+            div = document.createElement("div");
+            imageCell.appendChild(div);
+            img = document.createElement("img");
+            img.src = details.image;
+            div.appendChild(img);
+
+            row.appendChild(imageCell);
+// Add row to table body
+
+            tbody.appendChild(row);
+            list_container.style.visibility = "visible";
+
+
         }
         this.show();
     }
