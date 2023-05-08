@@ -168,11 +168,12 @@ public class Results extends HttpServlet {
 				
 				
 				productDetailsJson += supplierString + "}]";
+				
 				System.out.println(productDetailsJson);
 				response.setStatus(HttpServletResponse.SC_OK);
 				response.setContentType("application/json");
 				response.setCharacterEncoding("UTF-8");
-				response.getWriter().println(gson.toJson(product));
+				response.getWriter().println(productDetailsJson);
 				
 	}
 

@@ -70,9 +70,7 @@
                 anchor.setAttribute("product_id", product.id);
                 anchor.addEventListener("click",(e) => {
                     let detailsList = new DetailsList(product.id);
-                    //var searchedProduct = product.id;
-                    //detailsList.show(searchedProduct);
-
+                    detailsList.show();
                 });
                 anchor.href="#";
                 row.appendChild(nameCell);
@@ -94,7 +92,6 @@
     function DetailsList(product_id){
         let list_container = document.getElementById("id_detailsContainer");
 
-
         this.show = function () {
             let self = this; //Important!
 
@@ -103,15 +100,19 @@
                     if (req.readyState === XMLHttpRequest.DONE) { // == 4
                         if (req.status === 200) {
                             list_container.innerHTML = '';
-                            let productDetails = JSON.parse(req.responseText);
-
-                            if (productDetails.length === 0) {
-                                alert("No results"); //for demo purposes
-
-                            }else {
-                                // If conferences list is not emtpy, then update view
-                                self.update(productDetails); // self visible by closure
+                            try{
+                                let productDetails = JSON.parse(req.responseText);
+                                console.log(productDetails);
+                                if (productDetails.length === 0) {
+                                    alert("No results"); //for demo purposes
+                                }else {
+                                    // If conferences list is not emtpy, then update view
+                                    self.update(productDetails[0]); // self visible by closure
+                                }
+                            } catch (e) {
+                                console.log(e);
                             }
+
                         } else {
                             // request failed, handle it
                             list_container.style.visibility = "hidden";
@@ -125,7 +126,8 @@
         }
 
         this.update = function (details) {
-            let table, thead, row, idCell, nameCell, descriptionCell, categoryCell, imageCell, th, tbody, div, img ;
+            let table, thead, row, idCell, nameCell, descriptionCell, categoryCell, imageCell, th, tbody, div, productImg ;
+            let suppliersCell, suppliersTable, suppliersThead, suppliersTbody, sTh, insideRow, policiesTable;
             list_container.innerHTML = ""; // empty the table body
 
             // build updated list
@@ -173,18 +175,105 @@
             imageCell = document.createElement("td");
             div = document.createElement("div");
             imageCell.appendChild(div);
-            img = document.createElement("img");
-            img.src = details.image;
-            div.appendChild(img);
+            productImg = document.createElement("img");
+            productImg.src = "."+details['image'];
+            div.appendChild(productImg);
 
             row.appendChild(imageCell);
-// Add row to table body
+
+            //suppliersTable
+            suppliersTable = document.createElement('table');
+            row.appendChild(suppliersTable);
+
+            suppliersThead = document.createElement('thead');
+            suppliersTable.appendChild(suppliersThead);
+            sTh = document.createElement('th');
+            sTh.textContent = "id";
+            suppliersThead.appendChild(sTh);
+            sTh = document.createElement('th');
+            sTh.textContent = "supplier name";
+            suppliersThead.appendChild(sTh);
+            sTh = document.createElement('th');
+            sTh.textContent = "evaluation";
+            suppliersThead.appendChild(sTh);
+            sTh = document.createElement('th');
+            sTh.textContent = "free shipment price";
+            suppliersThead.appendChild(sTh);
+            //sTh = document.createElement('th');
+            /*sTh.textContent = "shipment info";
+            suppliersThead.appendChild(sTh);*/
+            suppliersTbody = document.createElement('tbody');
+            suppliersTable.appendChild(suppliersTbody);
+
+            insideRow = document.createElement("tr");
+            suppliersTbody.appendChild(insideRow);
+
+            var suppliersArray = details[5];
+            suppliersArray.forEach(function (supplier) {
+
+                supplierIdCell = document.createElement("td");
+                supplierIdCell.textContent = supplier.id;
+                insideRow.appendChild(supplierIdCell);
+
+                supplierNameCell = document.createElement("td");
+                supplierNameCell.textContent = supplier.name;
+                insideRow.appendChild(supplierNameCell);
+
+                evaluationCell =  document.createElement("td");
+                evaluationSpan = document.createElement("span");
+                evaluationCell.appendChild(evaluationSpan);
+
+                for (let i = 0; i < supplier.evaluation ; i++) {
+                    evaluationSpan.textContent += "&#x2605;";
+                }
+                insideRow.appendChild(evaluationCell);
+
+                freeShipmentCell = document.createElement("td");
+                freeShipmentCell.textContent = supplier.free_shipment_price;
+                insideRow.appendChild(freeShipmentCell);
+
+            })
+
+
+
+
+
+
+
+
+
+
+
+            /*shipment policies table
+            policiesTable = document.createElement('table');
+            insideRow.appendChild(policiesTable);
+            suppliersThead = document.createElement('thead');
+            suppliersTable.appendChild(suppliersThead);
+            sTh = document.createElement('th');
+            sTh.textContent = "id";
+            suppliersThead.appendChild(sTh);
+            sTh = document.createElement('th');
+            sTh.textContent = "name";
+            suppliersThead.appendChild(sTh);
+            sTh = document.createElement('th');
+            sTh.textContent = "description";
+            suppliersThead.appendChild(sTh);
+            sTh = document.createElement('th');
+            sTh.textContent = "category";
+            suppliersThead.appendChild(sTh);
+            sTh = document.createElement('th');
+            sTh.textContent = "image";
+            suppliersThead.appendChild(sTh);
+            suppliersTbody = document.createElement('tbody');
+            suppliersTable.appendChild(suppliersTbody);
+
+
 
             tbody.appendChild(row);
-            list_container.style.visibility = "visible";
+            list_container.style.visibility = "visible";*/
 
 
         }
-        this.show();
+       // this.show();
     }
 }
