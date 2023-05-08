@@ -69,9 +69,9 @@
                 anchor.appendChild(linkText);
                 anchor.setAttribute("product_id", product.id);
                 anchor.addEventListener("click",(e) => {
-                    let detailsList = new DetailsList();
-                    var searchedProduct = product.id;
-                    detailsList.show(searchedProduct);
+                    let detailsList = new DetailsList(product.id);
+                    //var searchedProduct = product.id;
+                    //detailsList.show(searchedProduct);
 
                 });
                 anchor.href="#";
@@ -91,11 +91,11 @@
     }
     
     
-    function DetailsList(){
+    function DetailsList(product_id){
         let list_container = document.getElementById("id_detailsContainer");
 
 
-        this.show = function (product_id) {
+        this.show = function () {
             let self = this; //Important!
 
             doRequest('Results?product_id='+ product_id, "POST", // callback function
