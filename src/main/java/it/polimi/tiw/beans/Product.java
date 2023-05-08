@@ -8,7 +8,7 @@ public class Product {
 	private String name;
 	private String description;
 	private String category;
-	private Blob image;
+	private String image;
 	private int price;
 	private boolean isVisualized = false;
 	private int quantity;
@@ -43,10 +43,10 @@ public class Product {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	public Blob getImage() {
+	public String getImage() {
 		return image;
 	}
-	public void setImage(Blob image) {
+	public void setImage(String image) {
 		this.image = image;
 	}
 	public String getName() {

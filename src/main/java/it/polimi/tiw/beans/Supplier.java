@@ -7,7 +7,7 @@ public class Supplier {
 
 	private int supplier_id;
 	private String supplier_name;
-	private String evaluation;
+	private int evaluation;
 	private int free_shipment_price;
 	private List<Shipment_policy> shipment_policy = new ArrayList<Shipment_policy>();
 	
@@ -29,10 +29,10 @@ public class Supplier {
 	public void setSupplier_name(String supplier_name) {
 		this.supplier_name = supplier_name;
 	}
-	public String getEvaluation() {
+	public int getEvaluation() {
 		return evaluation;
 	}
-	public void setEvaluation(String evaluation) {
+	public void setEvaluation(int evaluation) {
 		this.evaluation = evaluation;
 	}
 	public int getFree_shipment_price() {

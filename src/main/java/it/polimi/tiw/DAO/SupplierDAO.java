@@ -19,6 +19,7 @@ public class SupplierDAO {
 	private ResultSet shipmentResult = null;
 	private ResultSet priceResult = null;
 	private ResultSet nameResult = null;
+	private ResultSet supplierResult = null;
 	
 	
 	public SupplierDAO(Connection con) {
@@ -26,7 +27,7 @@ public class SupplierDAO {
 		this.con = con;
 	}
 	
-	public Map<Integer,Supplier> findSuppliers (int product_id) {
+	/*public Map<Integer,Supplier> findSuppliers (int product_id) {
 		
 		Map<Integer,Supplier> supplier_info = new HashMap<>();
 		
@@ -68,7 +69,7 @@ public class SupplierDAO {
 			e.printStackTrace();
 		}
 		return supplier_info;
-		}
+		}*/
 
 	private List<Shipment_policy>  setShipment_Info(Supplier supplier) {
 		//join supplier e shipment_policy per avere la lista di min e max price
@@ -165,7 +166,7 @@ public class SupplierDAO {
 		
 	}
 	
-	public String findSupplierName(int supplier_id) {
+	/*public String findSupplierName(int supplier_id) {
 		String supplier_name = null;
 		String query = "SELECT supplier_name FROM supplier WHERE supplier_id = ?";
 		PreparedStatement pstatement;
@@ -189,6 +190,41 @@ public class SupplierDAO {
 			e.printStackTrace();
 		}
 		return supplier_name;
+	}*/
+
+	public Supplier findSupplierById(int supplier_id) {
+		Supplier supplier = null;
+		String query = "SELECT  supplier_id, supplier_name, evaluation, free_shipment_price FROM supplier where supplier_id = ?";
+		PreparedStatement pstatement;
+		try {
+
+			pstatement = con.prepareStatement(query);
+			pstatement.setInt(1, supplier_id);
+			supplierResult = pstatement.executeQuery();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		try {
+			while(supplierResult.next()) {
+				supplier = new Supplier();
+				
+				supplier.setFree_shipment_price(supplierResult.getInt("free_shipment_price"));
+				supplier.setSupplier_id(supplierResult.getInt("supplier_id"));
+				supplier.setSupplier_name(supplierResult.getString("supplier_name"));
+				supplier.setShipment_policy(setShipment_Info(supplier));
+				supplier.setEvaluation(supplierResult.getString("evaluation").length());
+				
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return supplier;
 	}
 	
 

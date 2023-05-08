@@ -70,7 +70,7 @@ public class OrderServlet extends HttpServlet {
 			
 		
 		if(supplier_id != 0) {
-			String supplier_name = supplierDao.findSupplierName(supplier_id);
+			String supplier_name = supplierDao.findSupplierById(supplier_id).getSupplier_name();
 			int total= user.getTotalBySupplierId(supplier_id);
 			int shipment_price = supplierDao.getShipmentPrice(supplier_id,user.getCart().get(supplier_id), total);
 			

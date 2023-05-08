@@ -81,7 +81,7 @@ public class ProductDAO {
 					product.setPrice(result.getInt("price"));
 					product.setCategory(result.getString("category"));
 					product.setSupplier_id(result.getInt("supplier_id"));
-					product.setImage(result.getBlob("image"));
+					product.setImage(result.getString("image"));
 					product.setDescription(result.getString("product_description"));
 					
 					
@@ -142,7 +142,7 @@ public class ProductDAO {
 					product.setPrice(result.getInt("price"));
 					product.setCategory(result.getString("category"));
 					product.setSupplier_id(result.getInt("supplier_id"));
-					product.setImage(result.getBlob("image"));
+					product.setImage(result.getString("image"));
 					product.setDescription(result.getString("product_description"));
 			}	
 		} catch (SQLException e) {
@@ -175,7 +175,7 @@ public class ProductDAO {
 					product.setPrice(result.getInt("price"));
 					product.setCategory(result.getString("category"));
 					product.setSupplier_id(result.getInt("supplier_id"));
-					product.setImage(result.getBlob("image"));
+					product.setImage(result.getString("image"));
 					product.setDescription(result.getString("product_description"));
 					randomProducts.add(product);
 			}	

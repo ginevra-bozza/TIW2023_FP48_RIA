@@ -22,6 +22,9 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import it.polimi.tiw.DAO.ProductDAO;
 import it.polimi.tiw.DAO.SupplierDAO;
 import it.polimi.tiw.beans.Product;
@@ -116,7 +119,7 @@ public class Results extends HttpServlet {
 				//get product details
 				Integer product_Id = null;
 				try {
-					product_Id = Integer.parseInt(request.getParameter("product_id"));
+					product_Id = (Integer) session.getAttribute("product_id");
 				} catch (NumberFormatException | NullPointerException e) {
 					// only for debugging e.printStackTrace();
 					response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect param values");
@@ -130,24 +133,49 @@ public class Results extends HttpServlet {
 				List<Product> product = new ArrayList<Product>();
 				product = productDAO.findProductByID(product_Id);
 				
-				
-				for(Product p : product) 
-						p.setVisualized(true);
-				
+				Map<Supplier,Integer> supplier_info = new HashMap<>();
+				for(Product p : product) {
+					p.setVisualized(true);
+					Supplier supplier = supplierDAO.findSupplierById(p.getSupplier_id());
+					supplier_info.put(supplier,p.getPrice());
+				}
 				user.addToVisualizedList(product.get(0));
-				
-				Map<Integer,Supplier> supplier_info = new HashMap<>();
-				supplier_info = supplierDAO.findSuppliers(product_Id);
-				
+				System.out.println("Suppliers info for product: "+product.get(0).getName());
+				for(Supplier s : supplier_info.keySet()) {
+					System.out.println(s.getSupplier_name());
+				}
 				if (product == null || supplier_info == null) {
 					response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found");
 					return;
 				}
+				Gson gson = new GsonBuilder().create();
+
+				String productDetailsJson = "";
+				Product detailedProduct = product.get(0);
+				
+				productDetailsJson = "[{\"id\":" + detailedProduct.getProduct_id() 
+						+ ",\"name\":\"" + detailedProduct.getName()
+						+ "\",\"description\":\"" + detailedProduct.getDescription()
+						+ "\",\"category\":\"" + detailedProduct.getCategory()
+						+ "\",\"image\":\"" + detailedProduct.getImage() + "\",";
+				String supplierString = "[";
+				
+				for (Supplier s: supplier_info.keySet()) {
+					supplierString += gson.toJson(s) + ",\"price\":" + supplier_info.get(s) + ",";
+				}
 				
 				
-				
+				supplierString = supplierString.substring(0, supplierString.length() - 1);
+				supplierString += "]";
+				productDetailsJson += "}]";
+				System.out.println(productDetailsJson);
+				response.setStatus(HttpServletResponse.SC_OK);
+				response.setContentType("application/json");
+				response.setCharacterEncoding("UTF-8");
+				response.getWriter().println(gson.toJson(product));
 				
 	}
+
 	
 	
 	
