@@ -114,7 +114,7 @@
 
                         } else {
                             // request failed, handle it
-                            list_container.class = "masked";
+
                             alert("Not possible to recover data"); //for demo purposes
                         }
                     }
@@ -125,62 +125,16 @@
         }
 
         this.update = function (details) {
-            let table, thead, row, idCell, nameCell, descriptionCell, categoryCell, imageCell, th, tbody, div, productImg ;
-            let suppliersTable, suppliersThead, suppliersTbody, sTh,supplierIdCell,supplierNameCell, insideRow, policiesTable;
+            let table, thead, row, idCell, nameCell, descriptionCell, categoryCell, imageCell, th, tbody, div,
+                productImg;
+            let suppliersTable, suppliersThead, suppliersTbody, sTh, supplierIdCell, supplierNameCell, insideRow,
+                policiesTable;
             let productContainer = document.getElementById("id_productDetails");
             let suppliersContainer = document.getElementById("id_suppliersDetails");
 
-            // build updated list
+            // build updated list - product
+            buildProduct(details);
 
-            table = document.createElement('table');
-            productContainer.appendChild(table);
-            thead = document.createElement('thead');
-            table.appendChild(thead);
-            th = document.createElement('th');
-            th.textContent = "id";
-            thead.appendChild(th);
-            th = document.createElement('th');
-            th.textContent = "name";
-            thead.appendChild(th);
-            th = document.createElement('th');
-            th.textContent = "description";
-            thead.appendChild(th);
-            th = document.createElement('th');
-            th.textContent = "category";
-            thead.appendChild(th);
-            th = document.createElement('th');
-            th.textContent = "image";
-            thead.appendChild(th);
-            tbody = document.createElement('tbody');
-            table.appendChild(tbody);
-
-            row = document.createElement("tr");
-            tbody.appendChild(row);
-            
-            idCell = document.createElement("td");
-            idCell.textContent = details.id;
-            row.appendChild(idCell);
-
-            nameCell = document.createElement("td");
-            nameCell.textContent = details.name;
-            row.appendChild(idCell);
-
-            descriptionCell = document.createElement("td");
-            descriptionCell.textContent = details.description;
-            row.appendChild(descriptionCell);
-
-            categoryCell = document.createElement("td");
-            categoryCell.textContent = details.category;
-            row.appendChild(categoryCell);
-
-            imageCell = document.createElement("td");
-            div = document.createElement("div");
-            imageCell.appendChild(div);
-            productImg = document.createElement("img");
-            productImg.src = "."+details['image'];
-            div.appendChild(productImg);
-
-            row.appendChild(imageCell);
 
             //suppliersTable
             suppliersTable = document.createElement('table');
@@ -209,66 +163,6 @@
             insideRow = document.createElement("tr");
             suppliersTbody.appendChild(insideRow);
 
-            var suppliersArray = details.suppliers;
-
-             suppliersArray.forEach(function (supplier) {
-
-                 supplierIdCell = document.createElement("td");
-                 supplierIdCell.textContent = supplier.supplier_id;
-                 insideRow.appendChild(supplierIdCell);
-;
-                 supplierNameCell = document.createElement("td");
-                 supplierNameCell.textContent = supplier.supplier_name;
-                 insideRow.appendChild(supplierNameCell);
-
-                 /* evaluationCell =  document.createElement("td");
-                  evaluationSpan = document.createElement("span");
-                  evaluationCell.appendChild(evaluationSpan);
-
-                  for (let i = 0; i < supplier.evaluation ; i++) {
-                      evaluationSpan.textContent += "&#x2605;";
-                  }
-                  insideRow.appendChild(evaluationCell);
-
-                  freeShipmentCell = document.createElement("td");
-                  freeShipmentCell.textContent = supplier.free_shipment_price;
-                  insideRow.appendChild(freeShipmentCell);*/
-
-             })
-
-
-
-
-            /*shipment policies table
-            policiesTable = document.createElement('table');
-            insideRow.appendChild(policiesTable);
-            suppliersThead = document.createElement('thead');
-            suppliersTable.appendChild(suppliersThead);
-            sTh = document.createElement('th');
-            sTh.textContent = "id";
-            suppliersThead.appendChild(sTh);
-            sTh = document.createElement('th');
-            sTh.textContent = "name";
-            suppliersThead.appendChild(sTh);
-            sTh = document.createElement('th');
-            sTh.textContent = "description";
-            suppliersThead.appendChild(sTh);
-            sTh = document.createElement('th');
-            sTh.textContent = "category";
-            suppliersThead.appendChild(sTh);
-            sTh = document.createElement('th');
-            sTh.textContent = "image";
-            suppliersThead.appendChild(sTh);
-            suppliersTbody = document.createElement('tbody');
-            suppliersTable.appendChild(suppliersTbody);
-
-
-
-            tbody.appendChild(row);
-            list_container.style.visibility = "visible";*/
-
-
         }
-       // this.show();
     }
 }

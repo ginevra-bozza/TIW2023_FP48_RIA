@@ -41,48 +41,62 @@ function linkButton(id, cb) {
   });
 }
 
-function buildLittleProduct(product) {
-  var product_Container, product_id, name, price, viewButton;
+function buildProduct(product) {
 
-  product_Container = document.createElement('div');
-  product_Container.classList.add('Product');
+    let table, thead, row, idCell, nameCell, descriptionCell, categoryCell, imageCell, th, tbody, div, productImg ;
+    let productContainer = document.getElementById("id_productDetails");
 
-  // product ID
-  product_id = document.createElement('p');
-  product_id.classList.add('product_id');
-  product_id.textContent = product['id'];
-  product_Container.appendChild(product_id);
+    // build updated list
 
-  // product NAME
-  name = document.createElement('p');
-  name.classList.add('product_name');
-  name.textContent = product['name'];
-  product_Container.appendChild(name);
+    table = document.createElement('table');
+    productContainer.appendChild(table);
+    thead = document.createElement('thead');
+    table.appendChild(thead);
+    th = document.createElement('th');
+    th.textContent = "id";
+    thead.appendChild(th);
+    th = document.createElement('th');
+    th.textContent = "name";
+    thead.appendChild(th);
+    th = document.createElement('th');
+    th.textContent = "description";
+    thead.appendChild(th);
+    th = document.createElement('th');
+    th.textContent = "category";
+    thead.appendChild(th);
+    th = document.createElement('th');
+    th.textContent = "image";
+    thead.appendChild(th);
+    tbody = document.createElement('tbody');
+    table.appendChild(tbody);
 
-  // product PRICE
-  price = document.createElement('p');
-  price.classList.add('price');
-  price.textContent = product['price'] + '€';
-  product_Container.appendChild(price);
+    row = document.createElement("tr");
+    tbody.appendChild(row);
 
-  //buttom for Visualized the item
-  var viewDiv = document.createElement('div');
-  viewDiv.id = 'view';
-  viewDiv.classList.add('view');
-  viewButton = document.createElement('button');
-  viewButton.classList.add('view-button');
+    idCell = document.createElement("td");
+    idCell.textContent = product.id;
+    row.appendChild(idCell);
 
-  var span = document.createElement('SPAN');
-  span.textContent = 'Details';
+    nameCell = document.createElement("td");
+    nameCell.textContent = product.name;
+    row.appendChild(idCell);
 
-  viewButton.appendChild(span);
-  viewDiv.appendChild(viewButton);
-  product_Container.appendChild(viewDiv);
+    descriptionCell = document.createElement("td");
+    descriptionCell.textContent = product.description;
+    row.appendChild(descriptionCell);
 
-  viewButton.addEventListener('click', () => {
-    //call the POST in the server
-    //doView(product_id.textContent, product);
-  });
+    categoryCell = document.createElement("td");
+    categoryCell.textContent = product.category;
+    row.appendChild(categoryCell);
 
-  return product_Container;
+    imageCell = document.createElement("td");
+    div = document.createElement("div");
+    imageCell.appendChild(div);
+    productImg = document.createElement("img");
+    productImg.src = "."+product['image'];
+    div.appendChild(productImg);
+
+    row.appendChild(imageCell);
+
+
 }
