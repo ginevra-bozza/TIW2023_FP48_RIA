@@ -82,7 +82,7 @@ function buildProduct(product) {
 
     nameCell = document.createElement("td");
     nameCell.textContent = product.name;
-    row.appendChild(idCell);
+    row.appendChild(nameCell);
 
     descriptionCell = document.createElement("td");
     descriptionCell.textContent = product.description;
@@ -105,12 +105,12 @@ function buildProduct(product) {
 }
 
 function buildSuppliersList(details) {
-	
-	
+
   	let suppliersArray = details.suppliers;
     let suppliersContainer = document.getElementById("id_suppliersDetails");
     let suppliersTable, suppliersThead, sTh, suppliersTbody, row;
-    let idCell, nameCell, evaluationCell, evaluationSpan, freeShipmentCell, policiesCell,cartButtonCell,quantityForm,cartButton,quantityCell;
+    let idCell, nameCell, evaluationCell, evaluationSpan, freeShipmentCell, policiesCell,goToCartCell,quantityForm,cartButton,quantityCell, totalCell;
+    let quantityInput;
 
     suppliersContainer.innerHTML ="";
 
@@ -172,21 +172,28 @@ function buildSuppliersList(details) {
         quantityCell.textContent = getQuantityBySupplierId(supplier.supplier_id);
         row.appendChild(quantityCell);
 
+        totalCell = document.createElement("td");
+        totalCell.textContent = getTotalBySupplierId(supplier.supplier_id);
+        row.appendChild(totalCell);
+
         policiesCell = document.createElement("td");
         buildShipmentPolicies(policiesCell, supplier.shipment_policy);
         row.appendChild(policiesCell);
 
-
-        cartButtonCell = document.createElement("td");
-        row.appendChild(cartButtonCell);
+        goToCartCell = document.createElement("td");
         quantityForm = document.createElement("form");
-        cartButtonCell = cartButtonCell.appendChild(quantityForm);
-        
+        row.appendChild(goToCartCell);
+        goToCartCell.appendChild(quantityForm);
+
         cartButton = document.createElement("button");
         cartButton.textContent = "add to cart";
         quantityForm.appendChild(cartButton);
+
+        quantityInput = document.createElement("input");
+        quantityForm.appendChild(quantityInput);
+
         cartButton.addEventListener("click",(e) => {
-			if(quantityForm.textContent.value > 0){
+			if(quantityInput.textContent.value > 0){
 			addToCart(details, idCell.textContent, quantityForm.textContent.value);
             displayCart(cart);
         	}

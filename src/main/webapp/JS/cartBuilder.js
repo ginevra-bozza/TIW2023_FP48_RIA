@@ -32,49 +32,7 @@ function addToCart(details, supplier_id, quantity){
 					cart.set(s, new ProductListBySupplier());
 					}
 				}
-				
-			}
-		
-	)
-
-
-        
-
-        this.update = function (details) {// build updated list - product
-        let list_container = document.getElementById("id_detailsContainer");
-            list_container.className = "displayed";
-            buildProduct(details);
-            buildSuppliersList(details);
-        }
-        
-        this.show = function () {
-            let self = this; //Important!
-
-            doRequest('Cart?product_id='+ product_id + '&supplier_id='+ supplier_id + '&quantity=' + quantity, "GET", // callback function
-                function (req) {
-                    if (req.readyState === XMLHttpRequest.DONE) { // == 4
-                        if (req.status === 200) {
-                            try{
-                                let productDetails = JSON.parse(req.responseText);
-                                if (productDetails.length === 0) {
-                                    alert("No results"); //for demo purposes
-                                }else {
-                                    // If conferences list is not emtpy, then update view
-                                    self.update(productDetails[0]); // self visible by closure
-                                }
-                            } catch (e) {
-                                console.log(e);
-                            }
-
-                        } else {
-                            // request failed, handle it
-
-                            alert("Not possible to recover data"); //for demo purposes
-                        }
-                    }
-                }
-            );
-		}
+			})
 }
 function displayCart(cartToDisplay){
     let detail_list_container = document.getElementById("id_detailsContainer");
@@ -152,19 +110,19 @@ function displayCartBySupplier(productArray,supplier){
 
 function getQuantityBySupplierId(supplier_id) {
     this.quantity = 0;
-    if (cart.get(supplier_id) !== null) {
+
+    if (cart.get(supplier_id) !== undefined && cart.get(supplier_id) !== null && cart.get(supplier_id).productList.length > 0 ) {
         cart.get(supplier_id).forEach(function (s) {
             this.quantity += s.quantity;
         })
-        return this.quantity
-    } else {
-        return this.quantity;
     }
+    return this.quantity;
 }
+
 
 function getTotalBySupplierId(supplier_id){
     this.total = 0;
-    if(cart.get(supplier_id) !== null){
+    if(cart.get(supplier_id) !== undefined && cart.get(supplier_id) !== null){
         cart.get(supplier_id).forEach(function (s){
             this.total += s.price;
         })
