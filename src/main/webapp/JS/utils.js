@@ -45,6 +45,8 @@ function buildProduct(product) {
 
     let table, thead, row, idCell, nameCell, descriptionCell, categoryCell, imageCell, th, tbody, div, productImg ;
     let productContainer = document.getElementById("id_productDetails");
+
+    productContainer.innerHTML ="";
     productContainer.className = "displayed";
 
     // build updated list
@@ -108,6 +110,8 @@ function buildSuppliersList(suppliersArray) {
     let suppliersTable, suppliersThead, sTh, suppliersTbody, row;
     let idCell, nameCell, evaluationCell, evaluationSpan, freeShipmentCell, policiesCell;
 
+    suppliersContainer.innerHTML ="";
+
     suppliersTable = document.createElement('table');
     suppliersContainer.appendChild(suppliersTable);
 
@@ -162,6 +166,16 @@ function buildSuppliersList(suppliersArray) {
         policiesCell = document.createElement("td");
         buildShipmentPolicies(policiesCell, supplier.shipment_policy);
         row.appendChild(policiesCell);
+
+        cartButtonCell = document.createElement("td");
+        row.appendChild(cartButtonCell);
+        cartButton = document.createElement("button");
+        cartButton.textContent = "add to cart";
+        cartButtonCell.appendChild(cartButton);
+        cartButton.addEventListener("click",(e) => {
+
+        });
+
     });
 }
 
