@@ -4,7 +4,7 @@
 
 	function makeCall(method, url, formElement, cback, reset = true) {
 		console.log("makeCall on "+method+ " "+url+" "); //debug
-	    var req = new XMLHttpRequest(); // visible by closure
+	    let req = new XMLHttpRequest(); // visible by closure
 	    req.onreadystatechange = function() {
 	      cback(req)
 	    }; // closure
@@ -56,19 +56,19 @@ function buildProduct(product) {
     thead = document.createElement('thead');
     table.appendChild(thead);
     th = document.createElement('th');
-    th.textContent = "id";
+    th.textContent = "Id";
     thead.appendChild(th);
     th = document.createElement('th');
-    th.textContent = "name";
+    th.textContent = "Name";
     thead.appendChild(th);
     th = document.createElement('th');
-    th.textContent = "description";
+    th.textContent = "Description";
     thead.appendChild(th);
     th = document.createElement('th');
-    th.textContent = "category";
+    th.textContent = "Category";
     thead.appendChild(th);
     th = document.createElement('th');
-    th.textContent = "image";
+    th.textContent = "Image";
     thead.appendChild(th);
     tbody = document.createElement('tbody');
     table.appendChild(tbody);
@@ -104,11 +104,13 @@ function buildProduct(product) {
 
 }
 
-function buildSuppliersList(suppliersArray) {
-
+function buildSuppliersList(details) {
+	
+	
+  	let suppliersArray = details.suppliers;
     let suppliersContainer = document.getElementById("id_suppliersDetails");
     let suppliersTable, suppliersThead, sTh, suppliersTbody, row;
-    let idCell, nameCell, evaluationCell, evaluationSpan, freeShipmentCell, policiesCell;
+    let idCell, nameCell, evaluationCell, evaluationSpan, freeShipmentCell, policiesCell,cartButtonCell,quantityForm,cartButton,quantityCell;
 
     suppliersContainer.innerHTML ="";
 
@@ -118,19 +120,22 @@ function buildSuppliersList(suppliersArray) {
     suppliersThead = document.createElement('thead');
     suppliersTable.appendChild(suppliersThead);
     sTh = document.createElement('th');
-    sTh.textContent = "id";
+    sTh.textContent = "Id";
     suppliersThead.appendChild(sTh);
     sTh = document.createElement('th');
-    sTh.textContent = "supplier name";
+    sTh.textContent = "Supplier name";
     suppliersThead.appendChild(sTh);
     sTh = document.createElement('th');
-    sTh.textContent = "evaluation";
+    sTh.textContent = "Evaluation";
     suppliersThead.appendChild(sTh);
     sTh = document.createElement('th');
-    sTh.textContent = "free shipment price";
+    sTh.textContent = "Free shipment price";
     suppliersThead.appendChild(sTh);
     sTh = document.createElement('th');
-    sTh.textContent = "shipment info";
+    sTh.textContent = "Supplier Products";
+    suppliersThead.appendChild(sTh);
+    sTh = document.createElement('th');
+    sTh.textContent = "Shipment info";
     suppliersThead.appendChild(sTh);
 
 
@@ -163,17 +168,31 @@ function buildSuppliersList(suppliersArray) {
         freeShipmentCell.textContent = supplier.free_shipment_price;
         row.appendChild(freeShipmentCell);
 
+        quantityCell = document.createElement("td");
+        quantityCell.textContent = getQuantityBySupplierId(supplier.supplier_id);
+        row.appendChild(quantityCell);
+
         policiesCell = document.createElement("td");
         buildShipmentPolicies(policiesCell, supplier.shipment_policy);
         row.appendChild(policiesCell);
 
+
         cartButtonCell = document.createElement("td");
         row.appendChild(cartButtonCell);
+        quantityForm = document.createElement("form");
+        cartButtonCell = cartButtonCell.appendChild(quantityForm);
+        
         cartButton = document.createElement("button");
         cartButton.textContent = "add to cart";
-        cartButtonCell.appendChild(cartButton);
+        quantityForm.appendChild(cartButton);
         cartButton.addEventListener("click",(e) => {
-
+			if(quantityForm.textContent.value > 0){
+			addToCart(details, idCell.textContent, quantityForm.textContent.value);
+            displayCart(cart);
+        	}
+        	else {
+				alert("quantity not valid");
+			}
         });
 
     });
@@ -189,13 +208,13 @@ function buildShipmentPolicies(listContainer, policiesArray){
     thead = document.createElement('thead');
     policiesTable.appendChild(thead);
     th = document.createElement('th');
-    th.textContent = "minimum";
+    th.textContent = "Minimum";
     thead.appendChild(th);
     th = document.createElement('th');
-    th.textContent = "maximum";
+    th.textContent = "Maximum";
     thead.appendChild(th);
     th = document.createElement('th');
-    th.textContent = "shipment price";
+    th.textContent = "Shipment price";
     thead.appendChild(th);
 
     tbody = document.createElement('tbody');

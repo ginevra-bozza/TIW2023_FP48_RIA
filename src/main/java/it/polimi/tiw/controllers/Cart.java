@@ -63,7 +63,6 @@ public class Cart extends HttpServlet {
 		
 		HttpSession session = request.getSession();
 		User user = (User)session.getAttribute("currentUser");
-		Map<Integer, ArrayList<Product>> cart = new HashMap<Integer,ArrayList<Product>>();
 		Map<Integer, Integer> shipment_prices = new HashMap<Integer,Integer>();
 		ProductDAO product = new ProductDAO(connection);
 		SupplierDAO supplierDao = new SupplierDAO(connection);
@@ -72,9 +71,6 @@ public class Cart extends HttpServlet {
 		int supplier_id = 0;
 		int shipment_price = 0;
 
-		if(user.getCart() == null)
-			user.setCart(cart);
-		
 		try {
 			quantity = Integer.parseInt(request.getParameter("quantity"));
 			product_id = Integer.parseInt(request.getParameter("product_id"));
@@ -86,39 +82,15 @@ public class Cart extends HttpServlet {
 			} else {
 				response.sendError(HttpServletResponse.SC_FORBIDDEN, "Invalid quantity when adding products to the cart");
 				}
-			
-			if(user.getCart().containsKey(choosenProduct.getSupplier_id())) 
-				user.getCart().get(choosenProduct.getSupplier_id()).add(choosenProduct);
-			
-			else {
-				user.getCart().put(choosenProduct.getSupplier_id(), new ArrayList<Product>());
-				user.getCart().get(choosenProduct.getSupplier_id()).add(choosenProduct);
-				shipment_prices.remove(supplier_id);
-			}
 			shipment_price = supplierDao.getShipmentPrice(supplier_id,user.getCart().get(supplier_id),user.getTotalBySupplierId(supplier_id));
 			shipment_prices.put(supplier_id,shipment_price);
 			
 		} catch (NumberFormatException e) {
 			
-			if(user.getCart().size() == 0 ) {
-				System.out.println("Error: user has no cart");
-				
-			} else {
-				System.out.println("Printed cart");
-
-			}
+			System.out.println("parsing error in cart.java");
 		}
 		
 		
-			
-		
-		session.setAttribute("currentUser",user);
-		
-		String path ="/WEB-INF/Cart.html";
-		ServletContext servletContext = getServletContext();
-		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-		ctx.setVariable("shipment_prices", shipment_prices);
-		templateEngine.process(path, ctx, response.getWriter());
 	}
 
 	/**
