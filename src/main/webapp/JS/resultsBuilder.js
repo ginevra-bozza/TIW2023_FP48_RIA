@@ -99,10 +99,9 @@
                 function (req) {
                     if (req.readyState === XMLHttpRequest.DONE) { // == 4
                         if (req.status === 200) {
-                            list_container.innerHTML = '';
                             try{
                                 let productDetails = JSON.parse(req.responseText);
-                                console.log(productDetails);
+                                list_container.class = "displayed";
                                 if (productDetails.length === 0) {
                                     alert("No results"); //for demo purposes
                                 }else {
@@ -115,7 +114,7 @@
 
                         } else {
                             // request failed, handle it
-                            list_container.style.visibility = "hidden";
+                            list_container.class = "masked";
                             alert("Not possible to recover data"); //for demo purposes
                         }
                     }
@@ -127,13 +126,14 @@
 
         this.update = function (details) {
             let table, thead, row, idCell, nameCell, descriptionCell, categoryCell, imageCell, th, tbody, div, productImg ;
-            let suppliersCell, suppliersTable, suppliersThead, suppliersTbody, sTh, insideRow, policiesTable;
-            list_container.innerHTML = ""; // empty the table body
+            let suppliersTable, suppliersThead, suppliersTbody, sTh,supplierIdCell,supplierNameCell, insideRow, policiesTable;
+            let productContainer = document.getElementById("id_productDetails");
+            let suppliersContainer = document.getElementById("id_suppliersDetails");
 
             // build updated list
 
             table = document.createElement('table');
-            list_container.appendChild(table);
+            productContainer.appendChild(table);
             thead = document.createElement('thead');
             table.appendChild(thead);
             th = document.createElement('th');
@@ -155,7 +155,8 @@
             table.appendChild(tbody);
 
             row = document.createElement("tr");
-
+            tbody.appendChild(row);
+            
             idCell = document.createElement("td");
             idCell.textContent = details.id;
             row.appendChild(idCell);
@@ -183,7 +184,7 @@
 
             //suppliersTable
             suppliersTable = document.createElement('table');
-            row.appendChild(suppliersTable);
+            suppliersContainer.appendChild(suppliersTable);
 
             suppliersThead = document.createElement('thead');
             suppliersTable.appendChild(suppliersThead);
@@ -199,47 +200,41 @@
             sTh = document.createElement('th');
             sTh.textContent = "free shipment price";
             suppliersThead.appendChild(sTh);
-            //sTh = document.createElement('th');
-            /*sTh.textContent = "shipment info";
-            suppliersThead.appendChild(sTh);*/
+            sTh = document.createElement('th');
+            sTh.textContent = "shipment info";
+            suppliersThead.appendChild(sTh);
             suppliersTbody = document.createElement('tbody');
             suppliersTable.appendChild(suppliersTbody);
 
             insideRow = document.createElement("tr");
             suppliersTbody.appendChild(insideRow);
 
-            var suppliersArray = details[5];
-            suppliersArray.forEach(function (supplier) {
+            var suppliersArray = details.suppliers;
 
-                supplierIdCell = document.createElement("td");
-                supplierIdCell.textContent = supplier.id;
-                insideRow.appendChild(supplierIdCell);
+             suppliersArray.forEach(function (supplier) {
 
-                supplierNameCell = document.createElement("td");
-                supplierNameCell.textContent = supplier.name;
-                insideRow.appendChild(supplierNameCell);
+                 supplierIdCell = document.createElement("td");
+                 supplierIdCell.textContent = supplier.supplier_id;
+                 insideRow.appendChild(supplierIdCell);
+;
+                 supplierNameCell = document.createElement("td");
+                 supplierNameCell.textContent = supplier.supplier_name;
+                 insideRow.appendChild(supplierNameCell);
 
-                evaluationCell =  document.createElement("td");
-                evaluationSpan = document.createElement("span");
-                evaluationCell.appendChild(evaluationSpan);
+                 /* evaluationCell =  document.createElement("td");
+                  evaluationSpan = document.createElement("span");
+                  evaluationCell.appendChild(evaluationSpan);
 
-                for (let i = 0; i < supplier.evaluation ; i++) {
-                    evaluationSpan.textContent += "&#x2605;";
-                }
-                insideRow.appendChild(evaluationCell);
+                  for (let i = 0; i < supplier.evaluation ; i++) {
+                      evaluationSpan.textContent += "&#x2605;";
+                  }
+                  insideRow.appendChild(evaluationCell);
 
-                freeShipmentCell = document.createElement("td");
-                freeShipmentCell.textContent = supplier.free_shipment_price;
-                insideRow.appendChild(freeShipmentCell);
+                  freeShipmentCell = document.createElement("td");
+                  freeShipmentCell.textContent = supplier.free_shipment_price;
+                  insideRow.appendChild(freeShipmentCell);*/
 
-            })
-
-
-
-
-
-
-
+             })
 
 
 
