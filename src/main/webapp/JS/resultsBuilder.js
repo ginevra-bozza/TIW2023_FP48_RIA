@@ -90,7 +90,7 @@
     
     
     function DetailsList(product_id){
-        let list_container = document.getElementById("id_detailsContainer");
+        
 
         this.show = function () {
             let self = this; //Important!
@@ -101,7 +101,6 @@
                         if (req.status === 200) {
                             try{
                                 let productDetails = JSON.parse(req.responseText);
-                                list_container.class = "displayed";
                                 if (productDetails.length === 0) {
                                     alert("No results"); //for demo purposes
                                 }else {
@@ -125,6 +124,8 @@
         }
 
         this.update = function (details) {// build updated list - product
+        let list_container = document.getElementById("id_detailsContainer");
+            list_container.className = "displayed";
             buildProduct(details);
 
         }

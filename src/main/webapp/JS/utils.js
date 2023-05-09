@@ -45,6 +45,7 @@ function buildProduct(product) {
 
     let table, thead, row, idCell, nameCell, descriptionCell, categoryCell, imageCell, th, tbody, div, productImg ;
     let productContainer = document.getElementById("id_productDetails");
+    productContainer.className = "displayed";
 
     // build updated list
 
