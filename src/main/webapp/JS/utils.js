@@ -155,7 +155,7 @@ function buildSuppliersList(suppliersArray) {
         evaluationCell.appendChild(evaluationSpan);
 
         for (let i = 0; i < supplier.evaluation ; i++) {
-            evaluationSpan.textContent += "&#x2605";
+            evaluationSpan.textContent += `\u2B50`;
         }
         row.appendChild(evaluationCell);
 
