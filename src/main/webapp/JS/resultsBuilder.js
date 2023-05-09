@@ -124,44 +124,8 @@
 
         }
 
-        this.update = function (details) {
-            let table, thead, row, idCell, nameCell, descriptionCell, categoryCell, imageCell, th, tbody, div,
-                productImg;
-            let suppliersTable, suppliersThead, suppliersTbody, sTh, supplierIdCell, supplierNameCell, insideRow,
-                policiesTable;
-            let productContainer = document.getElementById("id_productDetails");
-            let suppliersContainer = document.getElementById("id_suppliersDetails");
-
-            // build updated list - product
+        this.update = function (details) {// build updated list - product
             buildProduct(details);
-
-
-            //suppliersTable
-            suppliersTable = document.createElement('table');
-            suppliersContainer.appendChild(suppliersTable);
-
-            suppliersThead = document.createElement('thead');
-            suppliersTable.appendChild(suppliersThead);
-            sTh = document.createElement('th');
-            sTh.textContent = "id";
-            suppliersThead.appendChild(sTh);
-            sTh = document.createElement('th');
-            sTh.textContent = "supplier name";
-            suppliersThead.appendChild(sTh);
-            sTh = document.createElement('th');
-            sTh.textContent = "evaluation";
-            suppliersThead.appendChild(sTh);
-            sTh = document.createElement('th');
-            sTh.textContent = "free shipment price";
-            suppliersThead.appendChild(sTh);
-            sTh = document.createElement('th');
-            sTh.textContent = "shipment info";
-            suppliersThead.appendChild(sTh);
-            suppliersTbody = document.createElement('tbody');
-            suppliersTable.appendChild(suppliersTbody);
-
-            insideRow = document.createElement("tr");
-            suppliersTbody.appendChild(insideRow);
 
         }
     }
