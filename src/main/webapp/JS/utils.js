@@ -101,3 +101,107 @@ function buildProduct(product) {
 
 
 }
+
+function buildSuppliersList(suppliersArray) {
+
+    let suppliersContainer = document.getElementById("id_suppliersDetails");
+    let suppliersTable, suppliersThead, sTh, suppliersTbody, row;
+    let idCell, nameCell, evaluationCell, evaluationSpan, freeShipmentCell, policiesCell;
+
+    suppliersTable = document.createElement('table');
+    suppliersContainer.appendChild(suppliersTable);
+
+    suppliersThead = document.createElement('thead');
+    suppliersTable.appendChild(suppliersThead);
+    sTh = document.createElement('th');
+    sTh.textContent = "id";
+    suppliersThead.appendChild(sTh);
+    sTh = document.createElement('th');
+    sTh.textContent = "supplier name";
+    suppliersThead.appendChild(sTh);
+    sTh = document.createElement('th');
+    sTh.textContent = "evaluation";
+    suppliersThead.appendChild(sTh);
+    sTh = document.createElement('th');
+    sTh.textContent = "free shipment price";
+    suppliersThead.appendChild(sTh);
+    sTh = document.createElement('th');
+    sTh.textContent = "shipment info";
+    suppliersThead.appendChild(sTh);
+
+
+    suppliersTbody = document.createElement('tbody');
+    suppliersTable.appendChild(suppliersTbody);
+
+
+    suppliersArray.forEach(function (supplier) {
+        row = document.createElement("tr");
+        suppliersTbody.appendChild(row);
+
+        idCell = document.createElement("td");
+        idCell.textContent = supplier.supplier_id;
+        row.appendChild(idCell);
+
+        nameCell = document.createElement("td");
+        nameCell.textContent = supplier.supplier_name;
+        row.appendChild(nameCell);
+
+        evaluationCell =  document.createElement("td");
+        evaluationSpan = document.createElement("span");
+        evaluationCell.appendChild(evaluationSpan);
+
+        for (let i = 0; i < supplier.evaluation ; i++) {
+            evaluationSpan.textContent += "&#x2605";
+        }
+        row.appendChild(evaluationCell);
+
+        freeShipmentCell = document.createElement("td");
+        freeShipmentCell.textContent = supplier.free_shipment_price;
+        row.appendChild(freeShipmentCell);
+
+        policiesCell = document.createElement("td");
+        buildShipmentPolicies(policiesCell, supplier.shipment_policy);
+        row.appendChild(policiesCell);
+    });
+}
+
+function buildShipmentPolicies(listContainer, policiesArray){
+    let policiesTable, thead, th, tbody, row;
+    let minimumCell, maximumCell, priceCell;
+
+    policiesTable = document.createElement('table');
+    listContainer.appendChild(policiesTable);
+
+    thead = document.createElement('thead');
+    policiesTable.appendChild(thead);
+    th = document.createElement('th');
+    th.textContent = "minimum";
+    thead.appendChild(th);
+    th = document.createElement('th');
+    th.textContent = "maximum";
+    thead.appendChild(th);
+    th = document.createElement('th');
+    th.textContent = "shipment price";
+    thead.appendChild(th);
+
+    tbody = document.createElement('tbody');
+    policiesTable.appendChild(tbody);
+
+    policiesArray.forEach(function (shipment_policy) {
+        row = document.createElement("tr");
+        tbody.appendChild(row);
+
+        minimumCell = document.createElement("td");
+        minimumCell.textContent = shipment_policy.minimum;
+        row.appendChild(minimumCell);
+
+        maximumCell = document.createElement("td");
+        maximumCell.textContent = shipment_policy.maximum;
+        row.appendChild(maximumCell);
+
+        priceCell = document.createElement("td");
+        priceCell.textContent = shipment_policy.shipment_price;
+        row.appendChild(priceCell);
+    })
+
+}

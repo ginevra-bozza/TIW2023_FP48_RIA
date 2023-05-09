@@ -127,7 +127,7 @@
         let list_container = document.getElementById("id_detailsContainer");
             list_container.className = "displayed";
             buildProduct(details);
-
+            buildSuppliersList(details.suppliers);
         }
     }
 }
