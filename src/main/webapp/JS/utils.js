@@ -111,7 +111,6 @@ function buildSuppliersList(details) {
     let suppliersTable, suppliersThead, sTh, suppliersTbody, row;
     let idCell, nameCell, priceCell, evaluationCell, evaluationSpan, freeShipmentCell, policiesCell,goToCartCell,quantityForm,cartButton,quantityCell, totalCell;
     let quantityInput;
-    let cart = sessionStorage.getItem("cart");
 
     suppliersContainer.innerHTML ="";
 
@@ -206,15 +205,24 @@ function buildSuppliersList(details) {
         cartButton.textContent = "add to cart";
         quantityForm.appendChild(cartButton);
 
+
         quantityForm.addEventListener("submit", (e) => {
             if(e.target.elements[0].value  > 0){
-                addToCart(details, idCell.textContent, nameCell.textContent, priceCell.textContent, e.target.elements[0].value);
-                displayCart();
+                addToCart(details, idCell.textContent, nameCell.textContent, priceCell.textContent, e.target.elements[0].value,getShipmentPolicies(idCell.textContent), freeShipmentCell.textContent);
             }
             else {
                 alert("quantity not valid");
             }
         });
+        function getShipmentPolicies(supplier_id) {
+            let shipmentPolicy;
+            this.suppliersArray.forEach(function (s) {
+                if(s.supplier_id === supplier_id){
+                    shipmentPolicy = s.shipment_policy;
+                }
+            })
+            return shipmentPolicy;
+        }
 
     });
 }
