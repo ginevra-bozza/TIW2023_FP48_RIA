@@ -105,7 +105,9 @@ function buildProduct(product) {
 }
 
 function buildSuppliersList(details) {
-    let cart= sessionStorage.getItem("cart");
+        let totalQuantity = 0;
+        let totalValue = 0;
+
   	let suppliersArray = details.suppliers;
     let suppliersContainer = document.getElementById("id_suppliersDetails");
     let suppliersTable, suppliersThead, sTh, suppliersTbody, row;
@@ -172,12 +174,16 @@ function buildSuppliersList(details) {
         freeShipmentCell.textContent = supplier.free_shipment_price;
         row.appendChild(freeShipmentCell);
 
-        let totalQuantity;
-        cart.forEach(function (s) {
-            if(idCell.textContent === s.supplier_id){
-                totalQuantity = s.totalQuantity;
-            }
-        })
+        if(sessionStorage.getItem("cart") !== undefined && sessionStorage.getItem("cart") !== null){
+            let cart = sessionStorage.getItem("cart");
+            cart.forEach(function (s) {
+                if(idCell.textContent === s.supplier_id){
+                    totalQuantity = s.totalQuantity;
+                    totalValue = s.totalValue;
+                }
+
+            })
+        }
 
 
         quantityCell = document.createElement("td");
@@ -185,7 +191,7 @@ function buildSuppliersList(details) {
         row.appendChild(quantityCell);
 
         totalCell = document.createElement("td");
-        totalCell.textContent = getTotalBySupplier(supplier);
+        totalCell.textContent = totalValue;
         row.appendChild(totalCell);
 
         policiesCell = document.createElement("td");
