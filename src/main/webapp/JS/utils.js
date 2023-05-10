@@ -229,7 +229,7 @@ function buildSuppliersList(details) {
         });
         function getShipmentPolicies(supplier_id) {
             let shipmentPolicy;
-            this.suppliersArray.forEach(function (s) {
+            suppliersArray.forEach(function (s) {
                 if(s.supplier_id === supplier_id){
                     shipmentPolicy = s.shipment_policy;
                 }
