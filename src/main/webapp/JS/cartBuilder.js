@@ -1,4 +1,4 @@
-const cart = new Map();
+//const cart = new Map();
 
 function ProductListBySupplier (){
     this.productList = [];
@@ -18,6 +18,15 @@ function calculateNewQuantity (productQuantity, addQuantity){
 	}
 
 function addToCart(details, supplier_id, quantity){
+    alert("ADD TO CART");
+
+    let cart;
+    if(sessionStorage.getItem("cart") !== undefined && sessionStorage.getItem("cart") !== null){
+        cart = sessionStorage.getItem("cart");
+    } else {
+        cart = new Map();
+    }
+
 		details.suppliers.forEach(function(s){
 			if(s.supplier_id === supplier_id && quantity > 0){
 				if(cart.has(s)){
@@ -33,21 +42,38 @@ function addToCart(details, supplier_id, quantity){
 					}
 				}
 			})
+    console.log("CART: "+cart);
+    sessionStorage.setItem("cart", cart);
 }
-function displayCart(cartToDisplay){
+function displayCart(){
+    let cartToDisplay;
+
+    if(sessionStorage.getItem("cart") !== undefined && sessionStorage.getItem("cart") !== null){
+        cartToDisplay = sessionStorage.getItem("cart");
+        console.log("CART: "+cartToDisplay);
+    } else {
+        alert("no cart available")
+    }
+
     let detail_list_container = document.getElementById("id_detailsContainer");
     detail_list_container.className = "masked";
     let page_container = document.getElementById("id_pageContainer");
     page_container.innerHTML="";
-    cartToDisplay.forEach(function(supplierCart){
+    /*cartToDisplay.forEach(function(supplierCart){
         supplierCart.forEach(function (){
             displayCartBySupplier(cartToDisplay.get(supplierCart),supplierCart);
         })
-    })
+    })*/
+    console.log("CART values: "+cartToDisplay.values());
+    Object.keys(cartToDisplay).forEach(function (supplier){
+        //let productArray = cartToDisplay.get(supplier);
+        //displayCartBySupplier(productArray,supplier);
+    });
 }
 
 function displayCartBySupplier(productArray,supplier){
     let table, thead, row, idCell, nameCell, priceCell, supplierNameCell, th, tbody, quantityCell, totalPriceCell ;
+    this.listcontainer = document.getElementById("id_pageContainer");
 
     table = document.createElement('table');
     this.listcontainer.appendChild(table);
@@ -99,7 +125,7 @@ function displayCartBySupplier(productArray,supplier){
         row.appendChild(quantityCell);
 
         totalPriceCell = document.createElement("td");
-        totalPriceCell.textContent = getTotalBySupplierId(supplier.supplier_id);
+        totalPriceCell.textContent = getTotalBySupplier(supplier);
         row.appendChild(totalPriceCell);
         // Add row to table body
         tbody.appendChild(row);
@@ -108,28 +134,48 @@ function displayCartBySupplier(productArray,supplier){
     this.listcontainer.className = "displayed";
 }
 
-function getQuantityBySupplierId(supplier_id) {
+function getQuantityBySupplier(supplier) {
+    let cart;
     this.quantity = 0;
 
-    if (cart.get(supplier_id) !== undefined && cart.get(supplier_id) !== null && cart.get(supplier_id).productList.length > 0 ) {
-        cart.get(supplier_id).forEach(function (s) {
+    if(sessionStorage.getItem("cart") !== undefined && sessionStorage.getItem("cart") !== null){
+        cart = sessionStorage.getItem("cart");
+        cart.get(supplier).forEach(function (s) {
             this.quantity += s.quantity;
         })
     }
+
+
+   /* if (cart.get(supplier_id) !== undefined && cart.get(supplier_id) !== null && cart.get(supplier_id).productList.length > 0 ) {
+        cart.get(supplier_id).forEach(function (s) {
+            this.quantity += s.quantity;
+        })
+    }*/
     return this.quantity;
 }
 
 
-function getTotalBySupplierId(supplier_id){
-    this.total = 0;
-    if(cart.get(supplier_id) !== undefined && cart.get(supplier_id) !== null){
+function getTotalBySupplier(supplier){
+    let cart;
+    let self = this;
+    self.total = 0;
+
+    if(sessionStorage.getItem("cart") !== undefined && sessionStorage.getItem("cart") !== null){
+        cart = sessionStorage.getItem("cart");
+        cart.get(supplier).forEach(function (s){
+            self.total += s.price;
+        })
+    }
+    return self.total;
+
+    /*if(cart.get(supplier_id) !== undefined && cart.get(supplier_id) !== null){
         cart.get(supplier_id).forEach(function (s){
             this.total += s.price;
         })
         return this.total }
     else {
         return this.total;
-    }
+    }*/
 
 
 }

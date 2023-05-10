@@ -111,6 +111,7 @@ function buildSuppliersList(details) {
     let suppliersTable, suppliersThead, sTh, suppliersTbody, row;
     let idCell, nameCell, evaluationCell, evaluationSpan, freeShipmentCell, policiesCell,goToCartCell,quantityForm,cartButton,quantityCell, totalCell;
     let quantityInput;
+    let cart = sessionStorage.getItem("cart");
 
     suppliersContainer.innerHTML ="";
 
@@ -169,11 +170,11 @@ function buildSuppliersList(details) {
         row.appendChild(freeShipmentCell);
 
         quantityCell = document.createElement("td");
-        quantityCell.textContent = getQuantityBySupplierId(supplier.supplier_id);
+        quantityCell.textContent = getQuantityBySupplier(supplier);
         row.appendChild(quantityCell);
 
         totalCell = document.createElement("td");
-        totalCell.textContent = getTotalBySupplierId(supplier.supplier_id);
+        totalCell.textContent = getTotalBySupplier(supplier);
         row.appendChild(totalCell);
 
         policiesCell = document.createElement("td");
@@ -203,7 +204,7 @@ function buildSuppliersList(details) {
         quantityForm.addEventListener("submit", (e) => {
             if(e.target.elements[0].value  > 0){
                 addToCart(details, idCell.textContent, e.target.elements[0].value);
-                displayCart(cart);
+                displayCart();
             }
             else {
                 alert("quantity not valid");
