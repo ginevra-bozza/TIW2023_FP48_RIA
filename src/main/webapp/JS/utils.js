@@ -174,7 +174,7 @@ function buildSuppliersList(details) {
         freeShipmentCell.textContent = supplier.free_shipment_price;
         row.appendChild(freeShipmentCell);
 
-        if(sessionStorage.getItem("cart") !== undefined && sessionStorage.getItem("cart") !== null){
+        /*if(sessionStorage.getItem("cart") !== undefined && sessionStorage.getItem("cart") !== null){
             let cart = sessionStorage.getItem("cart");
             cart.forEach(function (s) {
                 if(idCell.textContent === s.supplier_id){
@@ -183,7 +183,7 @@ function buildSuppliersList(details) {
                 }
 
             })
-        }
+        }*/
 
 
         quantityCell = document.createElement("td");
