@@ -105,7 +105,7 @@ function buildProduct(product) {
 }
 
 function buildSuppliersList(details) {
-
+    let cart= sessionStorage.getItem("cart");
   	let suppliersArray = details.suppliers;
     let suppliersContainer = document.getElementById("id_suppliersDetails");
     let suppliersTable, suppliersThead, sTh, suppliersTbody, row;
@@ -172,9 +172,16 @@ function buildSuppliersList(details) {
         freeShipmentCell.textContent = supplier.free_shipment_price;
         row.appendChild(freeShipmentCell);
 
+        let totalQuantity;
+        cart.forEach(function (s) {
+            if(idCell.textContent === s.supplier_id){
+                totalQuantity = s.totalQuantity;
+            }
+        })
+
 
         quantityCell = document.createElement("td");
-        quantityCell.textContent = getQuantityBySupplier(supplier);
+        quantityCell.textContent = totalQuantity;
         row.appendChild(quantityCell);
 
         totalCell = document.createElement("td");
