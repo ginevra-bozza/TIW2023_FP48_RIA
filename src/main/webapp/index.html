@@ -2,21 +2,30 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+<link rel="stylesheet" type="text/css" media="all" href="login.css" />
 <title>Login page</title>
 <script src="./JS/utils.js" charset="utf-8" defer></script>
 <script src="./JS/loginManagement.js" charset="utf-8" defer></script>
 
+
+
 </head>
 <body>
-	<h1>Welcome to the shop</h1>
 
-	<form action="#">
-	<fieldset>
-		Email: <input type="text" name="email" required> <br>
-		Password: <input type="password" name="pwd" required><br>
-		<input id="loginbutton" type="button" value="login">
+
+<div class="wrapper fadeInDown">
+	<div id="formContent">
+		<!-- Tabs Titles -->
+		<h2 class="active"> Sign In </h2>
+
+	<form action="#" class="login form">
+
+	<input id="fadeIn first " type="text" name="email" placeholder="email" required> <br>
+	<input id="fadeIn second" type="password" name="pwd" placeholder="password" required><br>
+	<input id="loginbutton" type="button" value="login">
 		<p id="errormessage"></p>
-	</fieldset></form>
-
+	</form>
+	</div>
+</div>
 </body>
 </html>
