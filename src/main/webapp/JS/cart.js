@@ -1,6 +1,6 @@
 
 
-    function addToCart(details, supplier_id, supplier_name, price, quantity, shipment_policy, free_shipment_price){
+    function addToCart(details, supplier_id, supplier_name, price, quantity /*, shipment_policy*/, free_shipment_price){
         if(quantity <= 0) {
             alert("invalid quantity");
             //bloccare azione
@@ -20,7 +20,8 @@
                 checkSupplier = true;
                 s.productsArray.forEach(function (product){
                     if(details.id === product.product_id){
-                        s.updateQuantity(product.product_id, quantity);
+                        /* ------------------da sistemare---------------------------------------------------------------*/
+                        //s.updateQuantity(product.product_id, quantity);
                         checkProduct = true;
                     }
                 })
@@ -30,19 +31,21 @@
             }
         });
         if(!checkSupplier) {
-            let supplierCart = new SupplierCart(supplier_id, supplier_name, shipment_policy, free_shipment_price);
+            let supplierCart = new SupplierCart(supplier_id, supplier_name /*shipment_policy*/, free_shipment_price);
             supplierCart.productsArray.push(new ProductInCart(details.id, details.name, quantity, price));
             cart.push(supplierCart);
         }
         //aggiornare quantity, totale, shipment price
-
-        cart.forEach( function (s) {
+        /* ------------------da sistemare---------------------------------------------------------------*/
+        /*cart.forEach( function (s) {
             if (s.supplier_id === supplier_id) {
                 s.calculateTotal();
                 s.calculateTotalQuantity();
                 s.calculateShipmentPrice();
             }
-        });
+        });*/
+        /* ----------------------------------------------------------------------------------------------*/
+
 
         checkSupplier = false;
         checkProduct = false;
@@ -51,7 +54,8 @@
         console.log(jsonCart);
 
         sessionStorage.setItem("cart", jsonCart);
-        displayCart(jsonCart);
+        alert("Calling displayCart");
+        displayCart();
     }
 
     function SupplierCart(supplier_id, supplier_name, shipment_policy, free_shipment_price) {
@@ -65,7 +69,7 @@
         this.totalValue = 0;
         this.shipmentPrice = 0;
 
-
+        /* ------------------da sistemare---------------------------------------------------------------*/
         this.updateQuantity = function (product_id, quantityToAdd) {
             let self = this;
             self.productsArray.forEach(function (p) {
@@ -101,6 +105,7 @@
                 })
             }
         }
+        /* -------------------------------------------------------------------------------------------*/
     }
 
 
@@ -111,48 +116,46 @@
             this.quantity = quantity;
         }
 
-        function displayCart(jsonCart) {
-            //let cartToDisplay = JSON.parse(sessionStorage.getItem("cart"));
-            let cartToDisplay = JSON.parse(jsonCart);
-            console.log(cartToDisplay[0]);
+        function displayCart() {
+            let cartToDisplay = JSON.parse(sessionStorage.getItem("cart"));
 
             let table, thead, row, idCell, nameCell, priceCell, supplierNameCell, th, tbody, quantityCell,
-                totalPriceCell, shipmentPriceCell;
-            let listcontainer = document.getElementById("id_cartContainer");
-            listcontainer.innerHTML ="";
+                totalPriceCell, shipmentPriceCell, headRow;
+            let listContainer = document.getElementById("id_pageContainer");
+            listContainer.innerHTML ="";
 
             table = document.createElement('table');
-            listcontainer.appendChild(table);
+            listContainer.appendChild(table);
             thead = document.createElement('thead');
             table.appendChild(thead);
-            row = document.createElement("tr");
-            thead.appendChild(row);
+            headRow = document.createElement("tr");
+            thead.appendChild(headRow);
             th = document.createElement('th');
             th.textContent = "Supplier id";
-            row.appendChild(th);
+            headRow.appendChild(th);
             th = document.createElement('th');
             th.textContent = "Supplier name";
-            row.appendChild(th);
+            headRow.appendChild(th);
             th = document.createElement('th');
             th.textContent = "Total quantity";
-            row.appendChild(th);
+            headRow.appendChild(th);
             th = document.createElement('th');
             th.textContent = "Total price";
-            row.appendChild(th);
+            headRow.appendChild(th);
             th = document.createElement('th');
             th.textContent = "Shipment Price";
-            row.appendChild(th);
+            headRow.appendChild(th);
             th = document.createElement('th');
             th.textContent = "Products";
-            row.appendChild(th);
+            headRow.appendChild(th);
 
             tbody = document.createElement('tbody');
-            thead.appendChild(th);
             table.appendChild(tbody);
 
             for (let i = 0; i < cartToDisplay.length; i++) {
-            //cartToDisplay.forEach(function (sCart) {
+
                 row = document.createElement("tr");
+                tbody.appendChild(row);
 
                 supplierIdCell = document.createElement("td");
                 supplierIdCell.textContent = cartToDisplay[i].supplier_id;
@@ -178,7 +181,7 @@
                 cartToDisplay[i].productsArray.forEach(function (product) { // self visible here, not this
                     //Creates a row for each product
                     insideTable = document.createElement('table');
-                    self.listcontainer.appendChild(insideTable);
+                    row.appendChild(insideTable);
                     insidethead = document.createElement('thead');
                     insideTable.appendChild(insidethead);
                     insideth = document.createElement('th');
@@ -218,8 +221,9 @@
 
             }
 
-            listcontainer.className = "displayed";
-
+            listContainer.className = "displayed";
+            let detailsContainer = document.getElementById("id_detailsContainer")
+            detailsContainer.className = "masked";
     }
 
 

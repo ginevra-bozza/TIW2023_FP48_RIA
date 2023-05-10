@@ -65,7 +65,7 @@
 
 
         this.update = function (productArray) {
-            let table,thead,row, nameCell, priceCell;
+            let table,thead,row, nameCell, priceCell, anchor, linkText;
             this.listcontainer.innerHTML = ""; // empty the table body
 
             // build updated list
@@ -88,7 +88,16 @@
                 row = document.createElement("tr");
 
                 nameCell = document.createElement("td");
-                nameCell.textContent = product.name;
+                anchor = document.createElement('a');
+                nameCell.appendChild(anchor);
+                linkText = document.createTextNode(product.name);
+                anchor.appendChild(linkText);
+                anchor.setAttribute("product_id", product.id);
+                anchor.addEventListener("click",(e) => {
+                    let detailsList = new DetailsList(product.id);
+                    detailsList.show();
+                });
+                anchor.href="#";
                 row.appendChild(nameCell);
 
                 priceCell = document.createElement("td");
