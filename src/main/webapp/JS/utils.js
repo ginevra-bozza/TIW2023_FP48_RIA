@@ -181,25 +181,33 @@ function buildSuppliersList(details) {
         row.appendChild(policiesCell);
 
         goToCartCell = document.createElement("td");
-        quantityForm = document.createElement("form");
         row.appendChild(goToCartCell);
+
+        quantityForm = document.createElement("form");
         goToCartCell.appendChild(quantityForm);
 
+        quantityForm.setAttribute("action" , "#");
+        quantityForm.setAttribute("id", "id_quantityForm");
+
+        quantityInput = document.createElement("input");
+        quantityInput.setAttribute("placeholder", "Insert quantity");
+        quantityInput.setAttribute("type", "number");
+        //quantityInput.setAttribute("required min", "1");
+        quantityForm.appendChild(quantityInput);
+
         cartButton = document.createElement("button");
+        cartButton.setAttribute("type", "submit");
         cartButton.textContent = "add to cart";
         quantityForm.appendChild(cartButton);
 
-        quantityInput = document.createElement("input");
-        quantityForm.appendChild(quantityInput);
-
-        cartButton.addEventListener("click",(e) => {
-			if(quantityInput.textContent.value > 0){
-			addToCart(details, idCell.textContent, quantityForm.textContent.value);
-            displayCart(cart);
-        	}
-        	else {
-				alert("quantity not valid");
-			}
+        quantityForm.addEventListener("submit", (e) => {
+            if(e.target.elements[0].value  > 0){
+                addToCart(details, idCell.textContent, e.target.elements[0].value);
+                displayCart(cart);
+            }
+            else {
+                alert("quantity not valid");
+            }
         });
 
     });
