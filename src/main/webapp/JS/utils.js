@@ -109,7 +109,7 @@ function buildSuppliersList(details) {
   	let suppliersArray = details.suppliers;
     let suppliersContainer = document.getElementById("id_suppliersDetails");
     let suppliersTable, suppliersThead, sTh, suppliersTbody, row;
-    let idCell, nameCell, evaluationCell, evaluationSpan, freeShipmentCell, policiesCell,goToCartCell,quantityForm,cartButton,quantityCell, totalCell;
+    let idCell, nameCell, priceCell, evaluationCell, evaluationSpan, freeShipmentCell, policiesCell,goToCartCell,quantityForm,cartButton,quantityCell, totalCell;
     let quantityInput;
     let cart = sessionStorage.getItem("cart");
 
@@ -156,6 +156,10 @@ function buildSuppliersList(details) {
         nameCell.textContent = supplier.supplier_name;
         row.appendChild(nameCell);
 
+        priceCell = document.createElement("td");
+        priceCell.textContent = supplier.price;
+        row.appendChild(priceCell);
+
         evaluationCell =  document.createElement("td");
         evaluationSpan = document.createElement("span");
         evaluationCell.appendChild(evaluationSpan);
@@ -168,6 +172,7 @@ function buildSuppliersList(details) {
         freeShipmentCell = document.createElement("td");
         freeShipmentCell.textContent = supplier.free_shipment_price;
         row.appendChild(freeShipmentCell);
+
 
         quantityCell = document.createElement("td");
         quantityCell.textContent = getQuantityBySupplier(supplier);
@@ -203,7 +208,7 @@ function buildSuppliersList(details) {
 
         quantityForm.addEventListener("submit", (e) => {
             if(e.target.elements[0].value  > 0){
-                addToCart(details, idCell.textContent, e.target.elements[0].value);
+                addToCart(details, idCell.textContent, nameCell.textContent, priceCell.textContent, e.target.elements[0].value);
                 displayCart();
             }
             else {

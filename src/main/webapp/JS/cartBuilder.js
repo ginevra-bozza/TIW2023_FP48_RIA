@@ -1,5 +1,5 @@
 //const cart = new Map();
-
+/*
 function ProductListBySupplier (){
     this.productList = [];
 }
@@ -63,14 +63,14 @@ function displayCart(){
         supplierCart.forEach(function (){
             displayCartBySupplier(cartToDisplay.get(supplierCart),supplierCart);
         })
-    })*/
+    })
     console.log("CART values: "+cartToDisplay.values());
     Object.keys(cartToDisplay).forEach(function (supplier){
         //let productArray = cartToDisplay.get(supplier);
         //displayCartBySupplier(productArray,supplier);
     });
-}
-
+}*/
+/*
 function displayCartBySupplier(productArray,supplier){
     let table, thead, row, idCell, nameCell, priceCell, supplierNameCell, th, tbody, quantityCell, totalPriceCell ;
     this.listcontainer = document.getElementById("id_pageContainer");
@@ -150,11 +150,11 @@ function getQuantityBySupplier(supplier) {
         cart.get(supplier_id).forEach(function (s) {
             this.quantity += s.quantity;
         })
-    }*/
+    }
     return this.quantity;
-}
+}*/
 
-
+/*
 function getTotalBySupplier(supplier){
     let cart;
     let self = this;
@@ -175,7 +175,8 @@ function getTotalBySupplier(supplier){
         return this.total }
     else {
         return this.total;
-    }*/
+    }
 
 
 }
+*/
