@@ -105,7 +105,7 @@
 
         suppliersArray.forEach(function (supplier) {
             row = document.createElement("tr");
-            
+
             suppliersTbody.appendChild(row);
 
             idCell = document.createElement("td");
@@ -205,8 +205,13 @@
 
             quantityForm.addEventListener("submit", (e) => {
                 e.preventDefault();
+                let supplier_id = e.target.parentNode.parentNode.children[0].textContent;
+                let supplier_name= e.target.parentNode.parentNode.children[1].textContent;
+                let supplier_price = e.target.parentNode.parentNode.children[2].textContent;
+                let free_shipment = e.target.parentNode.parentNode.children[4].textContent;
+                alert(supplier_id +" "+supplier_name);
                 if (e.target.elements[0].value > 0) {
-                    addToCart(details, idCell.textContent, nameCell.textContent, priceCell.textContent, e.target.elements[0].value, getShipmentPolicies(idCell.textContent), freeShipmentCell.textContent);
+                    addToCart(details, supplier_id, supplier_name, supplier_price, e.target.elements[0].value, getShipmentPolicies(idCell.textContent), free_shipment);
                 } else {
                    alert("quantity not valid");
                 }
