@@ -67,44 +67,45 @@
         displayCart();
     }
 
-    function SupplierCart(supplier_id, supplier_name, shipment_policy, free_shipment_price) {
+    class SupplierCart {
+        constructor(supplier_id, supplier_name, shipment_policy, free_shipment_price) {
 
-        console.log("creating new supplier cart with id: " + supplier_id);
+            console.log("creating new supplier cart with id: " + supplier_id);
 
-        this.supplier_id = supplier_id;
-        this.supplier_name = supplier_name;
-        this.productsArray = [];
-        this.totalQuantity = 0;
-        this.totalValue = 0;
-        this.shipmentPrice = 0;
+            this.supplier_id = supplier_id;
+            this.supplier_name = supplier_name;
+            this.productsArray = [];
+            this.totalQuantity = 0;
+            this.totalValue = 0;
+            this.shipmentPrice = 0;
+            this.shipment_policy = shipment_policy;
+            this.free_shipment_price = free_shipment_price;
 
-        /* ------------------da sistemare---------------------------------------------------------------*/
-
-        this.updateTotalQuantity = function (quantity) {
+        }
+        updateTotalQuantity (quantity) {
             let self = this;
             self.totalQuantity += quantity;
         }
 
-        this.updateTotal = function (price, quantity) {
+        updateTotal(price, quantity) {
             let self = this;
             self.totalValue += price * quantity;
             self.calculateShipmentPrice();
         }
 
-        this.calculateShipmentPrice = function () {
+        calculateShipmentPrice() {
             let self = this;
 
             if (self.totalValue > free_shipment_price) {
                 self.shipmentPrice = 0;
             } else {
-                shipment_policy.forEach(function (shPolicy) {
+                this.shipment_policy.forEach(function (shPolicy) {
                     if (self.totalQuantity > shPolicy.minimum && self.totalQuantity < shPolicy.maximum) {
                         self.shipmentPrice = shPolicy.shipmentPrice;
                     }
                 })
             }
         }
-        /* -------------------------------------------------------------------------------------------*/
     }
 
 

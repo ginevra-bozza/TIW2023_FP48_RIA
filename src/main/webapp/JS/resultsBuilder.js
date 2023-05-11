@@ -83,7 +83,10 @@
                 tbody.appendChild(row);
             });
 
-            this.listcontainer.style.visibility = "visible";
+            this.listcontainer.className = "displayed";
+            document.getElementById("id_detailsContainer").className = "masked";
+            document.getElementById("id_cartContainer").className = "masked";
+
         }
         this.show();
     }
