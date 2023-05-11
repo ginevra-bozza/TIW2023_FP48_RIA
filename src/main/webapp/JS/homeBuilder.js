@@ -4,8 +4,8 @@
         //var personalMessage = new PersonalMessage(sessionStorage.getItem('email'),
           //  document.getElementById("id_name"));
         //personalMessage.show();
-        linkButton('goHomeLink', () => goHome());
-        linkButton('goCartLink', () => goCart());
+        linkButton('goHomeLink', () => initializeHome());
+        linkButton('goCartLink', () => displayCart());
         linkButton('goOrdersLink', () => goOrders());
         refreshHome();
         prepareSearch();
@@ -13,6 +13,8 @@
 
     //showing last five element viewed
     function refreshHome() {
+        document.getElementById("id_detailsContainer").className = "masked";
+        document.getElementById("id_cartContainer").innerHTML = "";
         let lastViewedList = new LastViewedList(document.getElementById("id_pageContainer"));
         lastViewedList.show();
 
@@ -66,6 +68,7 @@
 
         this.update = function (productArray) {
             let table,thead,row, nameCell, priceCell, anchor, linkText;
+            this.listcontainer.className = "displayed";
             this.listcontainer.innerHTML = ""; // empty the table body
 
             // build updated list
