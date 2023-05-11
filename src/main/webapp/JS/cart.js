@@ -1,6 +1,6 @@
 
 
-    function addToCart(details, supplier_id, supplier_name, price, quantity /*, shipment_policy*/, free_shipment_price){
+    function addToCart(details, supplier_id, supplier_name, price, quantity , shipment_policy, free_shipment_price){
         if(quantity <= 0) {
             alert("invalid quantity");
             //bloccare azione
