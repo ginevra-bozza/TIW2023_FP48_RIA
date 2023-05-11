@@ -20,19 +20,28 @@
                 checkSupplier = true;
                 s.productsArray.forEach(function (product){
                     if(details.id === product.product_id){
-                        /* ------------------da sistemare---------------------------------------------------------------*/
-                        //s.updateQuantity(product.product_id, quantity);
+                        product.quantity += quantity;
                         checkProduct = true;
+                        s.updateTotalQuantity(quantity);
+                        s.updateTotal(price,quantity);
+
                     }
                 })
                 if(!checkProduct){
                     s.productsArray.push(new ProductInCart(details.id, details.name, quantity, price));
+                    s.updateTotalQuantity(quantity);
+                    s.updateTotal(price,quantity);
+
                 }
             }
+
+
         });
         if(!checkSupplier) {
             let supplierCart = new SupplierCart(supplier_id, supplier_name /*shipment_policy*/, free_shipment_price);
             supplierCart.productsArray.push(new ProductInCart(details.id, details.name, quantity, price));
+            supplierCart.updateTotalQuantity(quantity)
+            supplierCart.updateTotal(price,quantity);
             cart.push(supplierCart);
         }
         //aggiornare quantity, totale, shipment price
@@ -70,28 +79,18 @@
         this.shipmentPrice = 0;
 
         /* ------------------da sistemare---------------------------------------------------------------*/
-        this.updateQuantity = function (product_id, quantityToAdd) {
-            let self = this;
-            self.productsArray.forEach(function (p) {
-                if (p.product_id === product_id) {
-                    p.quantity += quantityToAdd;
-                }
-            })
 
-        }
-        this.calculateTotalQuantity = function () {
+        this.updateTotalQuantity = function (quantity) {
             let self = this;
-            self.productsArray.forEach(function (p) {
-                self.totalQuantity += p.quantity;
-            })
+            self.totalQuantity += quantity;
+        }
 
-        }
-        this.calculateTotal = function () {
+        this.updateTotal = function (price, quantity) {
             let self = this;
-            self.productsArray.forEach(function (p) {
-                self.totalValue += p.price * p.quantity;
-            })
+            self.totalValue += price * quantity;
+            self.calculateShipmentPrice();
         }
+
         this.calculateShipmentPrice = function () {
             let self = this;
 
@@ -99,7 +98,7 @@
                 self.shipmentPrice = 0;
             } else {
                 shipment_policy.forEach(function (shPolicy) {
-                    if (self.totalQuantity > shPolicy.minimum && totalQuantity < shPolicy.maximum) {
+                    if (self.totalQuantity > shPolicy.minimum && self.totalQuantity < shPolicy.maximum) {
                         self.shipmentPrice = shPolicy.shipmentPrice;
                     }
                 })

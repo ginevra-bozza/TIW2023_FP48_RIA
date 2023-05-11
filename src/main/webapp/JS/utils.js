@@ -233,7 +233,10 @@ function buildSuppliersList(details) {
             let shipmentPolicy = [];
             suppliersArray.forEach(function (s) {
                 if(s.supplier_id === supplier_id){
-                    shipmentPolicy = s.shipment_policy;
+                    s.shipment_policy.forEach(function (shPol) {
+                        shipmentPolicy.push(shPol);
+                    })
+
                 }
             });
             console.log("Shipment policy : "+shipmentPolicy);
