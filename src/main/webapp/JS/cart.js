@@ -2,18 +2,11 @@
 
     function addToCart(details, supplier_id, supplier_name, price, quantity , shipment_policy, free_shipment_price){
 
-        console.log("Supplier id: "+supplier_id+" Supplier_name: "+supplier_name);
-
         if(quantity <= 0) {
             alert("invalid quantity");
             //bloccare azione
         }
         let cart = getCartFromSession();
-       /* if(sessionStorage.getItem("cart") !== undefined && sessionStorage.getItem("cart") !== null && sessionStorage.getItem("cart").length > 0){
-            cart = JSON.parse(sessionStorage.getItem("cart"));
-        } else {
-            cart = [];
-        }*/
 
         let checkSupplier = false;
         let checkProduct = false;
@@ -47,17 +40,6 @@
             supplierCart.updateTotal(price,quantity);
             cart.push(supplierCart);
         }
-        //aggiornare quantity, totale, shipment price
-        /* ------------------da sistemare---------------------------------------------------------------*/
-        /*cart.forEach( function (s) {
-            if (s.supplier_id === supplier_id) {
-                s.calculateTotal();
-                s.calculateTotalQuantity();
-                s.calculateShipmentPrice();
-            }
-        });*/
-        /* ----------------------------------------------------------------------------------------------*/
-
 
         checkSupplier = false;
         checkProduct = false;
@@ -66,13 +48,10 @@
         console.log(jsonCart);
 
         sessionStorage.setItem("cart", jsonCart);
-        alert("Calling displayCart");
         displayCart();
     }
 
     function SupplierCart (supplier_id, supplier_name, shipment_policy, free_shipment_price) {
-
-        console.log("creating new supplier cart with id: " + supplier_id);
 
         this.supplier_id = supplier_id;
         this.supplier_name = supplier_name;
@@ -82,7 +61,6 @@
         this.shipmentPrice = 0;
         this.shipment_policy = shipment_policy;
         this.free_shipment_price = free_shipment_price;
-
 
         this.updateTotalQuantity = function (quantity) {
             let self = this;
@@ -97,7 +75,6 @@
 
         this.calculateShipmentPrice = function() {
             let self = this;
-
             if (self.totalValue > self.free_shipment_price) {
                 self.shipmentPrice = 0;
             } else {
@@ -118,121 +95,120 @@
             this.quantity = quantity;
         }
 
-        function displayCart() {
+    function displayCart() {
 
-            let listContainer = document.getElementById("id_pageContainer");
-            let detailsContainer = document.getElementById("id_detailsContainer")
-            let cartContainer = document.getElementById("id_cartContainer")
-           // let cartToDisplay = JSON.parse(sessionStorage.getItem("cart"));
-            let cartToDisplay = getCartFromSession();
-            let table, thead, row, idCell, nameCell, priceCell, supplierNameCell, th, tbody, quantityCell,
-                totalPriceCell, shipmentPriceCell, headRow, supplierIdCell, totalQuantityCell, insideTable,
-                insideThead, insideTh, insideRow, insideTbody ;
+        let listContainer = document.getElementById("id_pageContainer");
+        let detailsContainer = document.getElementById("id_detailsContainer")
+        let cartContainer = document.getElementById("id_cartContainer")
+        let cartToDisplay = getCartFromSession();
+        let table, thead, row, idCell, nameCell, priceCell, supplierNameCell, th, tbody, quantityCell,
+            totalPriceCell, shipmentPriceCell, headRow, supplierIdCell, totalQuantityCell, insideTable,
+            insideThead, insideTh, insideRow, insideTbody ;
 
-            listContainer.className = "masked";
-            detailsContainer.className = "masked";
-            cartContainer.innerHTML = "";
+        listContainer.className = "masked";
+        detailsContainer.className = "masked";
+        cartContainer.innerHTML = "";
 
-            table = document.createElement('table');
-            cartContainer.appendChild(table);
-            thead = document.createElement('thead');
-            table.appendChild(thead);
-            headRow = document.createElement("tr");
-            thead.appendChild(headRow);
-            th = document.createElement('th');
-            th.textContent = "Supplier id";
-            headRow.appendChild(th);
-            th = document.createElement('th');
-            th.textContent = "Supplier name";
-            headRow.appendChild(th);
-            th = document.createElement('th');
-            th.textContent = "Total quantity";
-            headRow.appendChild(th);
-            th = document.createElement('th');
-            th.textContent = "Total price";
-            headRow.appendChild(th);
-            th = document.createElement('th');
-            th.textContent = "Shipment Price";
-            headRow.appendChild(th);
-            th = document.createElement('th');
-            th.textContent = "Products";
-            headRow.appendChild(th);
+        table = document.createElement('table');
+        cartContainer.appendChild(table);
+        thead = document.createElement('thead');
+        table.appendChild(thead);
+        headRow = document.createElement('tr');
+        thead.appendChild(headRow);
+        th = document.createElement('th');
+        th.textContent = "Supplier id";
+        headRow.appendChild(th);
+        th = document.createElement('th');
+        th.textContent = "Supplier name";
+        headRow.appendChild(th);
+        th = document.createElement('th');
+        th.textContent = "Total quantity";
+        headRow.appendChild(th);
+        th = document.createElement('th');
+        th.textContent = "Total price";
+        headRow.appendChild(th);
+        th = document.createElement('th');
+        th.textContent = "Shipment Price";
+        headRow.appendChild(th);
+        th = document.createElement('th');
+        th.textContent = "Products";
+        headRow.appendChild(th);
 
-            tbody = document.createElement('tbody');
-            table.appendChild(tbody);
+        tbody = document.createElement('tbody');
+        table.appendChild(tbody);
 
-            for (let i = 0; i < cartToDisplay.length; i++) {
+        cartToDisplay.forEach(function (s){
 
-                row = document.createElement("tr");
-                tbody.appendChild(row);
+            row = document.createElement("tr");
+            tbody.appendChild(row);
 
-                supplierIdCell = document.createElement("td");
-                supplierIdCell.textContent = cartToDisplay[i].supplier_id;
-                row.appendChild(supplierIdCell);
+            supplierIdCell = document.createElement("td");
+            supplierIdCell.textContent = s.supplier_id;
+            row.appendChild(supplierIdCell);
 
-                supplierNameCell = document.createElement("td");
-                supplierNameCell.textContent = cartToDisplay[i].supplier_name;
-                row.appendChild(supplierNameCell);
+            supplierNameCell = document.createElement("td");
+            supplierNameCell.textContent = s.supplier_name;
+            row.appendChild(supplierNameCell);
 
-                totalQuantityCell = document.createElement("td");
-                totalQuantityCell.textContent = cartToDisplay[i].totalQuantity;
-                row.appendChild(totalQuantityCell);
+            totalQuantityCell = document.createElement("td");
+            totalQuantityCell.textContent = s.totalQuantity;
+            row.appendChild(totalQuantityCell);
 
-                totalPriceCell = document.createElement("td");
-                totalPriceCell.textContent = cartToDisplay[i].totalValue + "€";
-                row.appendChild(totalPriceCell);
+            totalPriceCell = document.createElement("td");
+            totalPriceCell.textContent = s.totalValue + "€";
+            row.appendChild(totalPriceCell);
 
-                shipmentPriceCell = document.createElement("td");
-                shipmentPriceCell.textContent = cartToDisplay[i].shipmentPrice;
-                row.appendChild(shipmentPriceCell);
+            /*shipmentPriceCell = document.createElement("td");
+            shipmentPriceCell.textContent = s.shipmentPrice;
+            row.appendChild(shipmentPriceCell);*/
 
-                insideTable = document.createElement('table');
-                row.appendChild(insideTable);
+            insideTable = document.createElement('table');
+            row.appendChild(insideTable);
+            console.log("products array for this supplier: "+s.productsArray);
+            s.productsArray.forEach(function (product) {
+                //Creates a row for each product
+                insideThead = document.createElement('thead');
+                insideTable.appendChild(insideThead);
+                insideTh = document.createElement('th');
+                insideTh.textContent = "Product id";
+                insideThead.appendChild(insideTh);
+                insideTh = document.createElement('th');
+                insideTh.textContent = "Name";
+                insideThead.appendChild(insideTh);
+                insideTh = document.createElement('th');
+                insideTh.textContent = "Price";
+                insideThead.appendChild(insideTh);
+                insideTh = document.createElement('th');
+                insideTh.textContent = "Quantity";
+                insideThead.appendChild(insideTh);
 
-                cartToDisplay[i].productsArray.forEach(function (product) {
-                    //Creates a row for each product
+                insideTbody = document.createElement('tbody');
+                insideTable.appendChild(insideTbody);
 
-                    insideThead = document.createElement('thead');
-                    insideTable.appendChild(insideThead);
-                    insideTh = document.createElement('th');
-                    insideTh.textContent = "Product id";
-                    insideThead.appendChild(insideTh);
-                    insideTh = document.createElement('th');
-                    insideTh.textContent = "Name";
-                    insideThead.appendChild(insideTh);
-                    insideTh = document.createElement('th');
-                    insideTh.textContent = "Price";
-                    insideThead.appendChild(insideTh);
-                    insideTh = document.createElement('th');
-                    insideTh.textContent = "Quantity";
-                    insideThead.appendChild(insideTh);
+                insideRow = document.createElement("tr");
+                insideTbody.appendChild(insideRow);
 
-                    insideTbody = document.createElement('tbody');
-                    insideTable.appendChild(insideTbody);
+                idCell = document.createElement("td");
+                idCell.textContent = product.product_id;
+                insideRow.appendChild(idCell);
 
-                    insideRow = document.createElement("tr");
-                    insideTbody.appendChild(insideRow);
+                nameCell = document.createElement("td");
+                nameCell.textContent = product.name;
+                insideRow.appendChild(nameCell);
 
-                    idCell = document.createElement("td");
-                    idCell.textContent = product.product_id;
-                    insideRow.appendChild(idCell);
+                priceCell = document.createElement("td");
+                priceCell.textContent = product.price + "€";
+                insideRow.appendChild(priceCell);
 
-                    nameCell = document.createElement("td");
-                    nameCell.textContent = product.name;
-                    insideRow.appendChild(nameCell);
+                quantityCell = document.createElement("td");
+                quantityCell.textContent = product.quantity;
+                insideRow.appendChild(quantityCell);
+            });
+            cartContainer.className = "displayed";
 
-                    priceCell = document.createElement("td");
-                    priceCell.textContent = product.price + "€";
-                    insideRow.appendChild(priceCell);
-
-                    quantityCell = document.createElement("td");
-                    quantityCell.textContent = product.quantity;
-                    insideRow.appendChild(quantityCell);
-                });
-                cartContainer.className = "displayed";
-
-            }
+        });
     }
+
 
 
 

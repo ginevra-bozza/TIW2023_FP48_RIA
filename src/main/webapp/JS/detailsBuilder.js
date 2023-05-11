@@ -211,7 +211,7 @@
                 let free_shipment = e.target.parentNode.parentNode.children[4].textContent;
                 alert(supplier_id +" "+supplier_name);
                 if (e.target.elements[0].value > 0) {
-                    addToCart(details, supplier_id, supplier_name, supplier_price, e.target.elements[0].value, getShipmentPolicies(idCell.textContent), free_shipment);
+                    addToCart(details, supplier_id, supplier_name, supplier_price, e.target.elements[0].value, getShipmentPolicies(supplier_id), free_shipment);
                 } else {
                    alert("quantity not valid");
                 }
