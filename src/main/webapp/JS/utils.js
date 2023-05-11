@@ -221,7 +221,7 @@ function buildSuppliersList(details) {
 
         quantityForm.addEventListener("submit", (e) => {
             if(e.target.elements[0].value  > 0){
-                addToCart(details, idCell.textContent, nameCell.textContent, priceCell.textContent, e.target.elements[0].value, /*getShipmentPolicies(idCell.textContent),*/ freeShipmentCell.textContent);
+                addToCart(details, idCell.textContent, nameCell.textContent, priceCell.textContent, e.target.elements[0].value, getShipmentPolicies(idCell.textContent), freeShipmentCell.textContent);
             }
             else {
                 alert("quantity not valid");

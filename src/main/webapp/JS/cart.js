@@ -38,7 +38,7 @@
 
         });
         if(!checkSupplier) {
-            let supplierCart = new SupplierCart(supplier_id, supplier_name /*shipment_policy*/, free_shipment_price);
+            let supplierCart = new SupplierCart(supplier_id, supplier_name ,shipment_policy, free_shipment_price);
             supplierCart.productsArray.push(new ProductInCart(details.id, details.name, quantity, price));
             supplierCart.updateTotalQuantity(quantity)
             supplierCart.updateTotal(price,quantity);
