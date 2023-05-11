@@ -80,18 +80,18 @@
             this.shipmentPrice = 0;
 
         }
-        updateTotalQuantity = function (quantity) {
+        updateTotalQuantity (quantity) {
             let self = this;
             self.totalQuantity += quantity;
         }
 
-        updateTotal = function (price, quantity) {
+        updateTotal(price, quantity) {
             let self = this;
             self.totalValue += price * quantity;
             self.calculateShipmentPrice();
         }
 
-        calculateShipmentPrice = function () {
+        calculateShipmentPrice() {
             let self = this;
 
             if (self.totalValue > free_shipment_price) {
