@@ -87,7 +87,8 @@
         }
         this.show();
     }
-    
+
+
     
     function DetailsList(product_id){
         
@@ -129,15 +130,9 @@
             buildProduct(details);
             buildSuppliersList(details);
         }
+
     }
 
-    function showPopupWindow(){
-        let detailsContainer = document.getElementById("id_detailsContainer");
-        let cartWindow = document.createElement("modal");
-        detailsContainer.appendChild(cartWindow);
-        cartWindow.className = "displayed";
-        cartWindow.textContent ="";
-    }
 
 
 }
