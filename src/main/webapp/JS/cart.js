@@ -78,6 +78,8 @@
             this.totalQuantity = 0;
             this.totalValue = 0;
             this.shipmentPrice = 0;
+            this.shipment_policy = shipment_policy;
+            this.free_shipment_price = free_shipment_price;
 
         }
         updateTotalQuantity (quantity) {
@@ -97,7 +99,7 @@
             if (self.totalValue > free_shipment_price) {
                 self.shipmentPrice = 0;
             } else {
-                shipment_policy.forEach(function (shPolicy) {
+                this.shipment_policy.forEach(function (shPolicy) {
                     if (self.totalQuantity > shPolicy.minimum && self.totalQuantity < shPolicy.maximum) {
                         self.shipmentPrice = shPolicy.shipmentPrice;
                     }
