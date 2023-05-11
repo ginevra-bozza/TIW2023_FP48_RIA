@@ -67,31 +67,31 @@
         displayCart();
     }
 
-    function SupplierCart(supplier_id, supplier_name, shipment_policy, free_shipment_price) {
+    class SupplierCart {
+        constructor(supplier_id, supplier_name, shipment_policy, free_shipment_price) {
 
-        console.log("creating new supplier cart with id: " + supplier_id);
+            console.log("creating new supplier cart with id: " + supplier_id);
 
-        this.supplier_id = supplier_id;
-        this.supplier_name = supplier_name;
-        this.productsArray = [];
-        this.totalQuantity = 0;
-        this.totalValue = 0;
-        this.shipmentPrice = 0;
+            this.supplier_id = supplier_id;
+            this.supplier_name = supplier_name;
+            this.productsArray = [];
+            this.totalQuantity = 0;
+            this.totalValue = 0;
+            this.shipmentPrice = 0;
 
-        /* ------------------da sistemare---------------------------------------------------------------*/
-
-        this.updateTotalQuantity = function (quantity) {
+        }
+        updateTotalQuantity = function (quantity) {
             let self = this;
             self.totalQuantity += quantity;
         }
 
-        this.updateTotal = function (price, quantity) {
+        updateTotal = function (price, quantity) {
             let self = this;
             self.totalValue += price * quantity;
             self.calculateShipmentPrice();
         }
 
-        this.calculateShipmentPrice = function () {
+        calculateShipmentPrice = function () {
             let self = this;
 
             if (self.totalValue > free_shipment_price) {
@@ -104,7 +104,6 @@
                 })
             }
         }
-        /* -------------------------------------------------------------------------------------------*/
     }
 
 
