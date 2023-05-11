@@ -41,4 +41,31 @@ function linkButton(id, cb) {
   });
 }
 
+//recover the cart from sessionStorage
+function getCartFromSession(){
+        let cart = [];
+        let jsonCart;
+        if(sessionStorage.getItem("cart")!== undefined && sessionStorage.getItem("cart") !== null){
+            jsonCart = JSON.parse(sessionStorage.getItem("cart"));
 
+            //retrieves each supplierCart in cart array
+            for (let i = 0; i < jsonCart.length; i++) {
+                let supplierCart = jsonCart[i];
+                cart.push(new SupplierCart(supplierCart.supplier_id, supplierCart.supplier_name,
+                    supplierCart.shipment_policy, supplierCart.free_shipment_price));
+
+                cart[i].totalValue = supplierCart.totalValue;
+                cart[i].totalQuantity = supplierCart.totalQuantity;
+                cart[i].shipment_price = supplierCart.shipment_price;
+                cart[i].shipment_policy = supplierCart.shipment_policy;
+
+                //retrieves the productArray for each supplierCart
+                for (let j = 0; j < jsonCart[i].productsArray ; j++) {
+                    let productInCart = jsonCart[i].productsArray[j];
+                    cart[i].push(new ProductInCart(productInCart.product_id, productInCart.name,
+                        productInCart.quantity, productInCart.price));
+                }
+            }
+        }
+        return cart;
+}

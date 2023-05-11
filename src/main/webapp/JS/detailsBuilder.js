@@ -105,6 +105,7 @@
 
         suppliersArray.forEach(function (supplier) {
             row = document.createElement("tr");
+            
             suppliersTbody.appendChild(row);
 
             idCell = document.createElement("td");
@@ -132,7 +133,7 @@
             freeShipmentCell.textContent = supplier.free_shipment_price;
             row.appendChild(freeShipmentCell);
 
-            let cart = [];
+            /*let cart = [];
             if (sessionStorage.getItem("cart") !== undefined && sessionStorage.getItem("cart") !== null) {
                 cart = sessionStorage.getItem("cart");
 
@@ -148,7 +149,14 @@
                         totalQuantity = s.totalQuantity;
                         totalValue = s.totalValue;
                     }
-                })*/
+                })
+            }*/
+            let cart = getCartFromSession();
+            for (let i = 0; i < cart.length; i++) {
+                if (idCell.textContent === cart[i].supplier_id) {
+                    totalQuantity = cart[i].totalQuantity;
+                    totalValue = cart[i].totalValue;
+                }
             }
 
             quantityCell = document.createElement("td");
@@ -196,10 +204,11 @@
 
 
             quantityForm.addEventListener("submit", (e) => {
+                e.preventDefault();
                 if (e.target.elements[0].value > 0) {
                     addToCart(details, idCell.textContent, nameCell.textContent, priceCell.textContent, e.target.elements[0].value, getShipmentPolicies(idCell.textContent), freeShipmentCell.textContent);
                 } else {
-                    alert("quantity not valid");
+                   alert("quantity not valid");
                 }
             });
 

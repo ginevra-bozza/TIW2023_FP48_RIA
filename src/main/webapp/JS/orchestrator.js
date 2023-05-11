@@ -4,7 +4,6 @@
             // initialize event listeners
             initializeHome();
             // display home page
-
         });
     })();
 }

@@ -1,16 +1,19 @@
 
 
     function addToCart(details, supplier_id, supplier_name, price, quantity , shipment_policy, free_shipment_price){
+
+        console.log("Supplier id: "+supplier_id+" Supplier_name: "+supplier_name);
+
         if(quantity <= 0) {
             alert("invalid quantity");
             //bloccare azione
         }
-        let cart;
-        if(sessionStorage.getItem("cart") !== undefined && sessionStorage.getItem("cart") !== null && sessionStorage.getItem("cart").length > 0){
+        let cart = getCartFromSession();
+       /* if(sessionStorage.getItem("cart") !== undefined && sessionStorage.getItem("cart") !== null && sessionStorage.getItem("cart").length > 0){
             cart = JSON.parse(sessionStorage.getItem("cart"));
         } else {
             cart = [];
-        }
+        }*/
 
         let checkSupplier = false;
         let checkProduct = false;
@@ -120,7 +123,8 @@
             let listContainer = document.getElementById("id_pageContainer");
             let detailsContainer = document.getElementById("id_detailsContainer")
             let cartContainer = document.getElementById("id_cartContainer")
-            let cartToDisplay = JSON.parse(sessionStorage.getItem("cart"));
+           // let cartToDisplay = JSON.parse(sessionStorage.getItem("cart"));
+            let cartToDisplay = getCartFromSession();
             let table, thead, row, idCell, nameCell, priceCell, supplierNameCell, th, tbody, quantityCell,
                 totalPriceCell, shipmentPriceCell, headRow, supplierIdCell, totalQuantityCell, insideTable,
                 insideThead, insideTh, insideRow, insideTbody ;
@@ -225,6 +229,7 @@
                     quantityCell.textContent = product.quantity;
                     insideRow.appendChild(quantityCell);
                 });
+                cartContainer.className = "displayed";
 
             }
     }
