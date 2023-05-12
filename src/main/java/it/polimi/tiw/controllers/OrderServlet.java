@@ -20,6 +20,9 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import it.polimi.tiw.DAO.OrderDAO;
 import it.polimi.tiw.DAO.SupplierDAO;
@@ -80,23 +83,55 @@ public class OrderServlet extends HttpServlet {
 			String decodedJson = URLDecoder.decode(jsonToParse, "UTF-8");
 			
 			System.out.println(decodedJson);
-			//System.out.println(supplier_id);
 			
+			Gson g = new Gson();
+
+			Gson gson = new Gson();
+
+	        // Parse the JSON string into a JsonObject
+	        JsonObject jsonObject = gson.fromJson(decodedJson, JsonObject.class);
+
+	        // Extract supplier_id
+	        supplier_id = jsonObject.get("supplier_id").getAsInt();
+	        System.out.println("Supplier ID: " + supplier_id);
+	        //int total = jsonObject.get("totalValue").getAsInt();
+	        //int shipment_price = jsonObject.get("totalValue").getAsInt();
+	        // Extract productsArray
+	        JsonArray productsArray = jsonObject.get("productsArray").getAsJsonArray();
+	        System.out.println("Products:");
+
+	        // Iterate over the products and print their details
+	        for (int i = 0; i < productsArray.size(); i++) {
+	            JsonObject productObject = productsArray.get(i).getAsJsonObject();
+	            int product_id = productObject.get("product_id").getAsInt();
+	            String name = productObject.get("name").getAsString();
+	            String price = productObject.get("price").getAsString();
+	            String quantity = productObject.get("quantity").getAsString();
+
+	            System.out.println("Product " + (i + 1));
+	            System.out.println("Product ID: " + product_id);
+	            System.out.println("Name: " + name);
+	            System.out.println("Price: " + price);
+	            System.out.println("Quantity: " + quantity);
+	            System.out.println();
+	        
+	    }
+		
 		if(supplier_id != 0) {
-			String supplier_name = supplierDao.findSupplierById(supplier_id).getSupplier_name();
-			int total= user.getTotalBySupplierId(supplier_id);
-			int shipment_price = supplierDao.getShipmentPrice(supplier_id,user.getCart().get(supplier_id), total);
+			//String supplier_name = supplierDao.findSupplierById(supplier_id).getSupplier_name();
+			//int total= user.getTotalBySupplierId(supplier_id);
+			//int shipment_price = supplierDao.getShipmentPrice(supplier_id,user.getCart().get(supplier_id), total);
 			
-			order.createOrder(user, supplier_id, supplier_name, total + shipment_price);
-			user.getCart().remove(supplier_id);
-			session.setAttribute("currentUser",user);
+			//order.createOrder(user, supplier_id, supplier_name, total + shipment_price);
+			//user.getCart().remove(supplier_id);
+			//session.setAttribute("currentUser",user);
 			
 			}
 		} catch (NumberFormatException e) {
 			
 			System.out.println("Printed orders");
 		} 
-		userOrders = order.getOrdersByUser(user.getEmail());		
+		//userOrders = order.getOrdersByUser(user.getEmail());		
 		
 		response.setStatus(HttpServletResponse.SC_OK);
 		response.setContentType("application/json");
