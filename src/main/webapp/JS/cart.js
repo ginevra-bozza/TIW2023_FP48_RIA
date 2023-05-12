@@ -207,9 +207,9 @@
                     let supplier_id = e.target.parentNode.parentNode.children[0].textContent;
                     let productsArray;
                     alert(supplier_id);
-                    s.forEach(function (supplier) {
+                    getCartFromSession().forEach(function (supplier) {
                         if(supplier.supplier_id == supplier_id){
-                            productsArray = s.productsArray;
+                            productsArray = supplier.productsArray;
                         }
                     })
                     const myJSON_prod = JSON.stringify(productsArray);
