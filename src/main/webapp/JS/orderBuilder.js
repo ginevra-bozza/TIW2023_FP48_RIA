@@ -2,7 +2,7 @@ function executeOrder(param){
     let list_container = document.getElementById("id_pageContainer")
         let self = this; //Important!
         console.log(param);
-        doRequest('OrderServlet' + param, "POST", // callback function
+        doRequest('Orders' + param, "POST", // callback function
             function (req) {
                 if (req.readyState === XMLHttpRequest.DONE) { // == 4
                     if (req.status === 200) {

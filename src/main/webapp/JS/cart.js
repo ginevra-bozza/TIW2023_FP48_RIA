@@ -195,27 +195,25 @@
             shipmentPriceCell.textContent = s.shipmentPrice;
             row.appendChild(shipmentPriceCell);
                 orderButton = document.createElement("button");
-                orderButton.setAttribute("type", "click");
+                //orderButton.setAttribute("type", "click");
+                orderButton.type = "file";
                 orderButton.textContent = "order";
                 totalPriceCell.appendChild(orderButton);
 
                 orderButton.addEventListener("click", (e) => {
                     e.preventDefault();
                     let supplier_id = e.target.parentNode.parentNode.children[0].textContent;
-                    let productsArray;
+                    let supplierCart;
                     alert(supplier_id);
                     getCartFromSession().forEach(function (supplier) {
                         if(supplier.supplier_id == supplier_id){
-                            productsArray = supplier.productsArray;
+                            supplierCart = supplier;
                         }
                     })
-                    const myJSON_prod = JSON.stringify(productsArray);
-                    const myJSON_sup = JSON.stringify(supplier_id);
-                    let param = '?order=' + myJSON_prod + '&supplier_id=' +myJSON_sup;
-                    console.log(myJSON_prod);
-                    console.log(myJSON_sup);
+                    const myJSON_order = encodeURIComponent(JSON.stringify(supplierCart));
+                    let param = '?order=' + myJSON_order;
+                    console.log(myJSON_order);
                     executeOrder(param);
-
 
                 });
 

@@ -26,7 +26,8 @@ import it.polimi.tiw.DAO.SupplierDAO;
 import it.polimi.tiw.beans.Order;
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.utils.ConnectionHandler;
-
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 /**
  * Servlet implementation class Order
  */
@@ -73,10 +74,13 @@ public class OrderServlet extends HttpServlet {
 		List<Order> userOrders = new ArrayList<Order>();
 		
 		try {
-			supplier_id = Integer.parseInt(request.getParameter("supplier_id"));
+			//supplier_id = Integer.parseInt(request.getParameter("supplier_id"));
 			String jsonToParse = request.getParameter("order");
-			System.out.println(jsonToParse);
-			System.out.println(supplier_id);
+			
+			String decodedJson = URLDecoder.decode(jsonToParse, "UTF-8");
+			
+			System.out.println(decodedJson);
+			//System.out.println(supplier_id);
 			
 		if(supplier_id != 0) {
 			String supplier_name = supplierDao.findSupplierById(supplier_id).getSupplier_name();
@@ -93,12 +97,11 @@ public class OrderServlet extends HttpServlet {
 			System.out.println("Printed orders");
 		} 
 		userOrders = order.getOrdersByUser(user.getEmail());		
-		String path ="/WEB-INF/Orders.html";
-		ServletContext servletContext = getServletContext();
-		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-		ctx.setVariable("userOrders", userOrders);
 		
-		templateEngine.process(path, ctx, response.getWriter());
+		response.setStatus(HttpServletResponse.SC_OK);
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		//response.getWriter().println(productDetailsJson);
 	}
 
 }
