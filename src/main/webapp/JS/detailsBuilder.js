@@ -147,6 +147,7 @@
 
 
             let cartPopup = document.getElementById("id_single_Cart_popUp");
+            let cartContentPopup = document.getElementById("id_cart_content");
 
             quantityCell.addEventListener("mouseover", (e) => {
                 cartPopup.style.display = "block";
@@ -164,7 +165,7 @@
                 let thead,th,tbody,headRow;
                 let popUpTable = document.createElement('table');
                 popUpTable.className = "modalContent";
-                cartPopup.appendChild(popUpTable);
+                cartContentPopup.appendChild(popUpTable);
                 thead = document.createElement('thead');
                 popUpTable.appendChild(thead);
                 headRow = document.createElement('tr');
