@@ -18,19 +18,15 @@
                     if(details.id === product.product_id){
                         product.quantity += quantity;
                         checkProduct = true;
-                        s.updateTotalQuantity(quantity);
-                        s.updateTotal(price,quantity);
-
                     }
                 })
                 if(!checkProduct){
                     s.productsArray.push(new ProductInCart(details.id, details.name, quantity, price));
-                    s.updateTotalQuantity(quantity);
-                    s.updateTotal(price,quantity);
-
                 }
             }
-
+            s.updateTotalQuantity(quantity);
+            s.updateTotal(price,quantity);
+            s.shipmentPrice = calculateShipmentPrice(s);
 
         });
         if(!checkSupplier) {
@@ -38,6 +34,7 @@
             supplierCart.productsArray.push(new ProductInCart(details.id, details.name, quantity, price));
             supplierCart.updateTotalQuantity(quantity)
             supplierCart.updateTotal(price,quantity);
+            supplierCart.shipmentPrice = calculateShipmentPrice(supplierCart);
             cart.push(supplierCart);
         }
 

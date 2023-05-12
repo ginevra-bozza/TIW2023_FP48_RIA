@@ -54,13 +54,19 @@ public class OrderServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		
+		}
+	
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		
 		User user = new User();
 		OrderDAO order = new OrderDAO(connection);
 		user = (User)session.getAttribute("currentUser");
 		
-		Gson gson = new GsonBuilder().create();
 		
 		SupplierDAO supplierDao = new SupplierDAO(connection);
 		int supplier_id = 0;
@@ -93,16 +99,6 @@ public class OrderServlet extends HttpServlet {
 		ctx.setVariable("userOrders", userOrders);
 		
 		templateEngine.process(path, ctx, response.getWriter());
-		
-		}
-	
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
 	}
 
 }
