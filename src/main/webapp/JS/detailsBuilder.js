@@ -146,7 +146,7 @@
             quantityCell.id = "popup"
 
 
-            let cartPopup = document.getElementById("id_cartPopup");
+            let cartPopup = document.getElementById("id_single_Cart_popUp");
 
             quantityCell.addEventListener("mouseover", (e) => {
                 let supplier_id = e.target.parentNode.children[0].textContent;
