@@ -147,40 +147,56 @@
 
 
             let cartPopup = document.getElementById("id_single_Cart_popUp");
+            let cartContentPopup = document.getElementById("id_cart_content");
 
             quantityCell.addEventListener("mouseover", (e) => {
-                let supplier_id = e.target.parentNode.children[0].textContent;
-                let thead,th,tbody,headRow;
-                let popUpTable = document.createElement('table');
-                cartPopup.appendChild(popUpTable);
-                thead = document.createElement('thead');
-                popUpTable.appendChild(thead);
-                headRow = document.createElement('tr');
-                thead.appendChild(headRow);
-                th = document.createElement('th');
-                th.textContent = "Supplier id";
-                headRow.appendChild(th);
-                th = document.createElement('th');
-                th.textContent = "Supplier name";
-                headRow.appendChild(th);
-                th = document.createElement('th');
-                th.textContent = "Total quantity";
-                headRow.appendChild(th);
-                th = document.createElement('th');
-                th.textContent = "Total price";
-                headRow.appendChild(th);
-                th = document.createElement('th');
-                th.textContent = "Shipment Price";
-                headRow.appendChild(th);
-                th = document.createElement('th');
-                th.textContent = "Products";
-                headRow.appendChild(th);
 
-                tbody = document.createElement('tbody');
-                popUpTable.appendChild(tbody);
-                displayCartBySupplier(supplier_id,tbody)
-                e.preventDefault();
 
+                    let supplier_id = e.target.parentNode.children[0].textContent;
+                    let thead, th, tbody, headRow;
+                    let popUpTable = document.createElement('table');
+                    popUpTable.className = "modalContent";
+                    cartContentPopup.appendChild(popUpTable);
+                    thead = document.createElement('thead');
+                    popUpTable.appendChild(thead);
+                    headRow = document.createElement('tr');
+                    thead.appendChild(headRow);
+                    th = document.createElement('th');
+                    th.textContent = "Supplier id";
+                    headRow.appendChild(th);
+                    th = document.createElement('th');
+                    th.textContent = "Supplier name";
+                    headRow.appendChild(th);
+                    th = document.createElement('th');
+                    th.textContent = "Total quantity";
+                    headRow.appendChild(th);
+                    th = document.createElement('th');
+                    th.textContent = "Total price";
+                    headRow.appendChild(th);
+                    th = document.createElement('th');
+                    th.textContent = "Shipment Price";
+                    headRow.appendChild(th);
+                    th = document.createElement('th');
+                    th.textContent = "Products";
+                    headRow.appendChild(th);
+
+                    tbody = document.createElement('tbody');
+                    popUpTable.appendChild(tbody);
+                    displayCartBySupplier(supplier_id, tbody)
+                    e.preventDefault();
+                    if(tbody!==null && tbody !== undefined) {
+                        cartPopup.style.display = "block";
+                        document.getElementById("close").addEventListener("click", (ev) => {
+                            ev.preventDefault();
+                            cartPopup.style.display = "none";
+                        })
+                        window.onclick = function (event) {
+                            event.preventDefault();
+                            if (event.target == cartPopup) {
+                                cartPopup.style.display = "none";
+                            }
+                        }
+                    }
 
             });
 
