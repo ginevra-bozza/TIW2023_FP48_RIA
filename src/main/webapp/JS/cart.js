@@ -87,8 +87,8 @@
         this.quantity = quantity;
     }
 
-    function displayCart() {
-        let cartToDisplay = getCartFromSession();
+    function displayCart(cart) {
+        let cartToDisplay;
         let listContainer = document.getElementById("id_pageContainer");
         let detailsContainer = document.getElementById("id_detailsContainer")
         let cartContainer = document.getElementById("id_cartContainer")
@@ -100,6 +100,10 @@
         detailsContainer.className = "masked";
         cartContainer.innerHTML = "";
 
+        if(cart === undefined || cart === null)
+            cartToDisplay = getCartFromSession();
+        else
+            cartToDisplay = cart;
 
         table = document.createElement('table');
         cartContainer.appendChild(table);

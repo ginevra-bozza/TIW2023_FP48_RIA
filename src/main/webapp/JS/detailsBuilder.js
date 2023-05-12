@@ -134,11 +134,21 @@
             row.appendChild(freeShipmentCell);
 
             let cart = getCartFromSession();
-            for (let i = 0; i < cart.length; i++) {
-                if (idCell.textContent === cart[i].supplier_id) {
-                    totalQuantity = cart[i].totalQuantity;
-                    totalValue = cart[i].totalValue;
+            let supplierFromCart;
+            let checkSupplier = false; //check if the supplier has already products in the cart
+
+            cart.forEach(function (s){
+                if(idCell.textContent == s.supplier_id){
+                    supplierFromCart = s;
+                    checkSupplier = true;
                 }
+            });
+            if(checkSupplier){
+                totalQuantity = supplierFromCart.totalQuantity;
+                totalValue = supplierFromCart.totalValue;
+            } else {
+                totalQuantity = 0;
+                totalValue = 0;
             }
 
             quantityCell = document.createElement("td");
@@ -192,16 +202,8 @@
                             }
                     }
                 }
-                /*document.getElementById("close").addEventListener("click", (ev) => {
-                    ev.preventDefault();
-                    cartPopup.style.display = "none";
-                })*/
-
             });
 
-            /*quantityCell.addEventListener("mouseleave", (e) => {
-                cartPopup.classList.toggle("hide");
-            });*/
             row.appendChild(quantityCell);
 
             totalCell = document.createElement("td");
