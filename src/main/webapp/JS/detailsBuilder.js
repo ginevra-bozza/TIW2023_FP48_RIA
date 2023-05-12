@@ -184,7 +184,7 @@
                     popUpTable.appendChild(tbody);
                     displayCartBySupplier(supplier_id, tbody)
                     e.preventDefault();
-                    if(cartContentPopup!==null) {
+                    if(tbody!==null && tbody !== undefined) {
                         cartPopup.style.display = "block";
                         document.getElementById("close").addEventListener("click", (ev) => {
                             ev.preventDefault();
