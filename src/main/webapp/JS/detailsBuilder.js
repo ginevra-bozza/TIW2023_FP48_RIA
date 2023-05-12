@@ -203,17 +203,16 @@
 
             /* ------------------da sistemare---------------------------------------------------------------*/
             function getShipmentPolicies(supplier_id) {
-                let shipmentPolicy = [];
+                let shipment_policy = [];
                 suppliersArray.forEach(function (s) {
-                    if (s.supplier_id === supplier_id) {
-                        s.shipment_policy.forEach(function (shPol) {
-                            shipmentPolicy.push(shPol);
-                        })
-
+                    if (s.supplier_id == supplier_id) {
+                        for (let i = 0; i < s.shipment_policy.length ; i++) {
+                            shipment_policy.push(s.shipment_policy[i]);
+                        }
                     }
                 });
-                console.log("Shipment policy : " + shipmentPolicy);
-                return shipmentPolicy;
+                console.log("Shipment policy : " + shipment_policy);
+                return shipment_policy;
             }
         });
         /* -------------------------------------------------------------------------------------------------*/
