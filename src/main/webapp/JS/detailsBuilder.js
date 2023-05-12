@@ -149,6 +149,17 @@
             let cartPopup = document.getElementById("id_single_Cart_popUp");
 
             quantityCell.addEventListener("mouseover", (e) => {
+                cartPopup.style.display = "block";
+                document.getElementById("close").addEventListener("click",(ev) =>{
+                    ev.preventDefault();
+                    cartPopup.style.display = "none";
+                })
+                window.onclick = function(event) {
+                    event.preventDefault();
+                    if (event.target == cartPopup) {
+                        cartPopup.style.display = "none";
+                    }
+                }
                 let supplier_id = e.target.parentNode.children[0].textContent;
                 let thead,th,tbody,headRow;
                 let popUpTable = document.createElement('table');
