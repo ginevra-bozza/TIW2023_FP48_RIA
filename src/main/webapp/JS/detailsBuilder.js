@@ -143,14 +143,45 @@
 
             quantityCell = document.createElement("td");
             quantityCell.textContent = totalQuantity;
+            quantityCell.id = "popup"
 
 
             let cartPopup = document.getElementById("id_cartPopup");
 
             quantityCell.addEventListener("mouseover", (e) => {
+                let supplier_id = e.target.parentNode.children[0].textContent;
+                let thead,th,tbody,headRow;
+                let popUpTable = document.createElement('table');
+                cartPopup.appendChild(popUpTable);
+                thead = document.createElement('thead');
+                popUpTable.appendChild(thead);
+                headRow = document.createElement('tr');
+                thead.appendChild(headRow);
+                th = document.createElement('th');
+                th.textContent = "Supplier id";
+                headRow.appendChild(th);
+                th = document.createElement('th');
+                th.textContent = "Supplier name";
+                headRow.appendChild(th);
+                th = document.createElement('th');
+                th.textContent = "Total quantity";
+                headRow.appendChild(th);
+                th = document.createElement('th');
+                th.textContent = "Total price";
+                headRow.appendChild(th);
+                th = document.createElement('th');
+                th.textContent = "Shipment Price";
+                headRow.appendChild(th);
+                th = document.createElement('th');
+                th.textContent = "Products";
+                headRow.appendChild(th);
+
+                tbody = document.createElement('tbody');
+                popUpTable.appendChild(tbody);
+                displayCartBySupplier(supplier_id,tbody)
                 e.preventDefault();
-                cartPopup.textContent = "prova";
-                cartPopup.classList.toggle("show");
+
+
             });
 
             /*quantityCell.addEventListener("mouseleave", (e) => {

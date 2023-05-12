@@ -35,6 +35,7 @@ body {
 }
 
 .popup {
+  background-color: #555;
   position: relative;
   display: inline-block;
   cursor: pointer;
