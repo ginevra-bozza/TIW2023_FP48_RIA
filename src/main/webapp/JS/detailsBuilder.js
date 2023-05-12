@@ -216,15 +216,13 @@
             cartButton.setAttribute("type", "submit");
             cartButton.textContent = "add to cart";
             quantityForm.appendChild(cartButton);
-
-
+            
             quantityForm.addEventListener("submit", (e) => {
                 e.preventDefault();
                 let supplier_id = e.target.parentNode.parentNode.children[0].textContent;
                 let supplier_name= e.target.parentNode.parentNode.children[1].textContent;
                 let supplier_price = e.target.parentNode.parentNode.children[2].textContent;
                 let free_shipment = e.target.parentNode.parentNode.children[4].textContent;
-                alert(supplier_id +" "+supplier_name);
                 if (e.target.elements[0].value > 0) {
                     addToCart(details, supplier_id, supplier_name, supplier_price, e.target.elements[0].value, getShipmentPolicies(supplier_id), free_shipment);
                 } else {
@@ -232,7 +230,6 @@
                 }
             });
 
-            /* ------------------da sistemare---------------------------------------------------------------*/
             function getShipmentPolicies(supplier_id) {
                 let shipment_policy = [];
                 suppliersArray.forEach(function (s) {
@@ -242,11 +239,9 @@
                         }
                     }
                 });
-                console.log("Shipment policy : " + shipment_policy);
                 return shipment_policy;
             }
         });
-        /* -------------------------------------------------------------------------------------------------*/
     }
 
     function buildShipmentPolicies(listContainer, policiesArray) {

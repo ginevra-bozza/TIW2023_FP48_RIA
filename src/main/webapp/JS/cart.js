@@ -1,8 +1,7 @@
+{
+    function addToCart(details, supplier_id, supplier_name, price, quantity, shipment_policy, free_shipment_price) {
 
-
-    function addToCart(details, supplier_id, supplier_name, price, quantity , shipment_policy, free_shipment_price){
-
-        if(quantity <= 0) {
+        if (quantity <= 0) {
             alert("invalid quantity");
             //bloccare azione
         }
@@ -11,33 +10,30 @@
         let checkSupplier = false;
         let checkProduct = false;
 
-        cart.forEach( function (s){
-            if(s.supplier_id === supplier_id){
+        cart.forEach(function (s) {
+            if (s.supplier_id === supplier_id) {
                 checkSupplier = true;
-                s.productsArray.forEach(function (product){
-                    if(details.id === product.product_id){
+                s.productsArray.forEach(function (product) {
+                    if (details.id === product.product_id) {
                         product.quantity += quantity;
                         checkProduct = true;
-                        s.updateTotalQuantity(quantity);
-                        s.updateTotal(price,quantity);
-
                     }
                 })
-                if(!checkProduct){
+                if (!checkProduct) {
                     s.productsArray.push(new ProductInCart(details.id, details.name, quantity, price));
-                    s.updateTotalQuantity(quantity);
-                    s.updateTotal(price,quantity);
-
                 }
             }
-
+            s.updateTotalQuantity(quantity);
+            s.updateTotal(price, quantity);
+            s.shipmentPrice = calculateShipmentPrice(s);
 
         });
-        if(!checkSupplier) {
-            let supplierCart = new SupplierCart(supplier_id, supplier_name ,shipment_policy, free_shipment_price);
+        if (!checkSupplier) {
+            let supplierCart = new SupplierCart(supplier_id, supplier_name, shipment_policy, free_shipment_price);
             supplierCart.productsArray.push(new ProductInCart(details.id, details.name, quantity, price));
             supplierCart.updateTotalQuantity(quantity)
-            supplierCart.updateTotal(price,quantity);
+            supplierCart.updateTotal(price, quantity);
+            supplierCart.shipmentPrice = calculateShipmentPrice(supplierCart);
             cart.push(supplierCart);
         }
 
@@ -48,10 +44,10 @@
         console.log(jsonCart);
 
         sessionStorage.setItem("cart", jsonCart);
-        displayCart();
+        displayCart(cart);
     }
 
-    function SupplierCart (supplier_id, supplier_name, shipment_policy, free_shipment_price) {
+    function SupplierCart(supplier_id, supplier_name, shipment_policy, free_shipment_price) {
 
         this.supplier_id = supplier_id;
         this.supplier_name = supplier_name;
@@ -64,46 +60,39 @@
 
         this.updateTotalQuantity = function (quantity) {
             let self = this;
-            self.totalQuantity += quantity;
+            self.totalQuantity += parseInt(quantity);
         }
 
-        this.updateTotal = function(price, quantity){
+        this.updateTotal = function (price, quantity) {
             let self = this;
-            self.totalValue += price * quantity;
-            self.calculateShipmentPrice();
-        }
-
-        this.calculateShipmentPrice = function() {
-            let self = this;
-            if (self.totalValue > self.free_shipment_price) {
-                self.shipmentPrice = 0;
-            } else {
-                this.shipment_policy.forEach(function (shPolicy) {
-                    if (self.totalQuantity > shPolicy.minimum && self.totalQuantity < shPolicy.maximum) {
-                        self.shipmentPrice = shPolicy.shipmentPrice;
-                    }
-                });
-            }
+            self.totalValue += parseInt(price) * parseInt(quantity);
         }
     }
 
-
-        function ProductInCart(product_in_cart_id, name, quantity, price) {
-            this.product_id = product_in_cart_id;
-            this.name = name;
-            this.price = price;
-            this.quantity = quantity;
+    function calculateShipmentPrice(supplierCart){
+        let shipment_price = 0;
+        if (supplierCart.totalValue <= supplierCart.free_shipment_price) {
+            supplierCart.shipment_policy.forEach(function (shPolicy) {
+                if (supplierCart.totalQuantity > shPolicy.minimum && supplierCart.totalQuantity <= shPolicy.maximum) {
+                   shipment_price = shPolicy.shipment_price;
+                }
+            });
         }
+        return shipment_price;
+    }
+    function ProductInCart(product_in_cart_id, name, quantity, price) {
+        this.product_id = product_in_cart_id;
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+    }
 
-    function displayCart() {
+    function displayCart(cartToDisplay) {
 
         let listContainer = document.getElementById("id_pageContainer");
         let detailsContainer = document.getElementById("id_detailsContainer")
         let cartContainer = document.getElementById("id_cartContainer")
-        let cartToDisplay = getCartFromSession();
-        let table, thead, row, idCell, nameCell, priceCell, supplierNameCell, th, tbody, quantityCell,
-            totalPriceCell, shipmentPriceCell, headRow, supplierIdCell, totalQuantityCell, insideTable,
-            insideThead, insideTh, insideRow, insideTbody ;
+        let table, thead, th, tbody, headRow;
 
         listContainer.className = "masked";
         detailsContainer.className = "masked";
@@ -137,86 +126,93 @@
         tbody = document.createElement('tbody');
         table.appendChild(tbody);
 
-        cartToDisplay.forEach(function (s){
-            displayCartBySupplier(s.supplier_id, tbody);
+        cartToDisplay.forEach(function (s) {
+            displayCartBySupplier(s.supplier_id, tbody, s);
         });
         cartContainer.className = "displayed";
     }
-    function displayCartBySupplier(supplier_id, tbody){
-        let cart = getCartFromSession();
+
+    function displayCartBySupplier(supplier_id, tbody, supplierCart) {
+
         let row, supplierIdCell, supplierNameCell, totalQuantityCell, totalPriceCell, insideTable, insideThead,
-            insideTh, insideTbody, insideRow, idCell, nameCell, priceCell, quantityCell;
-        cart.forEach( function (s){
-            if(s.supplier_id == supplier_id){
-                row = document.createElement("tr");
-                tbody.appendChild(row);
+            insideTh, insideTbody, insideRow, idCell, nameCell, priceCell, quantityCell, shipmentPriceCell;
+        let s = null;
 
-                supplierIdCell = document.createElement("td");
-                supplierIdCell.textContent = s.supplier_id;
-                row.appendChild(supplierIdCell);
+        if(supplierCart == null || supplierCart == undefined){
+            getCartFromSession().forEach( function (sCart){
+                if(sCart.supplier_id == supplier_id){
+                    s = sCart;
+                }
+            })
+        } else {
+            s = supplierCart;
+        }
+            row = document.createElement("tr");
+            tbody.appendChild(row);
 
-                supplierNameCell = document.createElement("td");
-                supplierNameCell.textContent = s.supplier_name;
-                row.appendChild(supplierNameCell);
+            supplierIdCell = document.createElement("td");
+            supplierIdCell.textContent = s.supplier_id;
+            row.appendChild(supplierIdCell);
 
-                totalQuantityCell = document.createElement("td");
-                totalQuantityCell.textContent = s.totalQuantity;
-                row.appendChild(totalQuantityCell);
+            supplierNameCell = document.createElement("td");
+            supplierNameCell.textContent = s.supplier_name;
+            row.appendChild(supplierNameCell);
 
-                totalPriceCell = document.createElement("td");
-                totalPriceCell.textContent = s.totalValue + "€";
-                row.appendChild(totalPriceCell);
+            totalQuantityCell = document.createElement("td");
+            totalQuantityCell.textContent = s.totalQuantity;
+            row.appendChild(totalQuantityCell);
 
-                /*shipmentPriceCell = document.createElement("td");
-                shipmentPriceCell.textContent = s.shipmentPrice;
-                row.appendChild(shipmentPriceCell);*/
+            totalPriceCell = document.createElement("td");
+            totalPriceCell.textContent = s.totalValue + "€";
+            row.appendChild(totalPriceCell);
 
-                insideTable = document.createElement('table');
-                row.appendChild(insideTable);
-                console.log("products array for this supplier: "+s.productsArray);
-                s.productsArray.forEach(function (product) {
-                    //Creates a row for each product
-                    insideThead = document.createElement('thead');
-                    insideTable.appendChild(insideThead);
-                    insideTh = document.createElement('th');
-                    insideTh.textContent = "Product id";
-                    insideThead.appendChild(insideTh);
-                    insideTh = document.createElement('th');
-                    insideTh.textContent = "Name";
-                    insideThead.appendChild(insideTh);
-                    insideTh = document.createElement('th');
-                    insideTh.textContent = "Price";
-                    insideThead.appendChild(insideTh);
-                    insideTh = document.createElement('th');
-                    insideTh.textContent = "Quantity";
-                    insideThead.appendChild(insideTh);
+            shipmentPriceCell = document.createElement("td");
+            shipmentPriceCell.textContent = s.shipmentPrice;
+            row.appendChild(shipmentPriceCell);
 
-                    insideTbody = document.createElement('tbody');
-                    insideTable.appendChild(insideTbody);
+            insideTable = document.createElement('table');
+            row.appendChild(insideTable);
+            s.productsArray.forEach(function (product) {
+                //Creates a row for each product
+                insideThead = document.createElement('thead');
+                insideTable.appendChild(insideThead);
+                insideTh = document.createElement('th');
+                insideTh.textContent = "Product id";
+                insideThead.appendChild(insideTh);
+                insideTh = document.createElement('th');
+                insideTh.textContent = "Name";
+                insideThead.appendChild(insideTh);
+                insideTh = document.createElement('th');
+                insideTh.textContent = "Price";
+                insideThead.appendChild(insideTh);
+                insideTh = document.createElement('th');
+                insideTh.textContent = "Quantity";
+                insideThead.appendChild(insideTh);
 
-                    insideRow = document.createElement("tr");
-                    insideTbody.appendChild(insideRow);
+                insideTbody = document.createElement('tbody');
+                insideTable.appendChild(insideTbody);
 
-                    idCell = document.createElement("td");
-                    idCell.textContent = product.product_id;
-                    insideRow.appendChild(idCell);
+                insideRow = document.createElement("tr");
+                insideTbody.appendChild(insideRow);
 
-                    nameCell = document.createElement("td");
-                    nameCell.textContent = product.name;
-                    insideRow.appendChild(nameCell);
+                idCell = document.createElement("td");
+                idCell.textContent = product.product_id;
+                insideRow.appendChild(idCell);
 
-                    priceCell = document.createElement("td");
-                    priceCell.textContent = product.price + "€";
-                    insideRow.appendChild(priceCell);
+                nameCell = document.createElement("td");
+                nameCell.textContent = product.name;
+                insideRow.appendChild(nameCell);
 
-                    quantityCell = document.createElement("td");
-                    quantityCell.textContent = product.quantity;
-                    insideRow.appendChild(quantityCell);
-                });
-            }
-        })
+                priceCell = document.createElement("td");
+                priceCell.textContent = product.price + "€";
+                insideRow.appendChild(priceCell);
 
+                quantityCell = document.createElement("td");
+                quantityCell.textContent = product.quantity;
+                insideRow.appendChild(quantityCell);
+            });
     }
+}
 
 
 

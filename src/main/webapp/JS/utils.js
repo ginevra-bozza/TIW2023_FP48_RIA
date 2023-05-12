@@ -43,12 +43,11 @@ function linkButton(id, cb) {
 
 //recover the cart from sessionStorage
 function getCartFromSession(){
-        console.log("getCartFromSession");
+
         let cart = [];
         let jsonCart;
         if(sessionStorage.getItem("cart")!== undefined && sessionStorage.getItem("cart") !== null){
             jsonCart = JSON.parse(sessionStorage.getItem("cart"));
-
             //retrieves each supplierCart in cart array
             for (let i = 0; i < jsonCart.length; i++) {
                 let supplierCart = jsonCart[i];
@@ -57,7 +56,7 @@ function getCartFromSession(){
 
                 cart[i].totalValue = supplierCart.totalValue;
                 cart[i].totalQuantity = supplierCart.totalQuantity;
-                cart[i].shipment_price = supplierCart.shipment_price;
+                cart[i].shipment_price = supplierCart.shipmentPrice;
                 cart[i].productsArray = [];
 
                 //retrieves the productArray for each supplierCart
