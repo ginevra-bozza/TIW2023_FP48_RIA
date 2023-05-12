@@ -163,6 +163,7 @@
                 let supplier_id = e.target.parentNode.children[0].textContent;
                 let thead,th,tbody,headRow;
                 let popUpTable = document.createElement('table');
+                popUpTable.className = "modalContent";
                 cartPopup.appendChild(popUpTable);
                 thead = document.createElement('thead');
                 popUpTable.appendChild(thead);
