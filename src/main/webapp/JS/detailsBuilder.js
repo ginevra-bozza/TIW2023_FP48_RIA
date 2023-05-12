@@ -144,9 +144,11 @@
             quantityCell = document.createElement("td");
             quantityCell.textContent = totalQuantity;
 
+
             let cartPopup = document.getElementById("id_cartPopup");
 
-            quantityCell.addEventListener("mouseover", () => {
+            quantityCell.addEventListener("mouseover", (e) => {
+                e.preventDefault();
                 cartPopup.textContent = "prova";
                 cartPopup.classList.toggle("show");
             });

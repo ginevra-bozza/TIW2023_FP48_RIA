@@ -89,3 +89,22 @@ body {
   from {opacity: 0;}
   to {opacity:1 ;}
 }
+
+table.goodLookingTable {
+  table-layout: fixed;
+  text-align: center;
+  width: 70%;
+}
+
+table.goodLookingTableFullWidth {
+  table-layout: fixed;
+  text-align: center;
+  width: 100%;
+    
+}
+
+table.goodLookingAlignLeftTable{
+	table-layout: fixed;
+  text-align: left;
+  width: 40%;
+}
