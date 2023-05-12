@@ -1,7 +1,8 @@
-{
-    function addToCart(details, supplier_id, supplier_name, price, quantity, shipment_policy, free_shipment_price) {
 
-        if (quantity <= 0) {
+
+    function addToCart(details, supplier_id, supplier_name, price, quantity , shipment_policy, free_shipment_price){
+
+        if(quantity <= 0) {
             alert("invalid quantity");
             //bloccare azione
         }
@@ -10,30 +11,33 @@
         let checkSupplier = false;
         let checkProduct = false;
 
-        cart.forEach(function (s) {
-            if (s.supplier_id === supplier_id) {
+        cart.forEach( function (s){
+            if(s.supplier_id === supplier_id){
                 checkSupplier = true;
-                s.productsArray.forEach(function (product) {
-                    if (details.id === product.product_id) {
+                s.productsArray.forEach(function (product){
+                    if(details.id === product.product_id){
                         product.quantity += quantity;
                         checkProduct = true;
+                        s.updateTotalQuantity(quantity);
+                        s.updateTotal(price,quantity);
+
                     }
                 })
-                if (!checkProduct) {
+                if(!checkProduct){
                     s.productsArray.push(new ProductInCart(details.id, details.name, quantity, price));
+                    s.updateTotalQuantity(quantity);
+                    s.updateTotal(price,quantity);
+
                 }
             }
-            s.updateTotalQuantity(quantity);
-            s.updateTotal(price, quantity);
-            s.shipmentPrice = calculateShipmentPrice(s);
+
 
         });
-        if (!checkSupplier) {
-            let supplierCart = new SupplierCart(supplier_id, supplier_name, shipment_policy, free_shipment_price);
+        if(!checkSupplier) {
+            let supplierCart = new SupplierCart(supplier_id, supplier_name ,shipment_policy, free_shipment_price);
             supplierCart.productsArray.push(new ProductInCart(details.id, details.name, quantity, price));
             supplierCart.updateTotalQuantity(quantity)
-            supplierCart.updateTotal(price, quantity);
-            supplierCart.shipmentPrice = calculateShipmentPrice(supplierCart);
+            supplierCart.updateTotal(price,quantity);
             cart.push(supplierCart);
         }
 
@@ -47,7 +51,7 @@
         displayCart(cart);
     }
 
-    function SupplierCart(supplier_id, supplier_name, shipment_policy, free_shipment_price) {
+    function SupplierCart (supplier_id, supplier_name, shipment_policy, free_shipment_price) {
 
         this.supplier_id = supplier_id;
         this.supplier_name = supplier_name;
@@ -193,6 +197,34 @@
             shipmentPriceCell = document.createElement("td");
             shipmentPriceCell.textContent = s.shipmentPrice;
             row.appendChild(shipmentPriceCell);
+                orderButton = document.createElement("button");
+                orderButton.setAttribute("type", "click");
+                orderButton.textContent = "order";
+                totalPriceCell.appendChild(orderButton);
+
+                orderButton.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    let supplier_id = e.target.parentNode.parentNode.children[0].textContent;
+                    let productsArray;
+                    alert(supplier_id);
+                    s.forEach(function (supplier) {
+                        if(supplier.supplier_id == supplier_id){
+                            productsArray = s.productsArray;
+                        }
+                    })
+                    const myJSON_prod = JSON.stringify(productsArray);
+                    const myJSON_sup = JSON.stringify(supplier_id);
+                    let param = '?order=' + myJSON_prod + '&supplier_id=' +myJSON_sup;
+                    console.log(myJSON_prod);
+                    console.log(myJSON_sup);
+                    executeOrder(param);
+
+
+                });
+
+                /*shipmentPriceCell = document.createElement("td");
+                shipmentPriceCell.textContent = s.shipmentPrice;
+                row.appendChild(shipmentPriceCell);*/
 
             insideTable = document.createElement('table');
             row.appendChild(insideTable);
@@ -238,7 +270,7 @@
         }
 
     }
-}
+
 
 
 

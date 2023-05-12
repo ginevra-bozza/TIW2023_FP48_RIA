@@ -18,6 +18,9 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import it.polimi.tiw.DAO.OrderDAO;
 import it.polimi.tiw.DAO.SupplierDAO;
 import it.polimi.tiw.beans.Order;
@@ -42,11 +45,6 @@ public class OrderServlet extends HttpServlet {
     
     public void init() throws ServletException {
     	ServletContext servletContext = getServletContext();
-		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
-		templateResolver.setTemplateMode(TemplateMode.HTML);
-		this.templateEngine = new TemplateEngine();
-		this.templateEngine.setTemplateResolver(templateResolver);
-		templateResolver.setSuffix(".html");
 		connection = ConnectionHandler.getConnection(servletContext);
     }
 
@@ -61,14 +59,19 @@ public class OrderServlet extends HttpServlet {
 		User user = new User();
 		OrderDAO order = new OrderDAO(connection);
 		user = (User)session.getAttribute("currentUser");
+		
+		Gson gson = new GsonBuilder().create();
+		
 		SupplierDAO supplierDao = new SupplierDAO(connection);
 		int supplier_id = 0;
 		List<Order> userOrders = new ArrayList<Order>();
 		
 		try {
 			supplier_id = Integer.parseInt(request.getParameter("supplier_id"));
+			String jsonToParse = request.getParameter("order");
+			System.out.println(jsonToParse);
+			System.out.println(supplier_id);
 			
-		
 		if(supplier_id != 0) {
 			String supplier_name = supplierDao.findSupplierById(supplier_id).getSupplier_name();
 			int total= user.getTotalBySupplierId(supplier_id);
