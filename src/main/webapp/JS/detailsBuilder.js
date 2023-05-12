@@ -133,24 +133,6 @@
             freeShipmentCell.textContent = supplier.free_shipment_price;
             row.appendChild(freeShipmentCell);
 
-            /*let cart = [];
-            if (sessionStorage.getItem("cart") !== undefined && sessionStorage.getItem("cart") !== null) {
-                cart = sessionStorage.getItem("cart");
-
-                for (let i = 0; i < cart.length; i++) {
-                    if (idCell.textContent === cart[i].supplier_id) {
-                        totalQuantity = cart[i].totalQuantity;
-                        totalValue = cart[i].totalValue;
-                    }
-                }
-
-                /*cart.forEach(function (s) {
-                    if(idCell.textContent === s.supplier_id){
-                        totalQuantity = s.totalQuantity;
-                        totalValue = s.totalValue;
-                    }
-                })
-            }*/
             let cart = getCartFromSession();
             for (let i = 0; i < cart.length; i++) {
                 if (idCell.textContent === cart[i].supplier_id) {

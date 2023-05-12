@@ -43,6 +43,7 @@ function linkButton(id, cb) {
 
 //recover the cart from sessionStorage
 function getCartFromSession(){
+        console.log("getCartFromSession");
         let cart = [];
         let jsonCart;
         if(sessionStorage.getItem("cart")!== undefined && sessionStorage.getItem("cart") !== null){
@@ -57,13 +58,15 @@ function getCartFromSession(){
                 cart[i].totalValue = supplierCart.totalValue;
                 cart[i].totalQuantity = supplierCart.totalQuantity;
                 cart[i].shipment_price = supplierCart.shipment_price;
-                cart[i].shipment_policy = supplierCart.shipment_policy;
+                cart[i].productsArray = [];
 
                 //retrieves the productArray for each supplierCart
-                for (let j = 0; j < jsonCart[i].productsArray ; j++) {
-                    let productInCart = jsonCart[i].productsArray[j];
-                    cart[i].push(new ProductInCart(productInCart.product_id, productInCart.name,
+                for (let j = 0; j < supplierCart.productsArray.length ; j++) {
+                    let productInCart = supplierCart.productsArray[j];
+                    cart[i].productsArray.push(new ProductInCart(productInCart.product_id, productInCart.name,
                         productInCart.quantity, productInCart.price));
+                    console.log("cart[i] is: "+cart[i]);
+
                 }
             }
         }
