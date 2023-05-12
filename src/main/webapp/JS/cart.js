@@ -87,16 +87,19 @@
         this.quantity = quantity;
     }
 
-    function displayCart(cartToDisplay) {
-
+    function displayCart() {
+        let cartToDisplay = getCartFromSession();
         let listContainer = document.getElementById("id_pageContainer");
         let detailsContainer = document.getElementById("id_detailsContainer")
         let cartContainer = document.getElementById("id_cartContainer")
+        let emptyCartMessage = document.createElement("p");
+
         let table, thead, th, tbody, headRow;
 
         listContainer.className = "masked";
         detailsContainer.className = "masked";
         cartContainer.innerHTML = "";
+
 
         table = document.createElement('table');
         cartContainer.appendChild(table);
@@ -126,9 +129,18 @@
         tbody = document.createElement('tbody');
         table.appendChild(tbody);
 
-        cartToDisplay.forEach(function (s) {
-            displayCartBySupplier(s.supplier_id, tbody, s);
-        });
+        tbody.appendChild(emptyCartMessage);
+
+        if(cartToDisplay !== undefined && cartToDisplay !== null && cartToDisplay.length > 0){
+            emptyCartMessage.className = "masked";
+            cartToDisplay.forEach(function (s) {
+                displayCartBySupplier(s.supplier_id, tbody, s);
+            });
+        } else {
+            emptyCartMessage.textContent = "No product available";
+            emptyCartMessage.className = "displayed";
+        }
+
         cartContainer.className = "displayed";
     }
 
@@ -136,17 +148,25 @@
 
         let row, supplierIdCell, supplierNameCell, totalQuantityCell, totalPriceCell, insideTable, insideThead,
             insideTh, insideTbody, insideRow, idCell, nameCell, priceCell, quantityCell, shipmentPriceCell;
-        let s = null;
+        let s = [];
+        let checkCart = false;
 
-        if(supplierCart == null || supplierCart == undefined){
-            getCartFromSession().forEach( function (sCart){
-                if(sCart.supplier_id == supplier_id){
-                    s = sCart;
-                }
-            })
+        if(supplierCart === null || supplierCart === undefined){
+            let cart = getCartFromSession();
+            if(cart!== undefined && cart.length > 0 && cart !== null){
+                cart.forEach( function (sCart){
+                    if(sCart.supplier_id == supplier_id){
+                        checkCart = true;
+                        s = sCart;
+                    }
+                })
+            }
         } else {
             s = supplierCart;
+            checkCart = true;
         }
+
+        if(checkCart){
             row = document.createElement("tr");
             tbody.appendChild(row);
 
@@ -211,6 +231,8 @@
                 quantityCell.textContent = product.quantity;
                 insideRow.appendChild(quantityCell);
             });
+        }
+
     }
 }
 

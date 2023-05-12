@@ -46,7 +46,7 @@ function getCartFromSession(){
 
         let cart = [];
         let jsonCart;
-        if(sessionStorage.getItem("cart")!== undefined && sessionStorage.getItem("cart") !== null){
+        if(sessionStorage.getItem("cart")!== undefined && sessionStorage.getItem("cart") !== null && sessionStorage.getItem("cart").length > 0){
             jsonCart = JSON.parse(sessionStorage.getItem("cart"));
             //retrieves each supplierCart in cart array
             for (let i = 0; i < jsonCart.length; i++) {
