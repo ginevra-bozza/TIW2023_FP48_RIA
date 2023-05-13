@@ -1,11 +1,7 @@
 package it.polimi.tiw.beans;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import it.polimi.tiw.DAO.SupplierDAO;
 
 public class User {
 	private String name;
@@ -14,10 +10,8 @@ public class User {
 	private String email;
 	private String address;
 	private List<Product> visualizedProducts = new ArrayList<Product>();
-	private Map<Integer, ArrayList<Product>> cart = new HashMap<Integer, ArrayList<Product>>();
+	
 
-	
-	
 	public String getName() {
 		return name;
 	}
@@ -48,12 +42,7 @@ public class User {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public Map<Integer, ArrayList<Product>> getCart() {
-		return cart;
-	}
-	public void setCart(Map<Integer, ArrayList<Product>> cart) {
-		this.cart = cart;
-	}
+	
 	public List<Product> getVisualizedProducts() {
 		return visualizedProducts;
 	}
@@ -71,13 +60,5 @@ public class User {
 			visualizedProducts.add(0, visualizedProduct);
 	}
 	
-	public int getTotalBySupplierId(int supplier_id){
-			int total = 0;
-			for(Product p: cart.get(supplier_id)) {
-				for(int i=1; i<=p.getQuantity();i++ )
-					total+=p.getPrice();
-			}
-			return total;
-			}
 	
 }

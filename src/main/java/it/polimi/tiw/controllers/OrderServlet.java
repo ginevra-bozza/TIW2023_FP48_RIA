@@ -3,10 +3,7 @@ package it.polimi.tiw.controllers;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -16,16 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import it.polimi.tiw.DAO.OrderDAO;
 import it.polimi.tiw.DAO.ProductDAO;
@@ -36,8 +27,6 @@ import it.polimi.tiw.beans.Supplier;
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.utils.ConnectionHandler;
 import it.polimi.tiw.utils.ParametersNotMatchingException;
-
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
 /**
@@ -46,7 +35,6 @@ import java.net.URLDecoder;
 @WebServlet("/Orders")
 public class OrderServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private TemplateEngine templateEngine;
 	private Connection connection = null;   
     /**
      * @see HttpServlet#HttpServlet()
@@ -65,7 +53,6 @@ public class OrderServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		
 		}
 	
@@ -88,15 +75,13 @@ public class OrderServlet extends HttpServlet {
 		int totalValue = 0;
 		int total = 0;
 		int shipment_price = 0;
-		List<Order> userOrders = new ArrayList<Order>();
+		List<Order> ordersList = new ArrayList<Order>();
 		Gson gson;
 		
 		try {
-			//supplier_id = Integer.parseInt(request.getParameter("supplier_id"));
+			
 			String jsonToParse = request.getParameter("order");
-			
 			String decodedJson = URLDecoder.decode(jsonToParse, "UTF-8");
-			
 			System.out.println(decodedJson);
 			
 			gson = new Gson();
@@ -132,7 +117,6 @@ public class OrderServlet extends HttpServlet {
 			
 			System.out.println("Printed orders");
 		} 
-		//userOrders = order.getOrdersByUser(user.getEmail());		
 		
 		try {
 			
@@ -160,7 +144,7 @@ public class OrderServlet extends HttpServlet {
 			}
 			response.setStatus(HttpServletResponse.SC_OK);
 			order.createOrder(user, orderCart, supplier_id, supplier_name, totalValue);
-			List<Order> ordersList = order.getOrdersByUser(user.getEmail());
+			ordersList = order.getOrdersByUser(user.getEmail());
 			
 			gson = new GsonBuilder().create();
 			System.out.println(gson.toJson(ordersList));

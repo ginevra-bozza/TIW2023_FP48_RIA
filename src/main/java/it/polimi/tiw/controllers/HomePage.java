@@ -49,7 +49,6 @@ public class HomePage extends HttpServlet {
     	ServletContext servletContext = getServletContext();
 		connection = ConnectionHandler.getConnection(servletContext);
 		
-		
     }
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -72,7 +71,6 @@ public class HomePage extends HttpServlet {
 			session.setAttribute("currentUser",user);
 		}
 		
-		//Gson gson = new GsonBuilder().create();
 		String productJson = "[";
 		for (Product p : visualizedProducts) {
 			productJson += "{\"id\":" + p.getProduct_id() + ",\"name\":\"" + p.getName()

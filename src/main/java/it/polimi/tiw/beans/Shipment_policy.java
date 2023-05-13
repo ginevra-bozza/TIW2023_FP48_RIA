@@ -1,7 +1,5 @@
 package it.polimi.tiw.beans;
 
-
-
 public class Shipment_policy {
 	private int supplier_id;
 	private int minimum;

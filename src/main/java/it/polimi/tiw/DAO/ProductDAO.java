@@ -33,7 +33,6 @@ public class ProductDAO {
 	public List<Product> searchProduct (String productName) {
 		List<Product> products = new ArrayList<Product>();
 
-		//String query = "SELECT product_id, supplier_id, product_name, price FROM product WHERE product_name like ? or product_description like ?";// group by product_id having min(price)";
 		String query = "SELECT p.product_id, p.supplier_id, p.product_name, p.price FROM product p JOIN (SELECT product_id, MIN(price) AS min_price FROM product WHERE product_name LIKE ? OR product_description LIKE ? GROUP BY product_id) AS sub ON p.product_id = sub.product_id AND p.price = sub.min_price";
 		PreparedStatement pstatement;
 		try {

@@ -27,49 +27,6 @@ public class SupplierDAO {
 		this.con = con;
 	}
 	
-	/*public Map<Integer,Supplier> findSuppliers (int product_id) {
-		
-		Map<Integer,Supplier> supplier_info = new HashMap<>();
-		
- 		String destroyView_query = "Drop view if exists orderedproducts;";
-		String createView_query = " CREATE VIEW orderedProducts AS SELECT product_id, supplier_id, price FROM product WHERE product_id = ? ;";
-		String select_query = "SELECT supplier_name, evaluation, free_shipment_price, price, supplier_id FROM orderedProducts natural join supplier ";
-		PreparedStatement destroyView_pstatement;
-		PreparedStatement createView_pstatement;
-		PreparedStatement select_pstatement;
-		
-		try {
-			destroyView_pstatement = con.prepareStatement(destroyView_query);
-			destroyView_pstatement.executeUpdate();
-			
-			createView_pstatement = con.prepareStatement(createView_query);
-			createView_pstatement.setInt(1, product_id);
-			createView_pstatement.executeUpdate();
-			
-			
-			select_pstatement = con.prepareStatement(select_query);
-			result = select_pstatement.executeQuery();
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
-		try {
-			while (result.next()) {
-				Supplier supplier = new Supplier();
-				supplier.setEvaluation(result.getString("evaluation"));
-				supplier.setFree_shipment_price(result.getInt("free_shipment_price"));
-				supplier.setSupplier_id(result.getInt("supplier_id"));
-				supplier.setSupplier_name(result.getString("supplier_name"));
-				supplier.setShipment_policy(setShipment_Info(supplier));
-				supplier_info.put(result.getInt("price"), supplier);
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return supplier_info;
-		}*/
 
 	private List<Shipment_policy>  setShipment_Info(Supplier supplier) {
 		//join supplier e shipment_policy per avere la lista di min e max price
@@ -166,32 +123,6 @@ public class SupplierDAO {
 		
 	}
 	
-	/*public String findSupplierName(int supplier_id) {
-		String supplier_name = null;
-		String query = "SELECT supplier_name FROM supplier WHERE supplier_id = ?";
-		PreparedStatement pstatement;
-		try {
-
-			pstatement = con.prepareStatement(query);
-			pstatement.setInt(1, supplier_id);
-			nameResult = pstatement.executeQuery();
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
-		try {
-			while(nameResult.next()) {
-				supplier_name = nameResult.getString("supplier_name");
-			}
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return supplier_name;
-	}*/
-
 	public Supplier findSupplierById(int supplier_id) {
 		Supplier supplier = null;
 		String query = "SELECT  supplier_id, supplier_name, evaluation, free_shipment_price FROM supplier where supplier_id = ?";
