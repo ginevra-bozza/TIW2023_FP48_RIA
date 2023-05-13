@@ -80,9 +80,8 @@ public class OrderDAO {
 		return orders;
 	}
 	
-	public void createOrder(User user, int supplier_id, String supplier_name, int totalValue) {
+	public void createOrder(User user, ArrayList<Product> orderCart, int supplier_id, String supplier_name, int totalValue) {
 		
-		List<Product> products = user.getCart().get(supplier_id);
 		String shipment_address = user.getAddress();
 		String email = user.getEmail();
 		int order_id = 0;
@@ -110,7 +109,7 @@ public class OrderDAO {
 				order_id = orderId_result.getInt("max(order_id)");
 			}
 			
-			for(Product p : products) {
+			for(Product p : orderCart) {
 				insert_pstatement = con.prepareStatement(insert_query);
 				insert_pstatement.setInt(1, order_id);
 				insert_pstatement.setString(2, email);
