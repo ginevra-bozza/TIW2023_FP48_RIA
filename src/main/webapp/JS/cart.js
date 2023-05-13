@@ -266,6 +266,20 @@
 
     }
 
+    function removeFromCart() {
+        let cart = getCartFromSession();
+        let ordersList = JSON.parse(sessionStorage.getItem("order"));
+        console.log(ordersList);
+        cart.forEach(function (s) {
+            if(s.supplier_id == ordersList[ordersList.length-1].supplier_id) {
+                cart.remove(s);
+                console.log(ordersList);
+                sessionStorage.setItem("cart",JSON.stringify(cart));
+            }
+
+        })
+    }
+
 
 
 

@@ -8,6 +8,7 @@ function executeOrder(param) {
             if (req.readyState === XMLHttpRequest.DONE) { // == 4
                 if (req.status === 200) {
                     document.getElementById('id_pageContainer').innerHTML = '';
+                    sessionStorage.setItem("order",req.responseText);
                     let orderToShow = JSON.parse(req.responseText);
 
                     if (orderToShow.length === 0) {
@@ -17,6 +18,7 @@ function executeOrder(param) {
                     } else {
                         console.log(orderToShow);
                         self.buildOrdersList(orderToShow);
+                        removeFromCart();
                     }
                 } else if (req.status === 400) {
                     let errorMessage = document.createElement("p");
