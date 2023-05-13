@@ -1,7 +1,5 @@
 package it.polimi.tiw.beans;
 
-import java.sql.Blob;
-
 public class Product {
 	private int product_id;
 	private int supplier_id;

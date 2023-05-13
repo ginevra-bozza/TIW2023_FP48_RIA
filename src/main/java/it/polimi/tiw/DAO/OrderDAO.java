@@ -24,7 +24,7 @@ public class OrderDAO {
 
 	public List<Order> getOrdersByUser(String email) {
 		
-		String query = "SELECT order_id, total, shipment_date, shipment_address, supplier_id, supplier_name FROM online_order where email = ? ORDER BY shipment_date desc";
+		String query = "SELECT order_id, total, shipment_date, shipment_address, supplier_id, supplier_name FROM online_order where email = ? ORDER BY shipment_date desc, order_id desc";
 		String orderedProducts_query = "SELECT product.product_id, product_name, category, image, price, quantity FROM product left join completedorders c on product.product_id = c.product_id WHERE order_id = ? AND product.supplier_id = ?";
 		List<Order> orders = new ArrayList<Order>();
 		orders.clear();

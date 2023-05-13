@@ -269,14 +269,26 @@
     function removeFromCart() {
         let cart = getCartFromSession();
         let ordersList = JSON.parse(sessionStorage.getItem("order"));
-        console.log(ordersList);
-        cart.forEach(function (s) {
-            if(s.supplier_id == ordersList[ordersList.length-1].supplier_id) {
-                cart.remove(s);
-                console.log(ordersList);
+
+        /*for (let i = 0; i < cart.length; i++) {
+            if(cart[i].supplier_id == ordersList[0].supplier_id){
+                let index = cart.indexOf(item);
+                if (index !== -1) {
+                    array.splice(index, 1);
+                }
+                console.log(JSON.stringify(cart));
+                sessionStorage.setItem("cart after update",JSON.stringify(cart));
+
+            }
+        }*/
+        console.log("cart before update"+JSON.stringify(cart));
+        cart.forEach( function (s){
+            if(s.supplier_id == ordersList[0].supplier_id){
+                let index = cart.indexOf(s);
+                cart.splice(index, 1);
+                console.log("cart after update"+JSON.stringify(cart));
                 sessionStorage.setItem("cart",JSON.stringify(cart));
             }
-
         })
     }
 

@@ -8,6 +8,7 @@ function executeOrder(param) {
             if (req.readyState === XMLHttpRequest.DONE) { // == 4
                 if (req.status === 200) {
                     document.getElementById('id_pageContainer').innerHTML = '';
+                    console.log("DATA FROM SERVER: "+req.responseText);
                     sessionStorage.setItem("order",req.responseText);
                     let orderToShow = JSON.parse(req.responseText);
 

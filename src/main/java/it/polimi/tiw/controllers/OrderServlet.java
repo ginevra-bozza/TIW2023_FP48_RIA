@@ -158,23 +158,27 @@ public class OrderServlet extends HttpServlet {
 			if(supplierDao.getShipmentPrice(supplier_id, orderCart , total) != shipment_price){
 				throw new ParametersNotMatchingException();
 			}
+			response.setStatus(HttpServletResponse.SC_OK);
+			order.createOrder(user, orderCart, supplier_id, supplier_name, totalValue);
+			List<Order> ordersList = order.getOrdersByUser(user.getEmail());
 			
+			gson = new GsonBuilder().create();
+			System.out.println(gson.toJson(ordersList));
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().println(gson.toJson(ordersList));
+		
 		}catch (ParametersNotMatchingException e){
 	
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
 			response.getWriter().println("Error: you tried to send incorrect data");
 		}
 		
-		order.createOrder(user, orderCart, supplier_id, supplier_name, totalValue);
-		List<Order> ordersList = order.getOrdersByUser(user.getEmail());
 		
-		gson = new GsonBuilder().create();
-		System.out.println(gson.toJson(ordersList));
+	
 		
-		response.setStatus(HttpServletResponse.SC_OK);
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		response.getWriter().println(gson.toJson(ordersList));
 	}
 	
 
