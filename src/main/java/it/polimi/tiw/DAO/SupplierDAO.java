@@ -220,7 +220,7 @@ public class SupplierDAO {
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("This supplier does not exists");
 		}
 		
 		

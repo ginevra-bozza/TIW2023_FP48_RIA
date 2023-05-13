@@ -3,7 +3,9 @@ package it.polimi.tiw.controllers;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -25,8 +27,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import it.polimi.tiw.DAO.OrderDAO;
+import it.polimi.tiw.DAO.ProductDAO;
 import it.polimi.tiw.DAO.SupplierDAO;
 import it.polimi.tiw.beans.Order;
+import it.polimi.tiw.beans.Product;
+import it.polimi.tiw.beans.Supplier;
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.utils.ConnectionHandler;
 import java.io.UnsupportedEncodingException;
@@ -70,9 +75,10 @@ public class OrderServlet extends HttpServlet {
 		User user = new User();
 		OrderDAO order = new OrderDAO(connection);
 		user = (User)session.getAttribute("currentUser");
-		
+		Map<Product,Integer> orderCart = new HashMap<Product,Integer>();
 		
 		SupplierDAO supplierDao = new SupplierDAO(connection);
+		ProductDAO productDao = new ProductDAO(connection);
 		int supplier_id = 0;
 		List<Order> userOrders = new ArrayList<Order>();
 		
@@ -93,8 +99,9 @@ public class OrderServlet extends HttpServlet {
 
 	        // Extract supplier_id
 	        supplier_id = jsonObject.get("supplier_id").getAsInt();
+	        String supplier_name = jsonObject.get("supplier_name").getAsString();
 	        System.out.println("Supplier ID: " + supplier_id);
-	        //int total = jsonObject.get("totalValue").getAsInt();
+	        int total = jsonObject.get("totalValue").getAsInt();
 	        //int shipment_price = jsonObject.get("totalValue").getAsInt();
 	        // Extract productsArray
 	        JsonArray productsArray = jsonObject.get("productsArray").getAsJsonArray();
@@ -103,22 +110,34 @@ public class OrderServlet extends HttpServlet {
 	        // Iterate over the products and print their details
 	        for (int i = 0; i < productsArray.size(); i++) {
 	            JsonObject productObject = productsArray.get(i).getAsJsonObject();
-	            int product_id = productObject.get("product_id").getAsInt();
-	            String name = productObject.get("name").getAsString();
-	            String price = productObject.get("price").getAsString();
-	            String quantity = productObject.get("quantity").getAsString();
+	            Product product = new Product();
+	            product.setProduct_id(productObject.get("product_id").getAsInt());
+	            product.setName(productObject.get("name").getAsString());
+	            product.setPrice(productObject.get("price").getAsInt());
+	            product.setSupplier_id(supplier_id);
+				int quantity = productObject.get("quantity").getAsInt();
+	            
+				orderCart.put(product, quantity);
 
-	            System.out.println("Product " + (i + 1));
-	            System.out.println("Product ID: " + product_id);
-	            System.out.println("Name: " + name);
-	            System.out.println("Price: " + price);
-	            System.out.println("Quantity: " + quantity);
-	            System.out.println();
-	        
 	    }
+		//check data validity
 		
+		} catch (NumberFormatException e) {
+			
+			System.out.println("Printed orders");
+		} 
+		//userOrders = order.getOrdersByUser(user.getEmail());		
+		
+		try {
 		if(supplier_id != 0) {
-			//String supplier_name = supplierDao.findSupplierById(supplier_id).getSupplier_name();
+			Supplier checkSupplier = supplierDao.findSupplierById(supplier_id);
+			if(checkSupplier.getSupplier_name().equals(supplier_name)) {
+				for(Product p: orderCart.keySet()) {
+					Product checkProduct = productDao.findProductByID(p.getProduct_id(),p.getSupplier_id());
+					if(checkProduct.getPrice() == p.getPrice())
+				}
+			}
+		
 			//int total= user.getTotalBySupplierId(supplier_id);
 			//int shipment_price = supplierDao.getShipmentPrice(supplier_id,user.getCart().get(supplier_id), total);
 			
@@ -127,16 +146,14 @@ public class OrderServlet extends HttpServlet {
 			//session.setAttribute("currentUser",user);
 			
 			}
-		} catch (NumberFormatException e) {
+		}catch (){
 			
-			System.out.println("Printed orders");
-		} 
-		//userOrders = order.getOrdersByUser(user.getEmail());		
-		
+		}
 		response.setStatus(HttpServletResponse.SC_OK);
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		//response.getWriter().println(productDetailsJson);
 	}
+	
 
 }
