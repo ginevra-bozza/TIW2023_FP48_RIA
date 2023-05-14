@@ -98,8 +98,7 @@ public class OrderServlet extends HttpServlet {
 	        
 	        // Extract productsArray
 	        JsonArray productsArray = jsonObject.get("productsArray").getAsJsonArray();
-	        System.out.println("Products:");
-
+	      
 	        // Iterate over the products and print their details
 	        for (int i = 0; i < productsArray.size(); i++) {
 	            JsonObject productObject = productsArray.get(i).getAsJsonObject();
@@ -119,27 +118,37 @@ public class OrderServlet extends HttpServlet {
 		} 
 		
 		try {
+			System.out.println("Inside orderServlet try");
 			
-			if(supplier_id <= 0 && supplier_id > 20)
+			if(supplier_id <= 0 && supplier_id > 20) {
+				System.out.println("Failed on supplier_id " +supplier_id);
 				throw new ParametersNotMatchingException();
+			}
+				
 			
 			Supplier checkSupplier = supplierDao.findSupplierById(supplier_id);
 			if(!checkSupplier.getSupplier_name().equals(supplier_name)) {
+				System.out.println("Failed on supplier_name:  " +supplier_name+ " vs "+checkSupplier.getSupplier_name());
 				throw new ParametersNotMatchingException();
 			}
 			
 			for(Product p: orderCart) {
 				Product checkProduct = productDao.findProductByID(p.getProduct_id(),p.getSupplier_id());
 				if(checkProduct.getPrice() != p.getPrice() || !checkProduct.getName().equals(p.getName())) {
+					System.out.println("Failed on price:  " +p.getPrice()+ " vs "+checkProduct.getPrice()+" or product name: "+p.getName()+ " vs "+checkProduct.getName());
 					throw new ParametersNotMatchingException();
 				}
 				totalValue += p.getPrice() * p.getQuantity();
 				
 			}
-			if(totalValue != total)
+			if(totalValue != total) {
+				System.out.println("Failed on total:  " +total+ " vs "+totalValue);
 				throw new ParametersNotMatchingException();
+			}
+				
 		
 			if(supplierDao.getShipmentPrice(supplier_id, orderCart , total) != shipment_price){
+				System.out.println("Failed on shipment_price:  " +shipment_price+ " vs "+supplierDao.getShipmentPrice(supplier_id, orderCart , total));
 				throw new ParametersNotMatchingException();
 			}
 			response.setStatus(HttpServletResponse.SC_OK);
@@ -147,13 +156,14 @@ public class OrderServlet extends HttpServlet {
 			ordersList = order.getOrdersByUser(user.getEmail());
 			
 			gson = new GsonBuilder().create();
-			System.out.println(gson.toJson(ordersList));
+			System.out.println("LIST OF ORDERS: "+gson.toJson(ordersList));
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
 			response.getWriter().println(gson.toJson(ordersList));
 		
 		}catch (ParametersNotMatchingException e){
 	
+			e.printStackTrace();
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");

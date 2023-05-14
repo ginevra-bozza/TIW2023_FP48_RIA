@@ -128,7 +128,7 @@ public class ProductDAO {
 	public List<Product> getRandomProducts(int listSize) {
 		//create a list of random products from 'Electronics' category, to visualize on the home page
 		List<Product> randomProducts = new ArrayList<Product>();
-		String query = "SELECT * FROM product WHERE category = 'Electronics' ORDER BY RAND() LIMIT ?";
+		String query = "SELECT DISTINCT * FROM product WHERE category = 'Electronics' ORDER BY RAND() LIMIT ?";
 		
 		PreparedStatement pstatement;
 		try {
