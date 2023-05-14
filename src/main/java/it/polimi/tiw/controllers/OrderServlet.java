@@ -82,7 +82,6 @@ public class OrderServlet extends HttpServlet {
 			
 			String jsonToParse = request.getParameter("order");
 			String decodedJson = URLDecoder.decode(jsonToParse, "UTF-8");
-			System.out.println(decodedJson);
 			
 			gson = new Gson();
 
@@ -92,7 +91,6 @@ public class OrderServlet extends HttpServlet {
 	        // Extract supplier_id
 	        supplier_id = jsonObject.get("supplier_id").getAsInt();
 	        supplier_name = jsonObject.get("supplier_name").getAsString();
-	        System.out.println("Supplier ID: " + supplier_id);
 	        total = jsonObject.get("totalValue").getAsInt();
 	        shipment_price = jsonObject.get("shipment_price").getAsInt();
 	        
@@ -156,7 +154,6 @@ public class OrderServlet extends HttpServlet {
 			ordersList = order.getOrdersByUser(user.getEmail());
 			
 			gson = new GsonBuilder().create();
-			System.out.println("LIST OF ORDERS: "+gson.toJson(ordersList));
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
 			response.getWriter().println(gson.toJson(ordersList));
