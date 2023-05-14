@@ -61,15 +61,6 @@
         this.shipment_policy = shipment_policy;
         this.free_shipment_price = free_shipment_price;
 
-       /* this.updateTotalQuantity = function (quantity) {
-            let self = this;
-            //self.totalQuantity += parseInt(quantity);
-        }
-
-        this.updateTotal = function (price, quantity) {
-            let self = this;
-            self.totalValue += parseInt(price) * parseInt(quantity);
-        }*/
         this.update = function (){
             let self = this;
             self.totalValue =  recalculateTotal(self);
@@ -92,7 +83,6 @@
         })
         return quantityToCalculate;
     }
-
     function calculateShipmentPrice(supplierCart){
         console.log("Calculating shipment price on: "+supplierCart);
         let shipment_price = 0;

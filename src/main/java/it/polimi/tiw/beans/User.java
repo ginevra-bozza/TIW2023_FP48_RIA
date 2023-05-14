@@ -58,6 +58,9 @@ public class User {
 		}
 		if(!check) //if that product_id is not present in the list
 			visualizedProducts.add(0, visualizedProduct);
+		if(visualizedProducts.size() > 5) {
+			visualizedProducts.remove(5);
+		}
 	}
 	
 	

@@ -6,7 +6,7 @@
         //personalMessage.show();
         linkButton('goHomeLink', () => initializeHome());
         linkButton('goCartLink', () => displayCart());
-        linkButton('goOrdersLink', () => goOrders());
+        linkButton('goOrdersLink', () => displayOrders());
         refreshHome();
         prepareSearch();
     }

@@ -8,8 +8,8 @@ function executeOrder(param) {
             if (req.readyState === XMLHttpRequest.DONE) { // == 4
                 if (req.status === 200) {
                     document.getElementById('id_pageContainer').innerHTML = '';
-                    console.log("DATA FROM SERVER: "+req.responseText);
-                    sessionStorage.setItem("order",req.responseText);
+                    console.log("DATA FROM SERVER: " + req.responseText);
+                    sessionStorage.setItem("order", req.responseText);
                     let orderToShow = JSON.parse(req.responseText);
 
                     if (orderToShow.length === 0) {
@@ -18,7 +18,7 @@ function executeOrder(param) {
 
                     } else {
                         console.log(orderToShow);
-                        self.buildOrdersList(orderToShow);
+                        buildOrdersList(orderToShow);
                         removeFromCart();
                     }
                 } else if (req.status === 400) {
@@ -31,15 +31,18 @@ function executeOrder(param) {
                 }
             }
         });
+}
 
 
-    this.buildOrdersList = function (order) {
+        function buildOrdersList(order) {
 
         let table, thead, row, idCell, totalCell, supplierNameCell, addressCell, dateCell, th, tbody;
         let resultContainer = document.getElementById("id_pageContainer");
         let cartContainer = document.getElementById("id_cartContainer");
         cartContainer.className = "masked";
+        resultContainer.innerHTML = "";
         resultContainer.className = "displayed";
+
 
         // build updated list
         table = document.createElement('table');
@@ -67,7 +70,6 @@ function executeOrder(param) {
 
         tbody = document.createElement('tbody');
         table.appendChild(tbody);
-
 
         for (let i = 0; i < order.length; i++){
         row = document.createElement("tr");
@@ -141,5 +143,18 @@ function executeOrder(param) {
             }
         }
 }
-}
+    function displayOrders(){
+       let ordersContainer = document.getElementById("id_pageContainer");
+       let orders = sessionStorage.getItem("order");
+       let emptyOrdersMessage;
+        if(orders.length <= 0){
+            emptyOrdersMessage = document.createElement("p");
+            emptyOrdersMessage.textContent = "No orders";
+            emptyOrdersMessage.className = "displayed";
+            ordersContainer.appendChild(emptyOrdersMessage);
+        } else {
+            buildOrdersList(orders);
+        }
+
+    }
 
