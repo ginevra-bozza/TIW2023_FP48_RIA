@@ -54,7 +54,30 @@ public class OrderServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		HttpSession session = request.getSession();
+		OrderDAO order = new OrderDAO(connection);
+		User user = new User();
+		user = (User)session.getAttribute("currentUser");
+		
+		Gson gson = new Gson();
+		List<Order> ordersList = new ArrayList<Order>();
+		
+		ordersList = order.getOrdersByUser(user.getEmail());
+		
+		if(ordersList == null || ordersList.isEmpty()) {
+			response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+		} else {
+			gson = new GsonBuilder().create();
+		
+			response.setStatus(HttpServletResponse.SC_OK);
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().println(gson.toJson(ordersList));
 		}
+		
+		
+		
+}
 	
 
 	/**

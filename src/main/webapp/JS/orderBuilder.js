@@ -145,13 +145,33 @@ function executeOrder(param) {
 }
     function displayOrders(){
        let ordersContainer = document.getElementById("id_pageContainer");
-       let orders = sessionStorage.getItem("order");
+       let orders = JSON.parse(sessionStorage.getItem("order"));
        let emptyOrdersMessage;
-        if(orders.length <= 0){
-            emptyOrdersMessage = document.createElement("p");
-            emptyOrdersMessage.textContent = "No orders";
-            emptyOrdersMessage.className = "displayed";
-            ordersContainer.appendChild(emptyOrdersMessage);
+
+        if(orders === undefined || orders === null || orders.length <= 0){
+            doRequest('Orders', "GET", // callback function
+                function (req) {
+                    if (req.readyState === XMLHttpRequest.DONE) { // == 4
+                        if (req.status === 200) {
+                            ordersContainer.innerHTML = '';
+                            let orderToShow = JSON.parse(req.responseText);
+                            sessionStorage.setItem("order", req.responseText);
+                            buildOrdersList(orderToShow);
+
+                        } else if (req.status === 204) {
+                            emptyOrdersMessage = document.createElement("p");
+                            emptyOrdersMessage.textContent = "No orders";
+                            ordersContainer.innerHTML = '';
+                            ordersContainer.appendChild(emptyOrdersMessage);
+
+                        } else {
+                            // request failed, handle it
+                            ordersContainer.className = "masked";
+                            alert("Not possible to recover data"); //for demo purposes
+                        }
+                    }
+                });
+
         } else {
             buildOrdersList(orders);
         }

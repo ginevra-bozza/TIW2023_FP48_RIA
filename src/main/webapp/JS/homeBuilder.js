@@ -26,10 +26,11 @@
        search_form.addEventListener('keydown', (e) => {
             if (e.code === 'Enter') {
                 e.preventDefault();
-                sessionStorage.setItem('id_searchForm', search_form.value);
-                //sessionStorage.removeItem('viewItem');
-                doSearch( document.getElementById("id_pageContainer"),search_form.value);
-
+                if(search_form.value === null || search_form.value.length === 0){
+                    alert("Insert a valid word");
+                } else {
+                    doSearch( document.getElementById("id_pageContainer"),search_form.value);
+                    }
                 }
         });
     }

@@ -65,12 +65,39 @@ public class Results extends HttpServlet {
 
 		String searchedProduct = null;
 		try {
-
+			
 			searchedProduct = request.getParameter("textSearch");
 			// check the validity
 			if (searchedProduct == null || searchedProduct.isEmpty()) {
-				throw new Exception("Missing or empty credential value");
+				throw new Exception("Missing or empty search text value");
 			}
+			
+			ProductDAO product = new ProductDAO(connection);
+			if(productList != null)
+				productList.clear();
+				productList = product.searchProduct(searchedProduct);
+				if(productList.isEmpty() || productList == null) {
+					response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+					response.setCharacterEncoding("UTF-8");
+				
+				} else {
+					
+					String productJson = "[";
+					for (Product p : productList) {
+						productJson += "{\"id\":" + p.getProduct_id() + ",\"name\":\"" + p.getName()
+								 + "\",\"price\":\""	+ p.getPrice() + "\"},";
+					}
+					productJson = productJson.substring(0, productJson.length() - 1);
+					
+					productJson += "]";
+					response.setStatus(HttpServletResponse.SC_OK);
+					response.setContentType("application/json");
+					response.setCharacterEncoding("UTF-8");
+					response.getWriter().println(productJson);
+				}
+				
+				
+				
 		} catch (Exception e) {
 
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400
@@ -79,23 +106,7 @@ public class Results extends HttpServlet {
 
 		}
 		
-		ProductDAO product = new ProductDAO(connection);
-		if(productList != null)
-			productList.clear();
-			productList = product.searchProduct(searchedProduct);
-			
-			String productJson = "[";
-			for (Product p : productList) {
-				productJson += "{\"id\":" + p.getProduct_id() + ",\"name\":\"" + p.getName()
-						 + "\",\"price\":\""	+ p.getPrice() + "\"},";
-			}
-			productJson = productJson.substring(0, productJson.length() - 1);
-			
-			productJson += "]";
-			response.setStatus(HttpServletResponse.SC_OK);
-			response.setContentType("application/json");
-			response.setCharacterEncoding("UTF-8");
-			response.getWriter().println(productJson);
+		
 	}
 
 

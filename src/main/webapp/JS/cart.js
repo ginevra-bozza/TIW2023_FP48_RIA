@@ -184,8 +184,9 @@
         } else {
             s = supplierCart;
             checkCart = true;
+            s.update();
         }
-        s.update();
+
 
         if(checkCart){
             row = document.createElement("tr");

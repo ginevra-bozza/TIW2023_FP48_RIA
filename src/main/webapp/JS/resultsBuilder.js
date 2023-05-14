@@ -1,5 +1,4 @@
 
-
 {
     function doSearch(_listcontainer, textSearch){
         this.listcontainer = _listcontainer;
@@ -10,17 +9,24 @@
             doRequest('Results?textSearch=' + textSearch, "GET", // callback function
                 function (req) {
                     if (req.readyState === XMLHttpRequest.DONE) { // == 4
+                        let pageContainer = document.getElementById('id_pageContainer')
                         if (req.status === 200) {
-                            document.getElementById('id_pageContainer').innerHTML = '';
+                            pageContainer.innerHTML = '';
                             let productToShow = JSON.parse(req.responseText);
 
                             if (productToShow.length === 0) {
                                 alert("No results"); //for demo purposes
 
-                            }else {
+                            } else {
                                 // If conferences list is not emtpy, then update view
                                 self.update(productToShow); // self visible by closure
                             }
+                        }else if(req.status === 204) {
+                            let emptySearchMessage = document.createElement("p");
+                            emptySearchMessage.textContent = "Search has produced no results";
+                            pageContainer.innerHTML = '';
+                            pageContainer.appendChild(emptySearchMessage);
+
                         } else {
                             // request failed, handle it
                             self.listcontainer.style.visibility = "hidden";
