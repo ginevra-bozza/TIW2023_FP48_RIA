@@ -1,24 +1,12 @@
 package it.polimi.tiw.DAO;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Reader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
-
-
-
-import java.sql.Blob;
-import java.sql.Clob;
 
 import it.polimi.tiw.beans.Product;
 
@@ -29,7 +17,11 @@ public class ProductDAO {
 	public ProductDAO(Connection connection) {
 		this.con = connection;
 	}
-	
+	/**
+	 * This method search a product by a part of it's name or his description
+	 * @param productName the input inserted in the form
+	 * @return the list of products that correspond with the research
+	 */
 	public List<Product> searchProduct (String productName) {
 		List<Product> products = new ArrayList<Product>();
 
@@ -59,7 +51,12 @@ public class ProductDAO {
 		}
 		return products;
 		}
-
+	/**
+	 * Find every attribute by his product ID
+	 * @param product_Id 
+	 * @return every attribute by his product ID
+	 * @throws IOException if can't set the image
+	 */
 	public List<Product> findProductByID(Integer product_Id) throws IOException {
 		List<Product> products = new ArrayList<Product>();
 		String query = "SELECT  product_id, supplier_id, product_name, product_description, category, image, price  FROM product WHERE product_id = ? order by price asc;";
@@ -92,7 +89,12 @@ public class ProductDAO {
 		}
 		return products;
 		}
-
+	/**
+	 * Find every attribute by his product ID and supplier ID
+	 * @param product_id
+	 * @param supplier_id
+	 * @return the attribute of a product that depends from the supplier
+	 */
 	public Product findProductByID(int product_id, int supplier_id) {
 		Product product = new Product();
 		String query = "SELECT * FROM product where product_id = ? and supplier_id = ?;";
@@ -124,7 +126,11 @@ public class ProductDAO {
 		return product;
 	}
 	
-	
+	/**
+	 * Random list of product when the user has not visualized anything	
+	 * @param listSize depends on how many product has visualized the user
+	 * @return a list of random product
+	 */	
 	public List<Product> getRandomProducts(int listSize) {
 		//create a list of random products from 'Electronics' category, to visualize on the home page
 		List<Product> randomProducts = new ArrayList<Product>();

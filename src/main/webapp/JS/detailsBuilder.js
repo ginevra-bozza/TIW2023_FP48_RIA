@@ -82,6 +82,9 @@
         sTh = document.createElement('th');
         sTh.textContent = "Supplier name";
         suppliersThead.appendChild(sTh);
+        sTh = document.createElement("th");
+        sTh.textContent = "Price";
+        suppliersThead.appendChild(sTh);
         sTh = document.createElement('th');
         sTh.textContent = "Evaluation";
         suppliersThead.appendChild(sTh);

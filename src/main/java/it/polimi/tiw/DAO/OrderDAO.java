@@ -21,7 +21,11 @@ public class OrderDAO {
 	public OrderDAO(Connection connection) {
 		this.con = connection;
 	}
-
+	/**
+	 * This method return every order for one user 
+	 * @param email passing the key that is unique for every user
+	 * @return the list of orders
+	 */
 	public List<Order> getOrdersByUser(String email) {
 		
 		String query = "SELECT order_id, total, shipment_date, shipment_address, supplier_id, supplier_name FROM online_order where email = ? ORDER BY shipment_date desc, order_id desc";
@@ -79,7 +83,13 @@ public class OrderDAO {
 		}
 		return orders;
 	}
-	
+	/**
+	 * Execute a query to create an order
+	 * @param user the user that is in the session
+	 * @param supplier_id the supplier that owns the products
+	 * @param supplier_name the name of the supplier
+	 * @param totalValue the value of the cart
+	 */
 	public void createOrder(User user, ArrayList<Product> orderCart, int supplier_id, String supplier_name, int totalValue) {
 		
 		String shipment_address = user.getAddress();
