@@ -2,9 +2,7 @@ package it.polimi.tiw.controllers;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -13,14 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import it.polimi.tiw.DAO.ProductDAO;
 import it.polimi.tiw.beans.Product;
@@ -57,6 +47,14 @@ public class HomePage extends HttpServlet {
 
 		
 		HttpSession session = request.getSession();
+		
+		String loginpath = getServletContext().getContextPath() + "/index.html";
+				
+		if (session.isNew() || session.getAttribute("currentUser") == null) {
+			System.out.println("User is: "+session.getAttribute("currentUser"));
+			response.sendRedirect(loginpath);
+			return;
+		}
 		
 		productDAO = new ProductDAO(connection);
 		User user = new User();

@@ -11,11 +11,9 @@
     function addToCart(details, supplier_id, supplier_name, price, quantity , shipment_policy, free_shipment_price){
         quantity = parseInt(quantity);
         if(quantity <= 0) {
-            alert("invalid quantity");
-            //bloccare azione
+        alert("invalid quantity");
         }
         let cart = getCartFromSession();
-
         let checkSupplier = false;
         let checkProduct = false;
 
@@ -32,22 +30,15 @@
                     s.productsArray.push(new ProductInCart(details.id, details.name, quantity, price));
                 }
             }
-            /*s.updateTotalQuantity(quantity);
-            s.updateTotal(price,quantity);*/
-           // s.shipmentPrice = calculateShipmentPrice(s);
             s.update();
 
         });
         if(!checkSupplier) {
             let supplierCart = new SupplierCart(supplier_id, supplier_name ,shipment_policy, free_shipment_price);
             supplierCart.productsArray.push(new ProductInCart(details.id, details.name, quantity, price));
-            //supplierCart.updateTotalQuantity(quantity)
-            //supplierCart.updateTotal(price,quantity);
-            //supplierCart.shipmentPrice = calculateShipmentPrice(supplierCart);
             supplierCart.update();
             cart.push(supplierCart);
         }
-
         checkSupplier = false;
         checkProduct = false;
 
@@ -321,12 +312,10 @@ function displayCartBySupplier(supplier_id, tbody, supplierCart) {
         let cart = getCartFromSession();
         let ordersList = JSON.parse(sessionStorage.getItem("order"));
 
-        console.log("cart before update"+JSON.stringify(cart));
         cart.forEach( function (s){
             if(s.supplier_id == ordersList[0].supplier_id){
                 let index = cart.indexOf(s);
                 cart.splice(index, 1);
-                console.log("cart after update"+JSON.stringify(cart));
                 sessionStorage.setItem("cart",JSON.stringify(cart));
             }
             s.update();

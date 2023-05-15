@@ -205,7 +205,6 @@
                 e.preventDefault();
                 if(tbody !== null && tbody !== undefined) {
                     cartPopup.style.display = "block";
-                        //window.onclick = function (event) {
                         cartPopup.onclick =  function (event) {
                             event.preventDefault();
                             if (event.target == cartPopup) {
@@ -237,14 +236,14 @@
             quantityInput = document.createElement("input");
             quantityInput.setAttribute("placeholder", "Insert quantity");
             quantityInput.setAttribute("type", "number");
-            //quantityInput.setAttribute("required min", "1");
             quantityForm.appendChild(quantityInput);
 
             cartButton = document.createElement("button");
             cartButton.setAttribute("type", "submit");
             cartButton.textContent = "add to cart";
             quantityForm.appendChild(cartButton);
-            
+
+            //add to cart event handling
             quantityForm.addEventListener("submit", (e) => {
                 e.preventDefault();
                 let supplier_id = e.target.parentNode.parentNode.children[0].textContent;

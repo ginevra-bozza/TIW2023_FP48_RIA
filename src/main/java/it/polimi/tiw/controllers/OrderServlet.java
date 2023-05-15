@@ -31,6 +31,9 @@ import java.net.URLDecoder;
 
 /**
  * Servlet implementation class Order
+ * This servlet is called when a new order is placed or when the user clicks on the menu link "Orders"
+ * After check for the validity of parameters, saves the new order in the database, and sends to the client the list of orders for that user
+ * 
  */
 @WebServlet("/Orders")
 public class OrderServlet extends HttpServlet {
@@ -54,7 +57,16 @@ public class OrderServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		
 		HttpSession session = request.getSession();
+		String loginpath = getServletContext().getContextPath() + "/index.html";
+		
+		if (session.isNew() || session.getAttribute("currentUser") == null) {
+			System.out.println("User is: "+session.getAttribute("currentUser"));
+			response.sendRedirect(loginpath);
+			return;
+		}
+		
 		OrderDAO order = new OrderDAO(connection);
 		User user = new User();
 		user = (User)session.getAttribute("currentUser");
@@ -74,9 +86,7 @@ public class OrderServlet extends HttpServlet {
 			response.setCharacterEncoding("UTF-8");
 			response.getWriter().println(gson.toJson(ordersList));
 		}
-		
-		
-		
+			
 }
 	
 
@@ -85,6 +95,14 @@ public class OrderServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
+		
+		String loginpath = getServletContext().getContextPath() + "/index.html";
+		
+		if (session.isNew() || session.getAttribute("currentUser") == null) {
+			System.out.println("User is: "+session.getAttribute("currentUser"));
+			response.sendRedirect(loginpath);
+			return;
+		}
 		
 		User user = new User();
 		OrderDAO order = new OrderDAO(connection);
@@ -111,7 +129,7 @@ public class OrderServlet extends HttpServlet {
 	        // Parse the JSON string into a JsonObject
 	        JsonObject jsonObject = gson.fromJson(decodedJson, JsonObject.class);
 
-	        // Extract supplier_id
+	        // Extract supplier data
 	        supplier_id = jsonObject.get("supplier_id").getAsInt();
 	        supplier_name = jsonObject.get("supplier_name").getAsString();
 	        total = jsonObject.get("totalValue").getAsInt();
@@ -132,14 +150,14 @@ public class OrderServlet extends HttpServlet {
 		
 				orderCart.add(product);
 	        }
-		//check data validity
+		
 		} catch (NumberFormatException e) {
 			
 			System.out.println("Printed orders");
 		} 
 		
 		try {
-			System.out.println("Inside orderServlet try");
+			//check the validity of the data sent by the client before creating the order
 			
 			if(supplier_id <= 0 && supplier_id > 20) {
 				System.out.println("Failed on supplier_id " +supplier_id);
@@ -167,12 +185,12 @@ public class OrderServlet extends HttpServlet {
 				throw new ParametersNotMatchingException();
 			}
 				
-		
 			if(supplierDao.getShipmentPrice(supplier_id, orderCart , total) != shipment_price){
 				System.out.println("Failed on shipment_price:  " +shipment_price+ " vs "+supplierDao.getShipmentPrice(supplier_id, orderCart , total));
 				throw new ParametersNotMatchingException();
 			}
 			response.setStatus(HttpServletResponse.SC_OK);
+			//create a new order and gets the list of orders
 			order.createOrder(user, orderCart, supplier_id, supplier_name, totalValue);
 			ordersList = order.getOrdersByUser(user.getEmail());
 			
@@ -183,7 +201,6 @@ public class OrderServlet extends HttpServlet {
 		
 		}catch (ParametersNotMatchingException e){
 	
-			e.printStackTrace();
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");

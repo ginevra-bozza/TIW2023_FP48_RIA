@@ -16,12 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -32,8 +26,12 @@ import it.polimi.tiw.beans.Supplier;
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.utils.ConnectionHandler;
 
+
 /**
  * Servlet implementation class Results
+ * The doGet of this servlet is called when the user search for a product in the home page, sends to the client the list of results as a JSON string
+ * The doPost is called when the user clicks on the product name, and sends back all the details of the product and the list of suppliers who sell it
+ * 
  */
 @WebServlet("/Results")
 public class Results extends HttpServlet {
@@ -61,13 +59,19 @@ public class Results extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		HttpSession session = request.getSession();
-		User user = (User) session.getAttribute("user");
+		String loginpath = getServletContext().getContextPath() + "/index.html";
+		
+		if (session.isNew() || session.getAttribute("currentUser") == null) {
+			System.out.println("User is: "+session.getAttribute("currentUser"));
+			response.sendRedirect(loginpath);
+			return;
+		}
 
 		String searchedProduct = null;
 		try {
 			
 			searchedProduct = request.getParameter("textSearch");
-			// check the validity
+			// check the validity of the search parameter
 			if (searchedProduct == null || searchedProduct.isEmpty()) {
 				throw new Exception("Missing or empty search text value");
 			}
@@ -90,12 +94,11 @@ public class Results extends HttpServlet {
 					productJson = productJson.substring(0, productJson.length() - 1);
 					
 					productJson += "]";
-					response.setStatus(HttpServletResponse.SC_OK);
+					response.setStatus(HttpServletResponse.SC_OK); //200
 					response.setContentType("application/json");
 					response.setCharacterEncoding("UTF-8");
 					response.getWriter().println(productJson);
 				}
-				
 				
 				
 		} catch (Exception e) {
@@ -104,18 +107,15 @@ public class Results extends HttpServlet {
 			response.getWriter().println("Input Error");
 			return;
 
-		}
-		
-		
+		}	
 	}
-
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// If the user is not logged in (not present in session) redirect to the login
-				
+			
+			// If the user is not logged in (not present in session) redirect to the login
 				
 				String loginpath = getServletContext().getContextPath() + "/index.html";
 				HttpSession session = request.getSession();
@@ -124,12 +124,12 @@ public class Results extends HttpServlet {
 					response.sendRedirect(loginpath);
 					return;
 					}
-				//get product details
+				
 				Integer product_Id = null;
 				try {
 					product_Id = Integer.parseInt(request.getParameter("product_id"));
 				} catch (NumberFormatException | NullPointerException e) {
-					// only for debugging e.printStackTrace();
+					
 					System.out.println(product_Id);
 					response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect param values");
 					return;
@@ -142,6 +142,7 @@ public class Results extends HttpServlet {
 				List<Product> product = new ArrayList<Product>();
 				product = productDAO.findProductByID(product_Id);
 				
+				//Map the supplier with the price for that product
 				Map<Supplier,Integer> supplier_info = new HashMap<>();
 				for(Product p : product) {
 					p.setVisualized(true);
@@ -154,6 +155,8 @@ public class Results extends HttpServlet {
 					response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found");
 					return;
 				}
+				
+				//creates the JSON string to send to the client
 				Gson gson = new GsonBuilder().create();
 
 				String productDetailsJson = "";

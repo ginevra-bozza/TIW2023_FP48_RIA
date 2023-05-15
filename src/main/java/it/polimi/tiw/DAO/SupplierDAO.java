@@ -5,9 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import it.polimi.tiw.beans.Product;
 import it.polimi.tiw.beans.Shipment_policy;
@@ -15,10 +13,8 @@ import it.polimi.tiw.beans.Supplier;
 
 public class SupplierDAO {
 	private Connection con;
-	private ResultSet result = null;
 	private ResultSet shipmentResult = null;
 	private ResultSet priceResult = null;
-	private ResultSet nameResult = null;
 	private ResultSet supplierResult = null;
 	
 	
@@ -27,10 +23,14 @@ public class SupplierDAO {
 		this.con = con;
 	}
 	
+	/**
+	 * This method executes a query on the database, extracting the shipment policy data for a specific supplier
+	 * @param supplier is the supplier for which shipment data are requested
+	 * @return a list of shipment policies (minimum, maximum, shipment price)
+	 */
+	
 
 	private List<Shipment_policy>  setShipment_Info(Supplier supplier) {
-		//join supplier e shipment_policy per avere la lista di min e max price
-		// TODO Auto-generated method stub
 		
 		String query = "SELECT minimum, maximum, shipment_price, supplier_id from shipment_policy where supplier_id = ?";
 		List<Shipment_policy> shipment_policies = new ArrayList<Shipment_policy>();
@@ -65,6 +65,13 @@ public class SupplierDAO {
 		return shipment_policies;
 	}
 	
+	/**
+	 * This method returns the shipment price, getting it from database table shipment_policy
+	 * @param supplier_id 
+	 * @param productBySupplier is the list of products for that supplier
+	 * @param total is the total value of products of the supplier that are in its cart
+	 * @return shipment price
+	 */
 	public int getShipmentPrice(int supplier_id, ArrayList<Product> productBySupplier, int total){
 		int Shipment_price = 0;
 		int free_shipment_price = 0;
@@ -123,6 +130,11 @@ public class SupplierDAO {
 		
 	}
 	
+	/**
+	 * This method gets all the data related to a supplier from the database table supplier
+	 * @param supplier_id
+	 * @return a Supplier object with all its attributes
+	 */
 	public Supplier findSupplierById(int supplier_id) {
 		Supplier supplier = null;
 		String query = "SELECT  supplier_id, supplier_name, evaluation, free_shipment_price FROM supplier where supplier_id = ?";

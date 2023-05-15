@@ -19,10 +19,13 @@
 	    }
 	  }
 
-    function doRequest(url, method, callback, form = null) {
+/**
+ * AJAX call management without form sending
+ *
+ */
+function doRequest(url, method, callback, form = null) {
         console.log("makeCall on "+method+ " "+url+" "); //debug
-        console.log(form);
-        var request = new XMLHttpRequest();
+        let request = new XMLHttpRequest();
         request.onreadystatechange = () => callback(request);
         request.open(method, url);
         if (form == null) {
@@ -32,16 +35,22 @@
             request.send(fd);
         }
     }
-	  
+
+/**
+ * links a button with its event in the menu
+ */
 function linkButton(id, cb) {
- 	 	var button = document.getElementById(id);
+ 	 	let button = document.getElementById(id);
   		button.addEventListener('click', (e) => {
     	e.preventDefault();
     	cb();
   });
 }
 
-//recover the cart from sessionStorage
+/**
+ * recover the cart from sessionStorage
+ * @returns cart element
+ */
 function getCartFromSession(){
 
         let cart = [];

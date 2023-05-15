@@ -7,6 +7,11 @@ import java.sql.SQLException;
 import javax.servlet.ServletContext;
 import javax.servlet.UnavailableException;
 
+/**
+ * This class handles the connection with the database, taking the driver, url and credentials from the xml file
+ * @author Ginny
+ *
+ */
 public class ConnectionHandler {
 	
     public static Connection getConnection(ServletContext context) throws UnavailableException {

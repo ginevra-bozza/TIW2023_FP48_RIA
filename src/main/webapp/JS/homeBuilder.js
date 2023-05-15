@@ -4,14 +4,11 @@
      */
  function initializeHome() {
 
-        //var personalMessage = new PersonalMessage(sessionStorage.getItem('email'),
-          //  document.getElementById("id_name"));
-        //personalMessage.show();
         linkButton('goHomeLink', () => initializeHome());
         linkButton('goCartLink', () => displayCart());
         linkButton('goOrdersLink', () => displayOrders());
+
         let userData = JSON.parse(sessionStorage.getItem("userData"));
-        console.log(userData);
         document.getElementById("id_name").textContent = userData.name + ' ' + userData.surname;
         document.getElementById('goHomeLink').className = "active";
         document.getElementById('goOrdersLink').className = "";
@@ -59,10 +56,9 @@
 
         this.listcontainer = id_lastviewedcontainer;
 
-
         this.show = function () {
 
-            var self = this; //Important!
+            let self = this;
 
             doRequest('HomePage', "GET", // callback function
                 function (req) {
@@ -86,14 +82,12 @@
             );
         };
 
-
         this.update = function (productArray) {
             let table,thead,row, nameCell, priceCell, anchor, linkText;
             this.listcontainer.className = "displayed";
             this.listcontainer.innerHTML = ""; // empty the table body
 
             // build updated list
-
             table = document.createElement('table');
             this.listcontainer.appendChild(table);
             thead = document.createElement('thead');
@@ -108,7 +102,7 @@
             let tbody = document.createElement('tbody');
             table.appendChild(tbody);
             productArray.forEach(function (product) { // self visible here, not this
-                //Create a row for each conference
+
                 row = document.createElement("tr");
 
                 nameCell = document.createElement("td");
@@ -128,7 +122,7 @@
                 priceCell.textContent = product.price;
                 row.appendChild(priceCell);
 
-                // Add row to table body
+
                 tbody.appendChild(row);
             });
 

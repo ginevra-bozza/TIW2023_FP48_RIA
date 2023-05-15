@@ -1,5 +1,12 @@
 
 {
+    /**
+     * This function is called when a user search for a product. Calls the server sending the text of the search,
+     * parse the result and creates a table of results. If no result is found, shows a custom message
+     *
+     * @param _listcontainer is the container element on the HTML page
+     * @param textSearch is the keyword searched by the user
+     */
     function doSearch(_listcontainer, textSearch){
         this.listcontainer = _listcontainer;
 
@@ -18,7 +25,6 @@
                                 alert("No results"); //for demo purposes
 
                             } else {
-                                // If conferences list is not emtpy, then update view
                                 self.update(productToShow); // self visible by closure
                             }
                         }else if(req.status === 204) {
@@ -97,7 +103,12 @@
         this.show();
     }
 
-
+    /**
+     * This function creates and shows a list of details for each product, including name, category, description, image and
+     * a list of all the suppliers that sell that product
+     * @param product_id
+     * @constructor
+     */
     
     function DetailsList(product_id){
         

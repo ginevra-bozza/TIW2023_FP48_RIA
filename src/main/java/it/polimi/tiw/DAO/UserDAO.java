@@ -13,7 +13,14 @@ public class UserDAO {
 	public UserDAO(Connection connection) {
 		this.con = connection;
 	}
-
+	
+	/**
+	 * This method gets the data of the user from the user table in databse
+	 * @param email is the email of the user, sent by the login form
+	 * @param pwd is the password of the user, sent by the login form
+	 * @return a User object 
+	 * @throws SQLException
+	 */
 	public User checkCredentials(String email, String pwd) throws SQLException {
 		String query = "SELECT  email, password, name, surname, address FROM user  WHERE email = ? AND password =?";
 		try (PreparedStatement pstatement = con.prepareStatement(query);) {

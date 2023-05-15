@@ -4,9 +4,9 @@
      */
     (function () {
         window.addEventListener('load', (e) => {
-            // initialize event listeners
+            // initialize and display home page
             initializeHome();
-            // display home page
+
         });
     })();
 }
