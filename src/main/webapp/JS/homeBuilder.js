@@ -7,6 +7,10 @@
         linkButton('goHomeLink', () => initializeHome());
         linkButton('goCartLink', () => displayCart());
         linkButton('goOrdersLink', () => displayOrders());
+
+        document.getElementById('goHomeLink').className = "active";
+        document.getElementById('goOrdersLink').className = "";
+        document.getElementById('goCartLink').className = "";
         refreshHome();
         prepareSearch();
     }

@@ -109,6 +109,9 @@
         let cartContainer = document.getElementById("id_cartContainer")
         let emptyCartMessage = document.createElement("p");
 
+        document.getElementById('goHomeLink').className = "";
+        document.getElementById('goOrdersLink').className = "";
+        document.getElementById('goCartLink').className = "active";
         let table, thead, th, tbody, headRow;
 
         listContainer.className = "masked";

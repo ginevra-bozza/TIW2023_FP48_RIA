@@ -35,7 +35,9 @@ function executeOrder(param) {
 
 
         function buildOrdersList(order) {
-
+        document.getElementById('goHomeLink').className = "";
+        document.getElementById('goOrdersLink').className = "active";
+        document.getElementById('goCartLink').className = "";
         let table, thead, row, idCell, totalCell, supplierNameCell, addressCell, dateCell, th, tbody;
         let resultContainer = document.getElementById("id_pageContainer");
         let cartContainer = document.getElementById("id_cartContainer");
@@ -144,6 +146,7 @@ function executeOrder(param) {
         }
 }
     function displayOrders(){
+
        let ordersContainer = document.getElementById("id_pageContainer");
        let orders = JSON.parse(sessionStorage.getItem("order"));
        let emptyOrdersMessage;
