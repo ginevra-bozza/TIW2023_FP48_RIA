@@ -1,5 +1,9 @@
 package it.polimi.tiw.beans;
-
+/**
+ * This class represent the database implementation of a product
+ * @author emanuele
+ *
+ */
 public class Product {
 	private int product_id;
 	private int supplier_id;

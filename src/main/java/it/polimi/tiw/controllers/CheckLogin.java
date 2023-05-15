@@ -21,7 +21,7 @@ import it.polimi.tiw.DAO.UserDAO;
 import it.polimi.tiw.utils.ConnectionHandler;
 
 /**
- * Servlet implementation class CheckLogin
+ * Servlet implementation class CheckLogin, handles the login and redirect to the homePage
  */
 @WebServlet("/CheckLogin")
 @MultipartConfig

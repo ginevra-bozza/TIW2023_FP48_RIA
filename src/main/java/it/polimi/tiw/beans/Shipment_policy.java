@@ -1,5 +1,9 @@
 package it.polimi.tiw.beans;
-
+/**
+ * This class represent the database implementation of the shipmentPolicy
+ * @author emanuele
+ *
+ */
 public class Shipment_policy {
 	private int supplier_id;
 	private int minimum;

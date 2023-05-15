@@ -2,7 +2,11 @@ package it.polimi.tiw.beans;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * This class represent the database implementation of a Supplier
+ * @author emanuele
+ *
+ */
 public class Supplier {
 
 	private int supplier_id;

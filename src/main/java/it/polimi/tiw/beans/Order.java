@@ -3,7 +3,11 @@ package it.polimi.tiw.beans;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * This class represent the database implementation of an order
+ * @author emanuele
+ *
+ */
 public class Order {
 	private int order_id ;
 	private  int total;

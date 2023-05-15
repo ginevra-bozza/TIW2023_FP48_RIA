@@ -1,5 +1,8 @@
 {
-    function initializeHome() {
+    /**
+     * Create the home after login and after every press on the home link
+     */
+ function initializeHome() {
 
         //var personalMessage = new PersonalMessage(sessionStorage.getItem('email'),
           //  document.getElementById("id_name"));
@@ -17,8 +20,11 @@
         prepareSearch();
     }
 
-    //showing last five element viewed
-    function refreshHome() {
+    /**
+     * showing last five element viewed
+     */
+
+ function refreshHome() {
         document.getElementById("id_detailsContainer").className = "masked";
         document.getElementById("id_cartContainer").innerHTML = "";
         let lastViewedList = new LastViewedList(document.getElementById("id_pageContainer"));
@@ -26,8 +32,11 @@
 
     }
 
-    //Product search
-    function prepareSearch(){
+    /**
+     * Product search
+     */
+
+ function prepareSearch(){
         let search_form = document.getElementById("id_textSearch")
        search_form.addEventListener('keydown', (e) => {
             if (e.code === 'Enter') {
@@ -41,7 +50,12 @@
         });
     }
 
-    function LastViewedList(id_lastviewedcontainer) {
+    /**
+     * Create the last viewed List
+     * @param id_lastviewedcontainer
+     * @constructor
+     */
+ function LastViewedList(id_lastviewedcontainer) {
 
         this.listcontainer = id_lastviewedcontainer;
 
@@ -121,4 +135,4 @@
 
         }
     }
-}
+ }

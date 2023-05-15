@@ -1,4 +1,8 @@
 {
+    /**
+     * Build a table with product details
+     * @param product
+     */
     function buildProduct(product) {
 
         let table, thead, row, idCell, nameCell, descriptionCell, categoryCell, imageCell, th, tbody, div, productImg;
@@ -58,6 +62,10 @@
         row.appendChild(imageCell);
     }
 
+    /**
+     * Build a table that represent the product details by his supplier
+     * @param details
+     */
     function buildSuppliersList(details) {
         let totalQuantity = 0;
         let totalValue = 0;
@@ -264,6 +272,11 @@
         });
     }
 
+    /**
+     * Produce a list of shipmentPolicies for every supplier
+     * @param listContainer
+     * @param policiesArray
+     */
     function buildShipmentPolicies(listContainer, policiesArray) {
         let policiesTable, thead, th, tbody, row;
         let minimumCell, maximumCell, priceCell;

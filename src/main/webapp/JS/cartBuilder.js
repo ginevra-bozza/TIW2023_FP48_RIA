@@ -1,5 +1,13 @@
-
-
+/**
+ * This method add to cart one product by his supplier
+ * @param details the array of the product with his details
+ * @param supplier_id
+ * @param supplier_name
+ * @param price
+ * @param quantity the number of product desired
+ * @param shipment_policy
+ * @param free_shipment_price
+ */
     function addToCart(details, supplier_id, supplier_name, price, quantity , shipment_policy, free_shipment_price){
         quantity = parseInt(quantity);
         if(quantity <= 0) {
@@ -50,7 +58,16 @@
         displayCart(cart);
     }
 
-    function SupplierCart (supplier_id, supplier_name, shipment_policy, free_shipment_price) {
+/**
+ * This function handles a cart that belongs to a supplier like a Java class
+ * and have external methods that recalculate his value, the total quantity and the shipment price of the cart
+ * @param supplier_id
+ * @param supplier_name
+ * @param shipment_policy
+ * @param free_shipment_price
+ * @constructor
+ */
+function SupplierCart (supplier_id, supplier_name, shipment_policy, free_shipment_price) {
 
         this.supplier_id = supplier_id;
         this.supplier_name = supplier_name;
@@ -95,7 +112,16 @@
         }
         return shipment_price;
     }
-    function ProductInCart(product_in_cart_id, name, quantity, price) {
+
+/**
+ * The single product that is contained in the supplier cart
+ * @param product_in_cart_id
+ * @param name
+ * @param quantity
+ * @param price
+ * @constructor
+ */
+function ProductInCart(product_in_cart_id, name, quantity, price) {
         this.product_id = product_in_cart_id;
         this.name = name;
         this.price = price;
@@ -167,7 +193,13 @@
         cartContainer.className = "displayed";
     }
 
-    function displayCartBySupplier(supplier_id, tbody, supplierCart) {
+/**
+ * Display a single cart by the supplier name
+ * @param supplier_id
+ * @param tbody
+ * @param supplierCart
+ */
+function displayCartBySupplier(supplier_id, tbody, supplierCart) {
 
         let row, supplierIdCell, supplierNameCell, totalQuantityCell, totalPriceCell, insideTable, insideThead,
             insideTh, insideTbody, insideRow, idCell, nameCell, priceCell, quantityCell, shipmentPriceCell, orderButton;
@@ -282,6 +314,9 @@
 
     }
 
+/**
+ * Remove a supplier cart when an order is executed
+ */
     function removeFromCart() {
         let cart = getCartFromSession();
         let ordersList = JSON.parse(sessionStorage.getItem("order"));

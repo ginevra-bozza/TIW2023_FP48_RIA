@@ -28,7 +28,7 @@ import it.polimi.tiw.beans.User;
 import it.polimi.tiw.utils.ConnectionHandler;
 
 /**
- * Servlet implementation class HomePage
+ * Servlet implementation class HomePage, handles search form and last viewed List
  */
 @WebServlet("/HomePage")
 public class HomePage extends HttpServlet {

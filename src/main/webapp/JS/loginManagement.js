@@ -1,5 +1,5 @@
 /**
- * Login management
+ * Login management, refers to the homePage
  */
 
 (function() {
