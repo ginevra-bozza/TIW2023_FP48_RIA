@@ -148,6 +148,7 @@ function executeOrder(param) {
     function displayOrders(){
 
        let ordersContainer = document.getElementById("id_pageContainer");
+       ordersContainer.className = "displayed";
        let orders = JSON.parse(sessionStorage.getItem("order"));
        let emptyOrdersMessage;
 

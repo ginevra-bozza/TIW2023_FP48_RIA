@@ -12,11 +12,12 @@
 			makeCall("POST", 'CheckLogin',form,
 				function(x) {
 					if (x.readyState === XMLHttpRequest.DONE) {
-						var message = x.responseText;
+						let message = x.responseText;
 						console.log("Status: "+x.status);
 						switch (x.status) {
 							case 200:
-								sessionStorage.setItem('email', message);
+								console.log(message);
+								sessionStorage.setItem("userData",message);
 								window.location.href = "Home.html";
 								break;
 							case 400: // bad request

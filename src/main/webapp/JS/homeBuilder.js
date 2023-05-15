@@ -7,7 +7,9 @@
         linkButton('goHomeLink', () => initializeHome());
         linkButton('goCartLink', () => displayCart());
         linkButton('goOrdersLink', () => displayOrders());
-
+        let userData = JSON.parse(sessionStorage.getItem("userData"));
+        console.log(userData);
+        document.getElementById("id_name").textContent = userData.name + ' ' + userData.surname;
         document.getElementById('goHomeLink').className = "active";
         document.getElementById('goOrdersLink').className = "";
         document.getElementById('goCartLink').className = "";

@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringEscapeUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.DAO.UserDAO;
@@ -66,9 +68,12 @@ public class CheckLogin extends HttpServlet {
 		} else {
 			request.getSession().setAttribute("currentUser", user);
 			response.setStatus(HttpServletResponse.SC_OK);
+			String userData = "{\"name\":\"" + user.getName() 
+			+ "\",\"surname\":\"" + user.getSurname() + "\"}";
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
-			response.getWriter().println(email);
+			response.getWriter().println(userData);
+			System.out.println(userData);
 		}
 	}
 
