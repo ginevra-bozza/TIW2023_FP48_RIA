@@ -3,43 +3,43 @@
     function doSearch(_listcontainer, textSearch){
         this.listcontainer = _listcontainer;
 
+        this.show = function () {
+            var self = this; //Important!
 
-        let self = this; //Important!
+            doRequest('Results?textSearch=' + textSearch, "GET", // callback function
+                function (req) {
+                    if (req.readyState === XMLHttpRequest.DONE) { // == 4
+                        let pageContainer = document.getElementById('id_pageContainer')
+                        if (req.status === 200) {
+                            pageContainer.innerHTML = '';
+                            let productToShow = JSON.parse(req.responseText);
 
-        doRequest('Results?textSearch=' + textSearch, "GET", // callback function
-            function (req) {
-                if (req.readyState === XMLHttpRequest.DONE) { // == 4
-                    let pageContainer = document.getElementById('id_pageContainer')
-                    if (req.status === 200) {
-                        pageContainer.innerHTML = '';
-                        let productToShow = JSON.parse(req.responseText);
+                            if (productToShow.length === 0) {
+                                alert("No results"); //for demo purposes
 
-                        if (productToShow.length === 0) {
-                            alert("No results"); //for demo purposes
+                            } else {
+                                // If conferences list is not emtpy, then update view
+                                self.update(productToShow); // self visible by closure
+                            }
+                        }else if(req.status === 204) {
+                            let emptySearchMessage = document.createElement("p");
+                            emptySearchMessage.textContent = "Search has produced no results";
+                            pageContainer.innerHTML = '';
+                            pageContainer.appendChild(emptySearchMessage);
 
                         } else {
-                            // If conferences list is not emtpy, then update view
-                            self.showResults(productToShow); // self visible by closure
+                            // request failed, handle it
+                            self.listcontainer.style.visibility = "hidden";
+                            alert("Not possible to recover data"); //for demo purposes
                         }
-                    }else if(req.status === 204) {
-                        let emptySearchMessage = document.createElement("p");
-                        emptySearchMessage.textContent = "Search has produced no results";
-                        pageContainer.innerHTML = '';
-                        pageContainer.appendChild(emptySearchMessage);
-
-                    } else {
-                        // request failed, handle it
-                        self.listcontainer.style.visibility = "hidden";
-                        alert("Not possible to recover data"); //for demo purposes
                     }
                 }
-            }
-        );
+            );
 
 
+        }
 
-
-        this.showResults = function (productArray) {
+        this.update = function (productArray) {
             let table, thead, row, idCell, nameCell, priceCell, th, tbody, anchor, linkText ;
             this.listcontainer.innerHTML = ""; // empty the table body
 
@@ -94,7 +94,7 @@
             document.getElementById("id_cartContainer").className = "masked";
 
         }
-
+        this.show();
     }
 
 
