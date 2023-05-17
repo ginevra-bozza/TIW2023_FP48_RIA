@@ -246,6 +246,7 @@
             //add to cart event handling
             quantityForm.addEventListener("submit", (e) => {
                 e.preventDefault();
+                e.stopImmediatePropagation();
                 let supplier_id = e.target.parentNode.parentNode.children[0].textContent;
                 let supplier_name= e.target.parentNode.parentNode.children[1].textContent;
                 let supplier_price = e.target.parentNode.parentNode.children[2].textContent;
