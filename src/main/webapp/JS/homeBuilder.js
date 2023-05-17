@@ -37,6 +37,7 @@
         let search_form = document.getElementById("id_textSearch")
        search_form.addEventListener('keydown', (e) => {
             if (e.code === 'Enter') {
+                e.stopImmediatePropagation();
                 e.preventDefault();
                 if(search_form.value === null || search_form.value.length === 0){
                     alert("Insert a valid word");
