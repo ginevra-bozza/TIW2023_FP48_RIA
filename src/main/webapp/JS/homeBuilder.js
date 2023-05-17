@@ -64,6 +64,7 @@
                 function (req) {
                     if (req.readyState === XMLHttpRequest.DONE) { // == 4
                         if (req.status === 200) {
+							self.listcontainer.style.visibility = "visible";
                             var productToShow = JSON.parse(req.responseText);
 
                             if (productToShow.length === 0) {
