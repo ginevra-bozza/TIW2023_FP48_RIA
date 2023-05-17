@@ -64,7 +64,7 @@
                 function (req) {
                     if (req.readyState === XMLHttpRequest.DONE) { // == 4
                         if (req.status === 200) {
-							self.listcontainer.style.visibility = "visible";
+							self.listcontainer.className = "displayed";
                             var productToShow = JSON.parse(req.responseText);
 
                             if (productToShow.length === 0) {
@@ -75,7 +75,7 @@
                             self.update(productToShow); // self visible by closure
                         } else {
                             // request failed, handle it
-                            self.listcontainer.style.visibility = "hidden";
+                            self.listcontainer.className = "masked";
                             alert("Not possible to recover data"); //for demo purposes
                         }
                     }

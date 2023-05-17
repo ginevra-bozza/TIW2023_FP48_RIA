@@ -18,6 +18,7 @@
                     if (req.readyState === XMLHttpRequest.DONE) { // == 4
                         let pageContainer = document.getElementById('id_pageContainer')
                         if (req.status === 200) {
+							self.listcontainer.className = "displayed";
                             pageContainer.innerHTML = '';
                             let productToShow = JSON.parse(req.responseText);
 
@@ -35,7 +36,7 @@
 
                         } else {
                             // request failed, handle it
-                            self.listcontainer.style.visibility = "hidden";
+                            self.listcontainer.className = "masked";
                             alert("Not possible to recover data"); //for demo purposes
                         }
                     }
